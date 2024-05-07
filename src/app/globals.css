@@ -25,6 +25,10 @@
     --input: 220 13% 91%;
     --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --yellow: #eab308;
+    --green: #22c55e;
   }
 
   .dark {
@@ -47,6 +51,10 @@
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
     --ring: 263.4 70% 50.4%;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --yellow: #eab308;
+    --green: #22c55e;
   }
 }
 
@@ -59,6 +67,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+.custom-scroll::-webkit-scrollbar {
+  @apply h-[10px]
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  @apply bg-background
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground rounded-[2px]
+}
+
+
+
 
 
 /* @layer base {

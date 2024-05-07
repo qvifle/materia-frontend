@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { PasswordInput } from "../ui/passwordInput";
 import api from "@/lib/utils/api";
 import { signIn } from "next-auth/react";
+import authService from "@/services/AuthService";
 
 const fromSchema = z
   .object({
@@ -40,16 +41,16 @@ const CredentialsRegistrationForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
-    const { confirmPassword, ...reqData } = values;
-    const res = await api.post("/signUp", reqData);
+    const { confirmPassword, ...fields } = values;
+    const { status } = await authService.signUp(fields);
 
-    if (res.status != 201) {
+    if (status != 201) {
       return;
     }
 
     signIn("credentials", {
-      email: reqData.email,
-      password: reqData.password,
+      email: fields.email,
+      password: fields.password,
       callbackUrl: "/home",
     });
   };

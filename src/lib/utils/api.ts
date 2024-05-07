@@ -3,16 +3,16 @@ import { getSession, signOut } from "next-auth/react";
 
 const baseURL = process.env.API_PATH || "http://localhost:5000";
 
+const options = {
+  baseURL,
+  // withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
+
 const ApiClient = () => {
-  const defaultOptions = {
-    baseURL,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  const instance = axios.create(defaultOptions);
-
+  const instance = axios.create(options);
   instance.interceptors.request.use(async (request) => {
     const session = await getSession({ req: request });
     if (session?.user.accessToken) {
@@ -22,14 +22,13 @@ const ApiClient = () => {
   });
 
   instance.interceptors.response.use(
-    (response) => {
-      return response;
-    },
+    (response) => response,
     (error) => {
+      // console.log(error.response.data);
       if (error.response.status === 401) {
         signOut({ redirect: true, callbackUrl: "/login" });
       }
-      console.log(error);
+      throw error;
     }
   );
 

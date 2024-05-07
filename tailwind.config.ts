@@ -8,6 +8,7 @@ const config = {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  mode: "jit",
   theme: {
     container: {
       center: true,

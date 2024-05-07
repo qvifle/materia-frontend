@@ -3,8 +3,10 @@ import { Rubik as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Providers from "@/components/providers/Providers";
+import DialogsContainer from "@/components/dialogs/DialogsContainer";
+import Toaster from "@/components/toaster/Toaster";
 
-export const fontSans = FontSans({
+const rubik = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -22,8 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn("min-h-screen antialiased font-sans", fontSans.variable)}>
-        <Providers>{children}</Providers>
+        className={cn("min-h-screen antialiased font-sans", rubik.variable)}>
+        <Providers>
+          {children}
+          <Toaster />
+          <DialogsContainer />
+        </Providers>
       </body>
     </html>
   );

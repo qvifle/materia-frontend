@@ -37,7 +37,7 @@ const RegistrationModule = () => {
             By qvifle
           </h3>
         </div>
-        <div className="flex items-center gap-2 ml-auto max-">
+        <div className="flex items-center gap-2 ml-auto ">
           <SocialMediaIconLink href="https://github.com/qvifle">
             <GhIcon />
           </SocialMediaIconLink>

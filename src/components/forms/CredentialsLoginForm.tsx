@@ -17,6 +17,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import { PasswordInput } from "../ui/passwordInput";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const fromSchema = z.object({
   email: z
@@ -27,15 +29,32 @@ const fromSchema = z.object({
 });
 
 const CredentialsLoginForm = () => {
+  const { push } = useRouter();
   const form = useForm<z.infer<typeof fromSchema>>({
     resolver: zodResolver(fromSchema),
   });
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
-    await signIn("credentials", {
-      ...values,
-      callbackUrl: "/home",
-    });
+    try {
+      const res = await signIn("credentials", {
+        ...values,
+        redirect: false,
+      });
+
+      if (!res) {
+        throw new Error("something went wrong");
+      }
+
+      if (!res.ok) {
+        toast.error("Wrong password or User doesnt exist");
+        return;
+      }
+
+      push("/home");
+    } catch (err) {
+      toast.error("Wrong password or User doesnt exist");
+      console.log(err);
+    }
   };
 
   return (

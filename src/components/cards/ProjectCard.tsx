@@ -1,9 +1,15 @@
 "use client";
+import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
+import { Trash, User } from "lucide-react";
+import Link from "next/link";
+import React, { HTMLAttributes } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { IProject } from "@/types/project.types";
+import truncate from "@/lib/utils/truncate";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -13,73 +19,54 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { User } from "lucide-react";
-import Image from "next/image";
-import React, { HTMLAttributes } from "react";
+import ProjectCardDropdown from "../dropdowns/ProjectCardDropdown";
 
-const truncate = (string: string, maxLength: number) => {
-  if (string.length > maxLength) {
-    const truncatedArray = string.substring(0, maxLength).split(" ");
-    truncatedArray.pop();
-    const value = truncatedArray.join(" ") + "...";
-
-    return { isTruncated: true, value: value };
-  }
-  return { isTruncated: false, value: string };
-};
-
-interface IProjectCard extends HTMLAttributes<HTMLDivElement> {
-  title: string;
-  iconUrl: string;
-  description: string;
-  createdAt: string;
+interface IProjectCard extends HTMLAttributes<HTMLAnchorElement> {
+  project: IProject;
 }
 
-const ProjectCard: React.FC<IProjectCard> = ({
-  title,
-  iconUrl,
-  description,
-  createdAt,
-  ...rest
-}) => {
+const ProjectCard: React.FC<IProjectCard> = ({ project, ...rest }) => {
   const { isTruncated: isDescriptionTruncated, value: truncatedDesctiption } =
-    truncate(description, 50);
+    truncate(project.description || undefined, 50);
+
+  const formatedData = new Date(project.createdAt);
 
   return (
-    <Card className="">
-      <CardHeader>
-        <CardTitle>
-          <div className="flex items-center gap-2">
-            <Image
-              alt="project-icon"
-              src={iconUrl || ""}
-              width={28}
-              height={28}
-            />
-            <span>{title}</span>
-          </div>
-        </CardTitle>
-
-        <CardDescription>
-          {isDescriptionTruncated ? (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span>{truncatedDesctiption}</span>
-                </TooltipTrigger>
-                <TooltipContent>{description}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ) : (
-            description
-          )}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">{createdAt}</span>
+    <Link href={`my-projects/${project.id}`} className="h-full" {...rest}>
+      <Card className="flex flex-col justify-between bg-[#9a9a9a20] hover:bg-[#64646420] duration-100 backdrop-blur-md h-full">
+        <CardHeader>
           <div>
+            <CardTitle>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {project.iconUrl && unifiedToEmoji(project.iconUrl)}
+                  <span>{project.title}</span>
+                </div>
+                <ProjectCardDropdown projectId={project.id} />
+              </div>
+            </CardTitle>
+            <CardDescription>
+              {isDescriptionTruncated ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>{truncatedDesctiption}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>{project.description}</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                project.description
+              )}
+            </CardDescription>
+          </div>
+        </CardHeader>
+
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground">
+              {formatedData.toDateString()}
+            </span>
             <Avatar>
               <AvatarImage alt="avatar"></AvatarImage>
               <AvatarFallback>
@@ -89,9 +76,9 @@ const ProjectCard: React.FC<IProjectCard> = ({
               </AvatarFallback>
             </Avatar>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 

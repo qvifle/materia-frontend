@@ -1,11 +1,16 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
+"use client";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
-export default function Home() {
-  return (
-    <main>
-      <Button className="">Hello</Button>
-    </main>
-  );
-}
+const Page = () => {
+  const { data: session } = useSession();
+  console.log("session");
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
+  return <div>Hello</div>;
+};
+
+export default Page;

@@ -1,5 +1,6 @@
 import api from "@/lib/utils/api";
 import getAccessTokenFromCookie from "@/lib/utils/getAccessTokenFromCookie";
+import authService from "@/services/AuthService";
 import type { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -36,33 +37,35 @@ export const options: NextAuthOptions = {
             return null;
           }
 
-          const {
-            data: user,
-            status,
-            headers,
-          } = await api.post(`/signIn`, {
-            email: credentials?.email,
-            password: credentials?.password,
-          });
+          // const res = await api.post(`/signIn`, {
+          //   email: credentials?.email,
+          //   password: credentials?.password,
+          // });
 
+          const res = await authService.signIn(credentials);
 
-          if (status != 200) {
+          if (!res) {
+            return;
+          }
+
+          if (res.status != 200) {
             return null;
           }
 
-          if (!headers["set-cookie"]) {
+          if (!res.headers["set-cookie"]) {
             return null;
           }
 
-          const accessToken = getAccessTokenFromCookie(headers["set-cookie"]);
+          const accessToken = getAccessTokenFromCookie(
+            res.headers["set-cookie"]
+          );
 
           if (!accessToken) {
-            
+            return null;
           }
 
-
-          return { ...user, accessToken: accessToken };
-        } catch (err) {
+          return { ...res.data, accessToken: accessToken };
+        } catch (err: any) {
           console.log(err);
         }
       },
