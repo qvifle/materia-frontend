@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
 
 @layer base {
   :root {
@@ -58,7 +57,6 @@
   }
 }
 
- 
 @layer base {
   * {
     @apply border-border;
@@ -69,20 +67,33 @@
 }
 
 .custom-scroll::-webkit-scrollbar {
-  @apply h-[10px]
+  @apply h-[10px];
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  @apply bg-background
+  @apply bg-background;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  @apply bg-muted-foreground rounded-[2px]
+  @apply bg-muted-foreground rounded-[2px];
 }
 
+@keyframes taskApperaAnimation {
+  0% {
+    filter: drop-shadow(0 20px 13px rgba(255, 255, 255, 0))
+      drop-shadow(0 8px 5px rgba(0, 0, 0, 0));
+  }
+  100% {
+    filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03))
+      drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+    border: hsl(var(--border)) 1px solid;
+  }
+}
 
-
-
+/* Apply animation to the element */
+.taskAppear {
+  animation: taskApperaAnimation 0.1s forwards ease-in;
+}
 
 /* @layer base {
   :root {

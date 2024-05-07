@@ -8,12 +8,13 @@ import { ITask } from "@/types/task.types";
 import {
   DndContext,
   DragEndEvent,
-  closestCorners,
   DragOverlay,
   DragStartEvent,
-  UniqueIdentifier,
   DropAnimation,
+  MouseSensor,
   defaultDropAnimationSideEffects,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -21,10 +22,6 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import SortableItem from "@/app/SortableItem";
-import {
-  restrictToVerticalAxis,
-  restrictToWindowEdges,
-} from "@dnd-kit/modifiers";
 
 const dropAnimationConfig: DropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
@@ -58,6 +55,18 @@ const TasksContainer: React.FC<ITasksContainer> = ({
     () => renderedTasks.map((item) => item.id),
     [renderedTasks],
   );
+
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+      delay: 150,
+      tolerance: 1,
+    },
+    onActivation: () => {
+      console.log("Ok");
+    },
+  });
+  const sensors = useSensors(mouseSensor);
 
   const {
     data: tasks,
@@ -130,10 +139,6 @@ const TasksContainer: React.FC<ITasksContainer> = ({
     }
   }, [tasks, setTasksCount]);
 
-  useEffect(() => {
-    console.log(activeTask);
-  }, [activeTask]);
-
   if (isPending) {
     return <span>Loading...</span>;
   }
@@ -148,7 +153,11 @@ const TasksContainer: React.FC<ITasksContainer> = ({
 
   return (
     <div className="flex flex-col gap-2" {...rest}>
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+      >
         <SortableContext
           items={tasksIds}
           strategy={verticalListSortingStrategy}
@@ -166,7 +175,7 @@ const TasksContainer: React.FC<ITasksContainer> = ({
           })}
         </SortableContext>
         <DragOverlay dropAnimation={dropAnimationConfig}>
-          {activeTask ? <TaskCard task={activeTask} /> : null}
+          {activeTask ? <TaskCard draggable task={activeTask} /> : null}
         </DragOverlay>
       </DndContext>
     </div>

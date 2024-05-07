@@ -23,19 +23,24 @@ import { cn } from "@/lib/utils";
 interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
   task: ITask;
   hidden?: boolean;
+  draggable?: boolean;
 }
 
-const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
+const TaskCard: React.FC<ITaskCard> = ({
+  task,
+  hidden = false,
+  draggable = false,
+  ...rest
+}) => {
   const [isTitleEdit, setTitleEdit] = useState(false);
   const [isDescriptionEdit, setDescriptionEdit] = useState(false);
-  const log = () => {
-    console.log("hello");
-  };
+
   return (
     <Card
       className={cn(
         "max-w-[350px] py-1 px-2 group border-none relative z-20",
         hidden ? "opacity-0" : "",
+        draggable && "taskAppear",
       )}
       {...rest}
     >

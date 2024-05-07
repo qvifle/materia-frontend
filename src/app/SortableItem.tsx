@@ -14,7 +14,6 @@ function SortableItem({ id, children }: { id: string; children: ReactNode }) {
 
   return (
     <div
-      className="z-10"
       ref={setNodeRef}
       style={style}
       {...attributes}
