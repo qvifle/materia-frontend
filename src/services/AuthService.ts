@@ -7,7 +7,7 @@ class AuthService {
   private signUpUrl = "signUp";
 
   async signIn(data: ISignInFormFields) {
-    const res = await api.post(this.signInUrl, data);
+    const res = await api.post(this.signInUrl, data, { withCredentials: true });
     return res;
   }
 

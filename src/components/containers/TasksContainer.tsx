@@ -31,6 +31,7 @@ const dropAnimationConfig: DropAnimation = {
       },
     },
   }),
+  duration: 300,
 };
 
 interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
@@ -58,9 +59,9 @@ const TasksContainer: React.FC<ITasksContainer> = ({
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
-      distance: 10,
-      delay: 150,
-      tolerance: 1,
+      distance: 20,
+      delay: 200,
+      tolerance: 20,
     },
     onActivation: () => {
       console.log("Ok");

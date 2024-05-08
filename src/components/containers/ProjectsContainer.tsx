@@ -3,6 +3,8 @@ import ProjectCard from "@/components/cards/ProjectCard";
 import { useQuery } from "@tanstack/react-query";
 import projectService from "@/services/ProjectService";
 import { IProject } from "@/types/project.types";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const ProjectsContainer = () => {
   const {
@@ -16,6 +18,9 @@ const ProjectsContainer = () => {
       return data;
     },
   });
+
+  const session = useSession();
+  useEffect(() => console.log(session), [session]);
 
   if (isPending) {
     return <div>Loading...</div>;

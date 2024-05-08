@@ -7,6 +7,7 @@ import { Textarea } from "../ui/textarea";
 import taskService from "@/services/TaskService";
 import getHeightOfChangeDescriptionInput from "@/lib/utils/getHeightOfChangeDescriptionInput";
 import { ITask } from "@/types/task.types";
+import useClickOutside from "@/lib/hooks/useClickOutside";
 
 const ChangeTaskDescriptionInput = ({
   toggle,
@@ -19,7 +20,14 @@ const ChangeTaskDescriptionInput = ({
   const [descriptionValue, setDescriptionValue] = useState(
     task.description || "",
   );
-  const ref = useRef<null | any>(null);
+  const textAreaRef = useRef<null | any>(null);
+  const mainRef = useRef<null | any>(null);
+
+  useClickOutside(mainRef, () => {
+    console.log("hello");
+    toggle(false);
+  });
+
   const { mutate } = useMutation({
     mutationKey: ["task", task.id],
     mutationFn: async () => {
@@ -39,18 +47,18 @@ const ChangeTaskDescriptionInput = ({
   };
 
   useEffect(() => {
-    const length = ref.current.value.length;
-    ref.current.setSelectionRange(0, length);
+    const length = textAreaRef.current.value.length;
+    textAreaRef.current.setSelectionRange(0, length);
   }, []);
 
   return (
-    <div className="w-full h-min relative">
+    <div className="w-full h-min relative" ref={mainRef}>
       <Textarea
         style={{ height: getHeightOfChangeDescriptionInput(descriptionValue) }}
         className=" z-[30] !ring-transparent border-none rounded-none w-full min-h-[30px]  scroll-transparent custom-scroll p-0 pr-9"
         onChange={(e) => setDescriptionValue(e.target.value)}
         rows={0}
-        ref={ref}
+        ref={textAreaRef}
         value={descriptionValue}
         autoFocus
         onKeyDown={(e) => {
@@ -68,10 +76,6 @@ const ChangeTaskDescriptionInput = ({
       >
         <Check size={14} />
       </Button>
-      <div
-        onClick={() => toggle(false)}
-        className="fixed top-0 left-0 h-screen w-screen"
-      ></div>
     </div>
   );
 };

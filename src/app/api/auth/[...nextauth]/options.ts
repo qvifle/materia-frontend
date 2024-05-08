@@ -57,7 +57,7 @@ export const options: NextAuthOptions = {
           }
 
           const accessToken = getAccessTokenFromCookie(
-            res.headers["set-cookie"]
+            res.headers["set-cookie"],
           );
 
           if (!accessToken) {

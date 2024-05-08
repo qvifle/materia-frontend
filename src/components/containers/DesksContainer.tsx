@@ -3,6 +3,7 @@ import deskService from "@/services/DeskService";
 import { IDesk } from "@/types/desk.types";
 import { useQuery } from "@tanstack/react-query";
 import DeskCard from "../cards/DeskCard";
+import { DndContext } from "@dnd-kit/core";
 
 interface IDesksContainer {
   projectId: string;
@@ -27,9 +28,11 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
 
   return (
     <>
-      {data.map((desk, index) => (
-        <DeskCard key={index} desk={desk} />
-      ))}
+      <DndContext>
+        {data.map((desk, index) => (
+          <DeskCard key={index} desk={desk} />
+        ))}
+      </DndContext>
     </>
   );
 };

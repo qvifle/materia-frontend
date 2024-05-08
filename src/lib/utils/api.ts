@@ -29,7 +29,7 @@ const ApiClient = () => {
         signOut({ redirect: true, callbackUrl: "/login" });
       }
       throw error;
-    }
+    },
   );
 
   return instance;
