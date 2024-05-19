@@ -174,16 +174,16 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        measuring={{
-          droppable: {
-            strategy: MeasuringStrategy.Always,
-          },
-        }}
+        // measuring={{
+        //   droppable: {
+        //     strategy: MeasuringStrategy.Always,
+        //   },
+        // }}
       >
         {reorderDesks.map((desk, key) => (
           <DeskCard key={key} desk={desk} tasks={desk.tasks} />
         ))}
-        <DragOverlay dropAnimation={defaultDropAnimation}>
+        <DragOverlay>
           {activeTask ? <TaskCard task={activeTask} /> : null}
         </DragOverlay>
       </DndContext>
