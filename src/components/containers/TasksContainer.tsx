@@ -30,19 +30,17 @@ const TasksContainer: React.FC<ITasksContainer> = ({
         <div
           ref={provider.innerRef}
           {...provider.droppableProps}
-          className="flex flex-col"
+          className="flex flex-col "
         >
           {tasks.map((task, index) => (
-            <Draggable index={index} key={task.orderId} draggableId={task.id}>
+            <Draggable index={index} key={task.id} draggableId={task.id}>
               {(dragProvider) => (
                 <div
                   ref={dragProvider.innerRef}
                   {...dragProvider.draggableProps}
                   {...dragProvider.dragHandleProps}
                 >
-                  <TaskCard
-                    task={task}
-                  />
+                  <TaskCard task={task} />
                 </div>
               )}
             </Draggable>

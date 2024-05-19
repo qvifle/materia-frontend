@@ -167,7 +167,7 @@ const data: IDesk[] = [
 ];
 
 export default data;
- export const newData: IDesk[] = [
+export const newData: IDesk[] = [
   {
     id: "2fc0710b-9b21-4077-af62-fb7d57af4122",
     title: "A",

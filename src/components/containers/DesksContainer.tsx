@@ -9,9 +9,13 @@ import { useReorderTasksContext } from "@/context/ReorderTasksContextProvider";
 import getIndexOfElementById from "@/lib/utils/getIndexOfElementById";
 import taskService from "@/services/TaskService";
 import TaskCard from "../cards/TaskCard";
-import data from "./data";
+import data, { newData } from "./data";
 import findTaskByIdInDesks from "@/lib/utils/findTaskByIdInDesks";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { arrayMove } from "@/lib/utils/arrayMove";
+import insert from "@/lib/utils/insert";
+import removeDuplicates from "@/lib/utils/removeDuplicates";
+import { ITask } from "@/types/task.types";
 
 interface IDesksContainer {
   projectId: string;
@@ -23,49 +27,126 @@ interface IChangeTaskOrderId {
 }
 
 const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const { activeTask, setActiveTask, reorderDesks, setReorderDesks } =
     useReorderTasksContext();
 
-  // const { mutate: reorderQuery } = useMutation({
-  //   mutationKey: ["changeOrderId"],
-  //   mutationFn: async ({ taskId, overTaskId }: IChangeTaskOrderId) =>
-  //     taskService.changeOrderById(taskId, { overTaskId: overTaskId }),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["desks"] });
-  //   },
-  // });
+  const {
+    data: desks,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["desks"],
+    queryFn: () => deskService.getDesks(projectId),
+  });
 
-  // const { mutate: changeDesk } = useMutation({
-  //   mutationKey: ["changeDesk"],
-  //   mutationFn: async ({ taskId, overTaskId }: IChangeTaskOrderId) =>
-  //     taskService.changeDeskById(taskId, { overTaskId: overTaskId }),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["desks"] });
-  //   },
-  // });
+  const { mutate: changeOrder } = useMutation({
+    mutationKey: ["changeOrderId"],
+    mutationFn: async ({ taskId, overTaskId }: IChangeTaskOrderId) =>
+      taskService.changeOrderById(taskId, { overTaskId: overTaskId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["desks"] });
+    },
+  });
+
+  const { mutate: changeDesk } = useMutation({
+    mutationKey: ["changeDesk"],
+    mutationFn: async ({ taskId, overTaskId }: IChangeTaskOrderId) =>
+      taskService.changeDeskById(taskId, { overTaskId: overTaskId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["desks"] });
+    },
+  });
 
   const handleDragEnd = (e: DropResult) => {
     console.log(e);
+    if (!e.destination) {
+      return;
+    }
+    const activeTaskId = e.draggableId;
+    const activeDesk = reorderDesks.find((desk) =>
+      desk.tasks.some((task) => task.id === activeTaskId),
+    );
+
+    if (!activeDesk) {
+      return;
+    }
+
+    const activeTaskIndex = e.source.index;
+    const overTaskIndex = e.destination.index;
+
+    const activeDeskId = activeDesk.id;
+    const overDeskId = e.destination.droppableId;
+
+    if (activeDeskId === overDeskId && activeTaskIndex === overTaskIndex) {
+      return;
+    }
+
+    const activeDeskIndex = getIndexOfElementById(activeDeskId, reorderDesks);
+    const overDeskIndex = getIndexOfElementById(overDeskId, reorderDesks);
+    const { id: overTaskId } = reorderDesks[overDeskIndex].tasks[overTaskIndex];
+
+    if (activeDeskId === overDeskId) {
+      setReorderDesks((prev) => {
+        const newState = [...prev];
+        newState[activeDeskIndex] = {
+          ...newState[activeDeskIndex],
+          tasks: arrayMove(
+            newState[activeDeskIndex].tasks,
+            activeTaskIndex,
+            overTaskIndex,
+          ),
+        };
+
+        return newState;
+      });
+
+      changeOrder({ overTaskId: overTaskId, taskId: activeTaskId });
+      return;
+    }
+
+    setReorderDesks((prev) => {
+      const activeDeskIndex = getIndexOfElementById(activeDeskId, prev);
+      return prev.map((desk) => {
+        if (desk.id === activeDeskId) {
+          return {
+            ...desk,
+            tasks: prev[activeDeskIndex].tasks.filter(
+              (task) => task.id != activeTaskId,
+            ),
+          };
+        } else if (desk.id === overDeskId) {
+          return {
+            ...desk,
+            tasks: insert(activeDesk.tasks[activeTaskIndex], overTaskIndex, [
+              ...desk.tasks,
+            ]),
+          };
+        }
+
+        return desk;
+      });
+    });
+    changeDesk({ overTaskId: overTaskId, taskId: activeTaskId });
   };
 
   useEffect(() => {
-    if (data) {
-      setReorderDesks(data);
+    if (desks) {
+      setReorderDesks(desks.data);
     }
-  }, [data]);
+  }, [desks]);
 
-  // if (isPending) {
-  //   return "Loading";
-  // }
+  if (isLoading) {
+    return "Loading";
+  }
 
-  // if (desks?.length === 0) {
-  //   return null;
-  // }
+  if (reorderDesks.length === 0) {
+    return null;
+  }
 
-  // if (isError) {
-  //   return "Error";
-  // }
+  if (isError) {
+    return "Error";
+  }
 
   return (
     <>

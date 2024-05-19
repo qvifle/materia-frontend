@@ -1,4 +1,5 @@
 "use client";
+import data from "@/components/containers/data";
 import { IDesk } from "@/types/desk.types";
 import { ITask } from "@/types/task.types";
 import { ReactNode, createContext, useContext, useState } from "react";
@@ -16,7 +17,7 @@ export const ReorderTasksContext = createContext<IReorderTasksContext | null>(
 
 const ReorderTasksContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeTask, setActiveTask] = useState<null | ITask>(null);
-  const [reorderDesks, setReorderDesks] = useState<IDesk[]>([]);
+  const [reorderDesks, setReorderDesks] = useState<IDesk[]>(data);
 
   const contextValue: IReorderTasksContext = {
     activeTask,
