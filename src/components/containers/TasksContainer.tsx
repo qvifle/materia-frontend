@@ -6,12 +6,6 @@ import TaskCard from "../cards/TaskCard";
 import { IDesk } from "@/types/desk.types";
 import { ITask } from "@/types/task.types";
 import { useReorderTasksContext } from "@/context/ReorderTasksContextProvider";
-import {
-  SortableContext,
-  rectSortingStrategy,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import Droppable from "../dnd/Droppable";
 interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
   tasks: ITask[];
   desk: IDesk;
@@ -30,23 +24,15 @@ const TasksContainer: React.FC<ITasksContainer> = ({
   }
 
   return (
-    <SortableContext
-      id={desk.id}
-      items={tasksIds}
-      strategy={verticalListSortingStrategy}
-    >
-      <Droppable id={desk.id}>
-        <div className="flex flex-col gap-2">
-          {tasks.map((task, key) => (
-            <TaskCard
-              hidden={activeTask ? task.id === activeTask.id : false}
-              key={key}
-              task={task}
-            />
-          ))}
-        </div>
-      </Droppable>
-    </SortableContext>
+    <div className="flex flex-col gap-2">
+      {tasks.map((task, key) => (
+        <TaskCard
+          hidden={activeTask ? task.id === activeTask.id : false}
+          key={key}
+          task={task}
+        />
+      ))}
+    </div>
   );
 };
 

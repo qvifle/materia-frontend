@@ -12,7 +12,7 @@ const useClickOutside = (ref: any, cb: () => void) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ref]);
+  }, [ref, cb]);
 };
 
 export default useClickOutside;
