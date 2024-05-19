@@ -24,6 +24,8 @@ import {
   defaultDropAnimation,
   DragStartEvent,
   DragEndEvent,
+  DropAnimation,
+  defaultDropAnimationSideEffects,
 } from "@dnd-kit/core";
 import findTaskByIdInDesks from "@/lib/utils/findTaskByIdInDesks";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -166,6 +168,16 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   //   return "Error";
   // }
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const dropAnimationConfig: DropAnimation = {
+    sideEffects: defaultDropAnimationSideEffects({
+      styles: {
+        active: {
+          opacity: "0",
+        },
+      },
+    }),
+    duration: 1000,
+  };
 
   return (
     <>
@@ -174,6 +186,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        modifiers={}
         // measuring={{
         //   droppable: {
         //     strategy: MeasuringStrategy.Always,
@@ -183,7 +196,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         {reorderDesks.map((desk, key) => (
           <DeskCard key={key} desk={desk} tasks={desk.tasks} />
         ))}
-        <DragOverlay>
+        <DragOverlay dropAnimation={dropAnimationConfig}>
           {activeTask ? <TaskCard task={activeTask} /> : null}
         </DragOverlay>
       </DndContext>

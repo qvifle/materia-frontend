@@ -23,14 +23,7 @@ const TasksContainer: React.FC<ITasksContainer> = ({
   ...rest
 }) => {
   const { activeTask } = useReorderTasksContext();
-  const [sortableContextItems, setSortableContextItems] = useState<string[]>(
-    [],
-  );
-
-  useEffect(
-    () => setSortableContextItems(tasks.map((task) => task.id)),
-    [tasks],
-  );
+  const tasksIds = useMemo(() => tasks.map((item) => item.id), [tasks]);
 
   if (!tasks || tasks.length === 0) {
     return null;
@@ -39,8 +32,8 @@ const TasksContainer: React.FC<ITasksContainer> = ({
   return (
     <SortableContext
       id={desk.id}
-      items={sortableContextItems}
-      // strategy={verticalListSortingStrategy}
+      items={tasksIds}
+      strategy={verticalListSortingStrategy}
     >
       <Droppable id={desk.id}>
         <div className="flex flex-col gap-2">
