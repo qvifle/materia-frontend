@@ -11,6 +11,7 @@ import taskService from "@/services/TaskService";
 import TaskCard from "../cards/TaskCard";
 import data from "./data";
 import findTaskByIdInDesks from "@/lib/utils/findTaskByIdInDesks";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 
 interface IDesksContainer {
   projectId: string;
@@ -44,6 +45,10 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   //   },
   // });
 
+  const handleDragEnd = (e: DropResult) => {
+    console.log(e);
+  };
+
   useEffect(() => {
     if (data) {
       setReorderDesks(data);
@@ -64,9 +69,11 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
 
   return (
     <>
-      {reorderDesks.map((desk, key) => (
-        <DeskCard key={key} desk={desk} tasks={desk.tasks} />
-      ))}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        {reorderDesks.map((desk, key) => (
+          <DeskCard key={key} desk={desk} tasks={desk.tasks} />
+        ))}
+      </DragDropContext>
     </>
   );
 };

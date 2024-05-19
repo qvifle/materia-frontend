@@ -19,6 +19,7 @@ import ChangeTaskTitleInput from "../inputs/ChangeTaskTitleInput";
 import ChangeTaskDescriptionInput from "../inputs/ChangeTaskDescriptionInput";
 import { ITask } from "@/types/task.types";
 import { cn } from "@/lib/utils";
+import { Draggable } from "@hello-pangea/dnd";
 
 interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
   task: ITask;
@@ -38,7 +39,7 @@ const TaskCard: React.FC<ITaskCard> = ({
   return (
     <Card
       className={cn(
-        "max-w-[350px] py-1 px-2 group border-none relative z-20",
+        "max-w-[350px] py-1 px-2 group border-none relative z-20 mb-2",
         hidden ? "opacity-0" : "",
         draggable && "taskAppear",
       )}
