@@ -23,7 +23,7 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks", desk.id] });
+      queryClient.invalidateQueries({ queryKey: ["desks"] });
       setValue("");
       setInit(true);
     },

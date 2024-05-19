@@ -24,7 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn("min-h-screen antialiased font-sans", rubik.variable)}>
+        className={cn("min-h-screen antialiased font-sans", rubik.variable)}
+      >
         <Providers>
           {children}
           <Toaster />

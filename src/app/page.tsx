@@ -1,16 +1,9 @@
 "use client";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const { data: session } = useSession();
-  console.log("session");
-
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
-
-  return <div>Hello</div>;
+  const router = useRouter();
+  router.push("/home");
 };
 
 export default Page;

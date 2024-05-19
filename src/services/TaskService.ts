@@ -32,6 +32,14 @@ class TaskService {
     return res;
   }
 
+  async changeDeskById(taskId: string, data: IOrderIdFormFields) {
+    const res = await api.patch(
+      `${this.baseUrl}/changeProject/${taskId}`,
+      data,
+    );
+    return res;
+  }
+
   async deleteTaskById(taskId: string) {
     const res = await api.delete(`${this.baseUrl}/${taskId}`);
     return res.data;

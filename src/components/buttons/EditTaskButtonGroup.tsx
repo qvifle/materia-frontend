@@ -23,7 +23,7 @@ const EditTaskButtonGroup: React.FC<IEditTaskButtonGroup> = ({
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["desks"] });
     },
   });
   return (
