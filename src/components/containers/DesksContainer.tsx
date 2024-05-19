@@ -14,13 +14,19 @@ import { ITask } from "@/types/task.types";
 import data from "./data";
 import {
   DndContext,
+  DragOverlay,
   MeasuringStrategy,
   MouseSensor,
   TouchSensor,
   closestCorners,
   useSensor,
   useSensors,
+  defaultDropAnimation,
+  DragStartEvent,
+  DragEndEvent,
 } from "@dnd-kit/core";
+import findTaskByIdInDesks from "@/lib/utils/findTaskByIdInDesks";
+import { arrayMove } from "@dnd-kit/sortable";
 
 interface IDesksContainer {
   projectId: string;
@@ -67,6 +73,68 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     },
   });
 
+  const handleDragStart = ({ active }: DragStartEvent) => {
+    const taskId = active.id.toString();
+    const activeTask = findTaskByIdInDesks(reorderDesks, taskId);
+    setActiveTask(activeTask || null);
+  };
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    setActiveTask(null);
+    if (!over) {
+      return;
+    }
+
+    const activeTaskId = active.id.toString();
+    const overTaskId = over.id.toString();
+
+    if (activeTaskId === overTaskId) {
+      return;
+    }
+
+    const activeTask = findTaskByIdInDesks(reorderDesks, activeTaskId);
+    const overTask = findTaskByIdInDesks(reorderDesks, overTaskId);
+
+    const activeDesk = findDeskOfTask(reorderDesks, activeTaskId);
+    const overDesk = findDeskOfTask(reorderDesks, overTaskId);
+
+    if (!activeTask || !overTask || !activeDesk || !overDesk) {
+      return;
+    }
+
+    const activeTaskIndex = getIndexOfElementById(
+      activeTaskId,
+      activeDesk.tasks,
+    );
+
+    const overTaskIndex = getIndexOfElementById(overTaskId, overDesk.tasks);
+
+    if (activeDesk.id === overDesk.id) {
+      const deskIndex = getIndexOfElementById(activeDesk.id, reorderDesks);
+      setReorderDesks((prev) => {
+        const newState = [...prev];
+        newState[deskIndex] = {
+          ...newState[deskIndex],
+          tasks: arrayMove(
+            newState[deskIndex].tasks,
+            activeTaskIndex,
+            overTaskIndex,
+          ),
+        };
+
+        return newState;
+      });
+
+      return;
+    }
+
+    console.log("not the same");
+  };
+
+  const findDeskOfTask = (desks: IDesk[], taskId: string) => {
+    return desks.find((desk) => desk.tasks.some((task) => task.id === taskId));
+  };
+
   // const findDeskOfTask = (taskId: string) => {
   //   const desk = reorderDesks.find((desk) =>
   //     desk.tasks.some((task) => task.id === taskId),
@@ -104,6 +172,8 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
         measuring={{
           droppable: {
             strategy: MeasuringStrategy.Always,
@@ -113,6 +183,9 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         {reorderDesks.map((desk, key) => (
           <DeskCard key={key} desk={desk} tasks={desk.tasks} />
         ))}
+        <DragOverlay dropAnimation={defaultDropAnimation}>
+          {activeTask ? <TaskCard task={activeTask} /> : null}
+        </DragOverlay>
       </DndContext>
     </>
   );

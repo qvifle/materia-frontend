@@ -7,11 +7,13 @@ interface ISortable extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Sortable: React.FC<ISortable> = ({ id, children }) => {
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
-    id: id,
-  });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: id,
+    });
   const style = {
     opacity: 1,
+    transition: transition,
     transform: CSS.Translate.toString(transform),
   };
   return (
