@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { ArrowRightCircle } from "lucide-react";
 import Link from "next/link";
 import SidebarProjects from "./SidebarProjects";
+import CreateProjectButton from "../buttons/CreateProjectButton";
 
 interface ISidebar {
   isOpen: boolean;
@@ -41,7 +42,6 @@ const Sidebar: React.FC<ISidebar> = ({ isOpen, setOpen }) => {
           />
         </Button>
       </div>
-
       <SidebarProjects isOpen={isOpen} />
     </aside>
   );

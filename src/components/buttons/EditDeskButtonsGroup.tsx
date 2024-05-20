@@ -26,7 +26,14 @@ const EditDeskButtonsGroup: React.FC<IEditDeskButtonGroup> = ({
       <Button variant="ghost" size="sm" onClick={() => setTitleEdit(true)}>
         Title
       </Button>
-      <Button onClick={() => deleteDesk()} variant="destructive" size="sm">
+      <Button
+        onClick={() => {
+          setTitleEdit(false);
+          deleteDesk();
+        }}
+        variant="destructive"
+        size="sm"
+      >
         Delete
       </Button>
     </div>

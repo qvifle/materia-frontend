@@ -7,7 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const ProjectModule = ({ projectId }: { projectId: string }) => {
-
   const { data, isPending, isError } = useQuery<IProject>({
     queryKey: [`project/${projectId}`],
     queryFn: async () => {
@@ -22,6 +21,10 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
 
   if (isError) {
     return "Error";
+  }
+
+  if (!data) {
+    return;
   }
 
   return (

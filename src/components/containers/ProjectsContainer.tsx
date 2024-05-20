@@ -24,7 +24,7 @@ const ProjectsContainer = () => {
   }
 
   if (!!projects && !projects.length) {
-    return <div>No projects</div>;
+    return <div className="w-full h-full flex items-center justify-center text-3xl font-semibold">No projects yet...</div>;
   }
 
   if (!projects || isError) {

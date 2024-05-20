@@ -8,6 +8,7 @@ import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
 import projectService from "@/services/ProjectService";
 import { PlusCircle } from "lucide-react";
 import { IProject } from "@/types/project.types";
+import CreateProjectButton from "../buttons/CreateProjectButton";
 
 const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
   const { open: openDialog } = useOpenDialog();
@@ -19,19 +20,11 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
     },
   });
 
-  if (isPending) {
-    return "loading";
-  }
-
   return (
     <div key={"index"} className="flex flex-col p-[15px] h-full">
-      <div className={cn("flex flex-col mb-2", isOpen ? "" : "items-center")}>
-        <div
-          className={cn(
-            "flex items-center justify-between",
-            isOpen ? "mr-2" : "",
-          )}
-        >
+      <CreateProjectButton isOpen={isOpen} />
+      {!!projects && !isPending && (
+        <>
           <Link href={"/home/my-projects"}>
             <p
               className={cn(
@@ -42,45 +35,57 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
               {"My projects"}
             </p>
           </Link>
-
-          <Button
-            onClick={() => openDialog("createProject")}
-            variant="ghost"
-            size="icon"
-            className="h-min w-min p-1"
-          >
-            <PlusCircle size={16} />
-          </Button>
-        </div>
-      </div>
-      <div>
-        {!!projects &&
-          projects.length > 0 &&
-          projects.map((project, key: number) => {
-            return (
-              <Button
-                key={key}
-                variant="ghost"
-                size={isOpen ? "default" : "icon"}
-                className={cn(
-                  "w-full",
-                  isOpen ? "justify-start" : "justify-center",
-                )}
-                asChild
+          {projects.map((project, key: number) => (
+            <Button
+              key={key}
+              variant="ghost"
+              size={isOpen ? "default" : "icon"}
+              className={cn(
+                "w-full",
+                isOpen ? "justify-start" : "justify-center",
+              )}
+              asChild
+            >
+              <Link
+                href={`/home/my-projects/${project.id}`}
+                className="text-left"
               >
-                <Link
-                  href={`/home/my-projects/${project.id}`}
-                  className="text-left"
-                >
-                  <div className="flex items-center gap-2">
-                    {project.iconUrl ? unifiedToEmoji(project.iconUrl) : null}
-                    {isOpen ? <span>{project.title}</span> : null}
-                  </div>
-                </Link>
-              </Button>
-            );
-          })}
-      </div>
+                <div className="flex items-center gap-2">
+                  {project.iconUrl ? unifiedToEmoji(project.iconUrl) : null}
+                  {isOpen ? <span>{project.title}</span> : null}
+                </div>
+              </Link>
+            </Button>
+          ))}
+        </>
+      )}
+
+      {/* {!!projects &&
+        projects.length > 0 &&
+        projects.map((project, key: number) => {
+          return (
+            <Button
+              key={key}
+              variant="ghost"
+              size={isOpen ? "default" : "icon"}
+              className={cn(
+                "w-full",
+                isOpen ? "justify-start" : "justify-center",
+              )}
+              asChild
+            >
+              <Link
+                href={`/home/my-projects/${project.id}`}
+                className="text-left"
+              >
+                <div className="flex items-center gap-2">
+                  {project.iconUrl ? unifiedToEmoji(project.iconUrl) : null}
+                  {isOpen ? <span>{project.title}</span> : null}
+                </div>
+              </Link>
+            </Button>
+          );
+        })} */}
     </div>
   );
 };
