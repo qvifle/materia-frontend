@@ -1,6 +1,6 @@
 .layout {
   transition: 300ms;
-  
+
   height: 100vh;
   /* width: fit-content; */
   min-width: 100vw;
@@ -29,7 +29,8 @@
   grid-row: 1;
 }
 .main {
-  background-color: hsl(var(--secondary));
+  background-color: hsl(var(--muted));
+  /* background-color: hsl(var(--foreground)); */
   grid-column: 2/3;
   grid-row: 2/3;
   padding: 16px;

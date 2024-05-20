@@ -37,7 +37,7 @@ const ChangeTaskDescriptionInput = ({
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["desks"] });
     },
   });
 

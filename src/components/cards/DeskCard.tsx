@@ -22,17 +22,13 @@ const DeskCard: React.FC<IDeskCard> = ({ desk, tasks, ...rest }) => {
 
   return (
     <div className="flex flex-col" {...rest}>
-      <Card
-        className={cn(
-          "bg-[#d0d0d0]  w-[350px] mb-2 hover:bg-[#64646420] duration-100 group ",
-        )}
-      >
-        <div className="w-full min-h-[32px] flex justify-end px-2 py-2 opacity-0 group-hover:opacity-100 duration-200">
+      <Card className={cn("  w-[350px] mb-2 duration-100 group")}>
+        <div className="w-full min-h-[32px] flex justify-end px-2 py-2">
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="ghost"
-                className="h-4 w-4 rounded-[3px] "
+                className="h-4 w-4 rounded-[3px] group-hover:opacity-100  opacity-0 duration-200"
                 size="icon"
               >
                 <Ellipsis className="" color="hsl(var(--muted-foreground))" />

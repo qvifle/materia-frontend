@@ -44,8 +44,8 @@ const EditDeskCardInput = ({ desk, toggle, ...rest }: IEditDeskCardInput) => {
   return (
     <div {...rest}>
       <div className="flex items-center justify-between pr-1 w-full h-6">
-        <Input
-          className="z-30 !ring-transparent ring-offset-transparent border-none !bg-transparent focus:ring-transparent text-muted-foreground text-2xl h-full font-semibold  pl-0 pr-3 rounded-none"
+        <input
+          className="z-30 bg-transparent outline-none w-[269px] text-muted-foreground text-2xl h-full font-semibold  rounded-none"
           defaultValue={desk.title}
           value={value}
           autoFocus

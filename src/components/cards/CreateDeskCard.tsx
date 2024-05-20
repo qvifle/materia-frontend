@@ -36,26 +36,25 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   if (!isInit) {
     return (
       <>
-        <Card className="bg-[#9a9a9a20] h-[72px] max-w-[348px]  backdrop-blur-md z-30 hover:bg-[#64646420] duration-100 p-0 flex items-center min-w-[350px]">
-          <CardHeader className="px-1 py-4 flex items-center">
-            <div className="flex justify-between gap-2 pr-3">
-              <CardTitle className="flex justify-start items-center ">
-                <Input
+        <Card className="bg-background h-[72px] max-w-[348px] backdrop-blur-md z-30 duration-100 p-0 flex items-center min-w-[350px]">
+          <CardHeader className="py-4 flex items-center w-full">
+            <CardTitle>
+              <div className="flex justify-between items-center w-full">
+                <input
                   onChange={(e) => setValue(e.target.value)}
                   autoFocus
-                  placeholder=""
-                  className="!ring-transparent ring-offset-transparent border-none !bg-transparent focus:ring-transparent  text-2xl font-semibold leading-0 h-[18px] py-5 px-3"
+                  className="outline-none w-[269px]  text-2xl font-semibold leading-0 bg-transparent"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       createNewDesk();
                     }
                   }}
                 />
-              </CardTitle>
-              <Button onClick={createNewDesk} size="icon">
-                <Check />
-              </Button>
-            </div>
+                <Button onClick={createNewDesk} size="icon">
+                  <Check />
+                </Button>
+              </div>
+            </CardTitle>
           </CardHeader>
         </Card>
         <div
@@ -69,7 +68,7 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   return (
     <Card
       onClick={() => setInit(false)}
-      className="bg-[#9a9a9a20] max-h-[72px] max-w-[348px] backdrop-blur-md  hover:bg-[#64646420] duration-100 flex items-center justify-center min-w-[350px]"
+      className="bg-background hover:bg-background_hover max-h-[72px] max-w-[348px] backdrop-blur-md  duration-100 flex items-center justify-center min-w-[350px]"
     >
       <Plus color="hsl(var(--muted-foreground))" />
     </Card>

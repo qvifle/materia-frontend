@@ -19,9 +19,6 @@ const ProjectsContainer = () => {
     },
   });
 
-  const session = useSession();
-  useEffect(() => console.log(session), [session]);
-
   if (isPending) {
     return <div>Loading...</div>;
   }
@@ -35,7 +32,7 @@ const ProjectsContainer = () => {
   }
 
   return (
-    <div className="grid grid-cols-4 gap-4 w-full auto-rows-[150px]">
+    <div className="grid grid-cols-4 gap-4 w-full auto-rows-[150px] ">
       {projects.map((el: IProject, key: number) => (
         <ProjectCard key={key} project={el} />
       ))}

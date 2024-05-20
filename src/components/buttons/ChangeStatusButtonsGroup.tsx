@@ -15,7 +15,7 @@ const ChangeStatusButtonsGroup = ({ taskId }: { taskId: string }) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`tasks`] });
+      queryClient.invalidateQueries({ queryKey: ["desks"] });
     },
   });
 

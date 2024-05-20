@@ -25,7 +25,7 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full ">
       <div className="">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
           {data.iconUrl ? unifiedToEmoji(data.iconUrl) : null}

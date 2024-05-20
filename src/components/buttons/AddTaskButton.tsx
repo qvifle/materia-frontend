@@ -41,7 +41,7 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
     return (
       <button
         onClick={() => setInit(false)}
-        className="w-full flex gap-1 items-center bg-card shadow-sm px-2 py-1 rounded-sm hover:bg-secondary duration-200"
+        className="w-full flex gap-1 items-center border-border border bg-card shadow-sm px-2 py-1 rounded-sm hover:bg-secondary duration-200"
         {...rest}
       >
         <Plus size={14} />

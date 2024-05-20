@@ -11,10 +11,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div
       className={cn(
-        "bg-[url('/loginImage.png')]",
         styles.layout,
-        isOpen ? styles.layoutOpen : styles.layoutClosed
-      )}>
+        isOpen ? styles.layoutOpen : styles.layoutClosed,
+      )}
+    >
       <Sidebar isOpen={isOpen} setOpen={setOpen} />
       <Header />
       <main className={cn(styles.main)}>{children}</main>
