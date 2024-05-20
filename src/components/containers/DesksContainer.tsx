@@ -26,6 +26,11 @@ interface IChangeTaskOrderId {
   overTaskId: string;
 }
 
+interface IAddToDesk {
+  taskId: string;
+  overDeskId: string;
+}
+
 const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const queryClient = useQueryClient();
   const { activeTask, setActiveTask, reorderDesks, setReorderDesks } =
@@ -43,7 +48,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const { mutate: changeOrder } = useMutation({
     mutationKey: ["changeOrderId"],
     mutationFn: async ({ taskId, overTaskId }: IChangeTaskOrderId) =>
-      taskService.changeOrderById(taskId, { overTaskId: overTaskId }),
+      taskService.changeOrderById(taskId, { overTaskId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["desks"] });
     },
@@ -52,17 +57,26 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const { mutate: changeDesk } = useMutation({
     mutationKey: ["changeDesk"],
     mutationFn: async ({ taskId, overTaskId }: IChangeTaskOrderId) =>
-      taskService.changeDeskById(taskId, { overTaskId: overTaskId }),
+      taskService.changeDeskById(taskId, { overTaskId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["desks"] });
+    },
+  });
+
+  const { mutate: addToDesk } = useMutation({
+    mutationKey: ["addToDesk"],
+    mutationFn: async ({ taskId, overDeskId }: IAddToDesk) =>
+      taskService.addToDesk(taskId, { overDeskId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["desks"] });
     },
   });
 
   const handleDragEnd = (e: DropResult) => {
-    console.log(e);
     if (!e.destination) {
       return;
     }
+
     const activeTaskId = e.draggableId;
     const activeDesk = reorderDesks.find((desk) =>
       desk.tasks.some((task) => task.id === activeTaskId),
@@ -84,9 +98,35 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
 
     const activeDeskIndex = getIndexOfElementById(activeDeskId, reorderDesks);
     const overDeskIndex = getIndexOfElementById(overDeskId, reorderDesks);
-    const { id: overTaskId } = reorderDesks[overDeskIndex].tasks[overTaskIndex];
+    const overTask = reorderDesks[overDeskIndex].tasks[overTaskIndex];
+    if (!overTask) {
+      // empty desk
+      const activeTask = reorderDesks[activeDeskIndex].tasks[activeTaskIndex];
+      setReorderDesks((prev) => {
+        return prev.map((desk) => {
+          if (desk.id === activeDeskId) {
+            return {
+              ...desk,
+              tasks: desk.tasks.filter((task) => task.id != activeTaskId),
+            };
+          } else if (desk.id === overDeskId) {
+            return {
+              ...desk,
+              tasks: [activeTask],
+            };
+          }
+          return desk;
+        });
+      });
+
+      addToDesk({ taskId: activeTaskId, overDeskId: overDeskId });
+      return;
+    }
+
+    const { id: overTaskId } = overTask;
 
     if (activeDeskId === overDeskId) {
+      // reorder in same desk
       setReorderDesks((prev) => {
         const newState = [...prev];
         newState[activeDeskIndex] = {
@@ -104,7 +144,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
       changeOrder({ overTaskId: overTaskId, taskId: activeTaskId });
       return;
     }
-
+    //reorder in not the same desks
     setReorderDesks((prev) => {
       const activeDeskIndex = getIndexOfElementById(activeDeskId, prev);
       return prev.map((desk) => {

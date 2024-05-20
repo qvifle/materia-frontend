@@ -1,5 +1,6 @@
 import api from "@/lib/utils/api";
 import {
+  IAddToDeskFields,
   IOrderIdFormFields,
   ITaskFormFields,
   ITaskStatusFormFields,
@@ -33,11 +34,12 @@ class TaskService {
   }
 
   async changeDeskById(taskId: string, data: IOrderIdFormFields) {
-    const res = await api.patch(
-      `${this.baseUrl}/changeProject/${taskId}`,
-      data,
-    );
+    const res = await api.patch(`${this.baseUrl}/changeDesk/${taskId}`, data);
     return res;
+  }
+
+  async addToDesk(taskId: string, data: IAddToDeskFields) {
+    return api.patch(`${this.baseUrl}/addToDesk/${taskId}`, data);
   }
 
   async deleteTaskById(taskId: string) {

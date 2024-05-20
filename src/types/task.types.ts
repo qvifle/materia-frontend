@@ -22,3 +22,6 @@ export interface ITaskStatusFormFields extends Pick<ITask, "status"> {}
 export interface IOrderIdFormFields {
   overTaskId: string;
 }
+export interface IAddToDeskFields {
+  overDeskId: string;
+}

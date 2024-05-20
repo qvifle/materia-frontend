@@ -10,6 +10,7 @@ import EditDeskCardInput from "../inputs/EditDeskCardInput";
 import { cn } from "@/lib/utils";
 import { IDesk } from "@/types/desk.types";
 import { ITask } from "@/types/task.types";
+import { Droppable } from "@hello-pangea/dnd";
 
 interface IDeskCard extends HTMLAttributes<HTMLDivElement> {
   desk: IDesk;
@@ -20,10 +21,10 @@ const DeskCard: React.FC<IDeskCard> = ({ desk, tasks, ...rest }) => {
   const [isTitleEdit, setTitleEdit] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2" {...rest}>
+    <div className="flex flex-col" {...rest}>
       <Card
         className={cn(
-          "bg-[#d0d0d0]  w-[350px]  hover:bg-[#64646420] duration-100 group ",
+          "bg-[#d0d0d0]  w-[350px] mb-2 hover:bg-[#64646420] duration-100 group ",
         )}
       >
         <div className="w-full min-h-[32px] flex justify-end px-2 py-2 opacity-0 group-hover:opacity-100 duration-200">
@@ -61,9 +62,19 @@ const DeskCard: React.FC<IDeskCard> = ({ desk, tasks, ...rest }) => {
           </div>
         </CardContent>
       </Card>
-
-      <Tasks desk={desk} tasks={tasks} />
-      <AddTaskButton desk={desk} />
+      <Droppable droppableId={desk.id}>
+        {(provider) => (
+          <div
+            ref={provider.innerRef}
+            {...provider.droppableProps}
+            className="w-full"
+          >
+            <Tasks desk={desk} tasks={tasks} />
+            {provider.placeholder}
+            <AddTaskButton desk={desk} />
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };
