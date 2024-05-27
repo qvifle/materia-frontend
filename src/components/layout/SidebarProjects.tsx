@@ -2,16 +2,13 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import useOpenDialog from "@/lib/hooks/useDialog";
 import { useQuery } from "@tanstack/react-query";
 import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
 import projectService from "@/services/ProjectService";
-import { PlusCircle } from "lucide-react";
 import { IProject } from "@/types/project.types";
 import CreateProjectButton from "../buttons/CreateProjectButton";
 
 const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
-  const { open: openDialog } = useOpenDialog();
   const { data: projects, isPending } = useQuery<IProject[]>({
     queryKey: ["projects"],
     queryFn: async () => {

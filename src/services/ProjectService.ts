@@ -1,5 +1,5 @@
 import api from "@/lib/utils/api";
-import { IProjectFormFields } from "@/types/project.types";
+import { IProject, IProjectFormFields } from "@/types/project.types";
 
 class ProjectService {
   private baseUrl = "/projects";
@@ -10,7 +10,7 @@ class ProjectService {
   }
 
   async getProjectById(projectId: string) {
-    const res = await api.get(`${this.baseUrl}/${projectId}`);
+    const res = await api.get<IProject>(`${this.baseUrl}/${projectId}`);
     return res;
   }
 
