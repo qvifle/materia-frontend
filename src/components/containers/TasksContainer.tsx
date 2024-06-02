@@ -1,11 +1,8 @@
 "use client";
-
-export const dynamicParams = false;
-import React, { HTMLAttributes, useEffect, useMemo, useState } from "react";
+import React, { HTMLAttributes } from "react";
 import TaskCard from "../cards/TaskCard";
 import { IDesk } from "@/types/desk.types";
 import { ITask } from "@/types/task.types";
-import { useReorderTasksContext } from "@/context/ReorderTasksContextProvider";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
   tasks: ITask[];
@@ -17,15 +14,12 @@ const TasksContainer: React.FC<ITasksContainer> = ({
   desk,
   ...rest
 }) => {
-  const { activeTask } = useReorderTasksContext();
-  const tasksIds = useMemo(() => tasks.map((item) => item.id), [tasks]);
-
   if (!tasks || tasks.length === 0) {
     return null;
   }
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col gap-1">
       {tasks.map((task, index) => (
         <Draggable index={index} key={task.id} draggableId={task.id}>
           {(dragProvider) => (
@@ -40,31 +34,6 @@ const TasksContainer: React.FC<ITasksContainer> = ({
         </Draggable>
       ))}
     </div>
-
-    // <Droppable droppableId={desk.id}>
-    //   {(provider) => (
-    //     <div
-    //       ref={provider.innerRef}
-    //       {...provider.droppableProps}
-    //       className="flex flex-col "
-    //     >
-    //       {tasks.map((task, index) => (
-    //         <Draggable index={index} key={task.id} draggableId={task.id}>
-    //           {(dragProvider) => (
-    //             <div
-    //               ref={dragProvider.innerRef}
-    //               {...dragProvider.draggableProps}
-    //               {...dragProvider.dragHandleProps}
-    //             >
-    //               <TaskCard task={task} />
-    //             </div>
-    //           )}
-    //         </Draggable>
-    //       ))}
-    //       {provider.placeholder}
-    //     </div>
-    //   )}
-    // </Droppable>
   );
 };
 

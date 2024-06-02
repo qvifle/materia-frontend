@@ -11,7 +11,7 @@ const DesksWidget = ({ projectId }: { projectId: string }) => {
   
 
   return (
-    <div className=" flex gap-4 min-h-[74px] w-max ">
+    <div className="flex gap-1 min-h-[74px] w-max">
       <DesksContainer projectId={projectId}/>
       <CreateDeskCard projectId={projectId} />
     </div>

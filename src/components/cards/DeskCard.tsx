@@ -22,7 +22,7 @@ const DeskCard: React.FC<IDeskCard> = ({ desk, tasks, ...rest }) => {
 
   return (
     <div className="flex flex-col" {...rest}>
-      <Card className={cn("  w-[350px] mb-2 duration-100 group")}>
+      <Card className={cn("w-[350px] mb-1 duration-100 group")}>
         <div className="w-full min-h-[32px] flex justify-end px-2 py-2">
           <Popover>
             <PopoverTrigger asChild>
@@ -63,7 +63,7 @@ const DeskCard: React.FC<IDeskCard> = ({ desk, tasks, ...rest }) => {
           <div
             ref={provider.innerRef}
             {...provider.droppableProps}
-            className="w-full"
+            className="w-full flex flex-col gap-1"
           >
             <Tasks desk={desk} tasks={tasks} />
             {provider.placeholder}

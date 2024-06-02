@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { User } from "lucide-react";
+import { Bell, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
@@ -11,6 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import Link from "next/link";
+import NotificationsButton from "../buttons/NotificationsButton";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -52,6 +54,7 @@ const Header = () => {
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+        <NotificationsButton />
       </div>
     </header>
   );

@@ -36,7 +36,7 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   if (!isInit) {
     return (
       <>
-        <Card className="bg-background h-[72px] max-w-[348px] backdrop-blur-md z-30 duration-100 p-0 flex items-center min-w-[350px]">
+        <Card className="bg-background h-[82px] backdrop-blur-md z-30 duration-100 p-0 flex items-center min-w-[350px]">
           <CardHeader className="py-4 flex items-center w-full">
             <CardTitle>
               <div className="flex justify-between items-center w-full">
@@ -68,7 +68,7 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   return (
     <Card
       onClick={() => setInit(false)}
-      className="bg-background hover:bg-background_hover max-h-[72px] max-w-[348px] backdrop-blur-md  duration-100 flex items-center justify-center min-w-[350px]"
+      className="bg-background hover:bg-background_hover max-h-[82px] max-w-[348px] backdrop-blur-md  duration-100 flex items-center justify-center min-w-[350px]"
     >
       <Plus color="hsl(var(--muted-foreground))" />
     </Card>

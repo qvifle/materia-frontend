@@ -22,7 +22,10 @@ const ProjectSettingsDropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuItem className="flex items-center gap-2">
+          <DropdownMenuItem
+            onClick={() => openDialog("invite-project")}
+            className="flex items-center gap-2"
+          >
             <UserRoundPlus /> <span>Invite</span>
           </DropdownMenuItem>
           <DropdownMenuItem

@@ -2,21 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import deskService from "@/services/DeskService";
-import { IDesk } from "@/types/desk.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import DeskCard from "../cards/DeskCard";
-import { useReorderTasksContext } from "@/context/ReorderTasksContextProvider";
 import getIndexOfElementById from "@/lib/utils/getIndexOfElementById";
 import taskService from "@/services/TaskService";
-import TaskCard from "../cards/TaskCard";
-import data, { newData } from "./data";
-import findTaskByIdInDesks from "@/lib/utils/findTaskByIdInDesks";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { arrayMove } from "@/lib/utils/arrayMove";
 import insert from "@/lib/utils/insert";
-import removeDuplicates from "@/lib/utils/removeDuplicates";
-import { ITask } from "@/types/task.types";
-
+import { IDesk } from "@/types/desk.types";
 interface IDesksContainer {
   projectId: string;
 }
@@ -33,8 +26,7 @@ interface IAddToDesk {
 
 const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const queryClient = useQueryClient();
-  const { activeTask, setActiveTask, reorderDesks, setReorderDesks } =
-    useReorderTasksContext();
+  const [reorderDesks, setReorderDesks] = useState<IDesk[]>([]);
 
   const {
     data: desks,

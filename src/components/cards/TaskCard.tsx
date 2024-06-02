@@ -39,7 +39,7 @@ const TaskCard: React.FC<ITaskCard> = ({
   return (
     <Card
       className={cn(
-        "max-w-[350px] py-1 px-2 group relative z-20 mb-2",
+        "max-w-[350px] py-1 px-2 group relative z-20",
         hidden ? "opacity-0" : "",
         draggable && "taskAppear",
       )}

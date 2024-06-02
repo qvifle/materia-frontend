@@ -42,7 +42,10 @@ const Sidebar: React.FC<ISidebar> = ({ isOpen, setOpen }) => {
           />
         </Button>
       </div>
-      <SidebarProjects isOpen={isOpen} />
+      <div key={"index"} className="flex flex-col gap-2 p-[15px] h-full">
+        <CreateProjectButton isOpen={isOpen} />
+        <SidebarProjects isOpen={isOpen} />
+      </div>
     </aside>
   );
 };
