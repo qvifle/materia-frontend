@@ -1,48 +1,87 @@
-import LoginForm from "@/components/forms/LoginForm";
-import SocialMediaIconLink from "@/components/ui/links/SocialMediaIconLink";
+"use client";
+import React, { useEffect } from "react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Input,
+} from "@nextui-org/react";
+import Link from "next/link";
 import { Github as GhIcon, Instagram } from "lucide-react";
-import React from "react";
+import LoginForm from "@/components/forms/LoginForm";
 
 const LoginModule = () => {
   return (
-    <main className="h-screen grid grid-cols-[5fr,4fr] bg-[url('/loginImage.png')] bg-cover max-[1100px]:flex max-[1100px]:justify-center">
-      <div className="h-screen p-[40px] flex flex-col justify-between max-[1100px]:hidden">
-        <div>
-          <h1 className="scroll-m-20 text-4xl font-bold text-muted tracking-tight lg:text-5xl text-left dark:text-muted-foreground">
-            Trello clone
-          </h1>
-          <h3 className="scroll-m-20 text-2xl font-semibold text-primary-foreground  tracking-tight text-left dark:text-muted-foreground">
-            By qvifle
-          </h3>
-        </div>
-        <div className="flex items-center gap-2">
-          <SocialMediaIconLink href="https://github.com/qvifle">
-            <GhIcon />
-          </SocialMediaIconLink>
-          <SocialMediaIconLink href="https://www.instagram.com/qvifle.dev?igsh=MTU1aHhibmNiOHg5ag">
-            <Instagram />
-          </SocialMediaIconLink>
-        </div>
-      </div>
-      <div className="bg-background15 backdrop-blur-md  flex items-center justify-center rounded-tl-2xl rounded-bl-2xl max-[1100px]:w-full max-[1100px]:flex-col max-[1100px]:justify-between p-[40px] max-[400px]:p-5">
-        <div className="hidden max-[1100px]:block">
-          <h1 className="scroll-m-20 text-4xl font-bold text-muted tracking-tight lg:text-5xl text-right dark:text-muted-foreground">
-            Trello clone
-          </h1>
-          <h3 className="scroll-m-20 text-2xl font-semibold text-primary-foreground  tracking-tight text-right dark:text-muted-foreground">
-            By qvifle
-          </h3>
-        </div>
+    <main className="bg-[url('/loginImage.png')] bg-cover min-h-screen h-full  ">
+      <div className=" h-screen flex items-center md:grid md:grid-cols-[4fr,5fr]">
+        <section className="hidden md:flex flex-col justify-between h-screen w-full p-[40px]">
+          <div className="flex flex-col max-w-max  ">
+            <h1 className="text-gray-1 text-4xl leading-[36px] font-semibold text-left w-full">
+              Trello clone
+            </h1>
+            <h3 className="text-primary-6 text-3xl font-bold text-left">
+              by qvifle
+            </h3>
+          </div>
 
-        <LoginForm />
-        <div className="hidden max-[1100px]:flex items-center gap-2 ">
-          <SocialMediaIconLink href="https://github.com/qvifle">
-            <GhIcon />
-          </SocialMediaIconLink>
-          <SocialMediaIconLink href="https://www.instagram.com/qvifle.dev?igsh=MTU1aHhibmNiOHg5ag">
-            <Instagram />
-          </SocialMediaIconLink>
-        </div>
+          <div className="w-full flex items-center justify-start gap-2">
+            <Link target="_blank" href="https://github.com/qvifle">
+              <Button variant="faded" isIconOnly>
+                <GhIcon color="var(--gray-12)" />
+              </Button>
+            </Link>
+            <Link target="_blank" href="https://www.instagram.com/qvifle.dev">
+              <Button variant="faded" isIconOnly>
+                <Instagram color="var(--gray-12)" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        <section className="h-full w-full flex flex-col justify-between items-center py-[40px] md:p-0 md:items-center md:justify-center filter-opacity-15 px-4 backdrop-blur-md md:rounded-l-3xl">
+          <div className="flex flex-col max-w-max mx-auto md:hidden">
+            <h1 className="text-gray-1 text-4xl leading-[36px] font-semibold text-center">
+              Trello clone
+            </h1>
+            <h3 className="text-primary-6 text-3xl font-bold text-end">
+              by qvifle
+            </h3>
+          </div>
+
+          <Card className="max-w-[400px] w-full">
+            <CardHeader>
+              <h2 className="text-2xl font-medium md:text-4xl ">Login</h2>
+            </CardHeader>
+            <Divider />
+            <CardBody>
+              <p className="text-sm text-gray-10 mx-1 mb-4 md:text-md">
+                Login to your account if you have already or{" "}
+                <Link
+                  className="text-primary-9 font-medium"
+                  href="/registration"
+                >
+                  Sign up
+                </Link>
+              </p>
+              <LoginForm />
+            </CardBody>
+          </Card>
+
+          <div className="w-full flex items-center justify-center gap-2 md:hidden">
+            <Link target="_blank" href="https://github.com/qvifle">
+              <Button variant="faded" isIconOnly>
+                <GhIcon color="var(--gray-12)" />
+              </Button>
+            </Link>
+            <Link target="_blank" href="https://www.instagram.com/qvifle.dev">
+              <Button variant="faded" isIconOnly>
+                <Instagram color="var(--gray-12)" />
+              </Button>
+            </Link>
+          </div>
+        </section>
       </div>
     </main>
   );

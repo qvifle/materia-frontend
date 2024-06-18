@@ -44,7 +44,7 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <div className="flex flex-col gap-1">
       <div>
-        <Link href={"/home/my-projects"}>
+        <Link href={"/home/projects"}>
           <p
             className={cn(
               "text-sm text-muted-foreground",
@@ -65,10 +65,7 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
             )}
             asChild
           >
-            <Link
-              href={`/home/my-projects/${project.id}`}
-              className="text-left"
-            >
+            <Link href={`/home/projects/${project.id}`} className="text-left">
               <div className="flex items-center gap-2">
                 {project.iconUrl ? unifiedToEmoji(project.iconUrl) : null}
                 {isOpen ? <span>{project.title}</span> : null}
@@ -78,7 +75,7 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
         ))}
       </div>
       <div>
-        <Link href={"/home/my-projects"}>
+        <Link href={"/home/projects"}>
           <p
             className={cn(
               "text-sm text-muted-foreground",
@@ -99,10 +96,7 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
             )}
             asChild
           >
-            <Link
-              href={`/home/my-projects/${project.id}`}
-              className="text-left"
-            >
+            <Link href={`/home/projects/${project.id}`} className="text-left">
               <div className="flex items-center gap-2">
                 {project.iconUrl ? unifiedToEmoji(project.iconUrl) : null}
                 {isOpen ? <span>{project.title}</span> : null}

@@ -1,42 +1,98 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import CredentialsLoginForm from "./CredentialsLoginForm";
-import { Separator } from "../ui/separator";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import requiredFormFieldMessage from "@/lib/constants/requiredFormFieldMessage";
+import { z } from "zod";
+import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
+import PasswordInput from "@/components/inputs/PasswordInput";
+import { useRouter } from "next/navigation";
+import { Button, Input } from "@nextui-org/react";
 
 const LoginForm = () => {
+  const { push } = useRouter();
+  const fromSchema = z.object({
+    email: z
+      .string()
+      .email("This is not valid Email")
+      .min(1, requiredFormFieldMessage),
+    password: z.string().min(8, "This field must have at least 8 symbols"),
+  });
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<z.infer<typeof fromSchema>>({
+    resolver: zodResolver(fromSchema),
+  });
+
+  const onSubmit = async (values: z.infer<typeof fromSchema>) => {
+    try {
+      const res = await signIn("credentials", {
+        ...values,
+        redirect: false,
+      });
+
+      if (!res) {
+        throw new Error("something went wrong");
+      }
+
+      if (!res.ok) {
+        toast.error("Wrong password or User doesnt exist");
+        return;
+      }
+
+      push("/home");
+    } catch (err) {
+      toast.error("Wrong password or User doesnt exist");
+      console.log(err);
+    }
+  };
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="max-[467px]:mb-4">Login</CardTitle>
-        <CardDescription className="leading-[8px]">
-          <span> Login to your account if you have already or</span>
-          <Button variant="link" asChild className="p-0 ml-1">
-            <Link href="/registration">Sign up</Link>
-          </Button>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <CredentialsLoginForm />
-        <div className="grid grid-cols-[1fr,1fr,1fr] grid-rows-1 items-center gap-2 mt-4">
-          <Separator />
-          <p className="w-max leading-7 text-muted-foreground">
-            or continue with
-          </p>
-          <Separator />
-        </div>
-        <Button variant="outline" className="w-full mt-1">
-          Google
+    <form onSubmit={handleSubmit(onSubmit)} action="">
+      <Controller
+        control={control}
+        name="email"
+        render={({ field }) => (
+          <Input
+            className="mb-2"
+            size="lg"
+            type="email"
+            label="Email"
+            placeholder="Enter your email"
+            isInvalid={!!errors.email}
+            errorMessage={errors.email?.message}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="password"
+        render={({ field }) => (
+          <PasswordInput
+            placeholder="Enter your password"
+            size="lg"
+            label="Password"
+            className="mb-4"
+            isInvalid={!!errors.password}
+            errorMessage={errors.password?.message}
+            {...field}
+          />
+        )}
+      />
+      <div className="w-full flex justify-end">
+        <Button
+          type="submit"
+          color="primary"
+          size="lg"
+          className="w-[100px] font-medium"
+        >
+          Login
         </Button>
-      </CardContent>
-    </Card>
+      </div>
+    </form>
   );
 };
 

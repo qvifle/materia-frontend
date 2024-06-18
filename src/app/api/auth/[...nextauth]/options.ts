@@ -43,6 +43,7 @@ export const options: NextAuthOptions = {
           //   password: credentials?.password,
           // });
 
+          console.log("qvifle");
           const res = await authService.signIn(credentials);
 
           if (!res) {

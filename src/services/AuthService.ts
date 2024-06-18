@@ -1,6 +1,5 @@
 import api from "@/lib/utils/api";
 import { ISignInFormFields, ISignUpFormFields } from "@/types/auth.types";
-import { Tokens } from "@/types/tokens.types";
 
 class AuthService {
   private signInUrl = "/signIn";

@@ -6,6 +6,7 @@ import { IProject } from "@/types/project.types";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import sortProjects from "@/lib/utils/sortProjects";
+import { Spinner } from "@nextui-org/react";
 
 const ProjectsContainer = () => {
   const {
@@ -28,7 +29,7 @@ const ProjectsContainer = () => {
   );
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (!sortedProjects) {

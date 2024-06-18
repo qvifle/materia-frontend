@@ -32,7 +32,7 @@ const ProjectCard: React.FC<IProjectCard> = ({ project, ...rest }) => {
   const formatedData = new Date(project.createdAt);
 
   return (
-    <Link href={`my-projects/${project.id}`} {...rest}>
+    <Link href={`projects/${project.id}`} {...rest}>
       <Card className="flex flex-col justify-between bg-card duration-100 h-full">
         <CardHeader>
           <div>

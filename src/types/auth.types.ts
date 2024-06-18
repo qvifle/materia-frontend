@@ -8,4 +8,5 @@ export interface IUser {
 }
 
 export interface ISignInFormFields extends Pick<IUser, "email" | "password"> {}
-export interface ISignUpFormFields extends Pick<IUser, "name" | "email" | "password"> {}
+export interface ISignUpFormFields
+  extends Pick<IUser, "name" | "email" | "password"> {}
