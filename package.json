@@ -13,7 +13,7 @@
     "@emoji-mart/react": "^1.1.1",
     "@hello-pangea/dnd": "^16.6.0",
     "@hookform/resolvers": "^3.3.4",
-    "@nextui-org/react": "^2.4.1",
+    "@nextui-org/react": "^2.4.2",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",

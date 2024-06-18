@@ -18,6 +18,8 @@ import projectService from "@/services/ProjectService";
 import sortProjects from "@/lib/utils/sortProjects";
 import { useSession } from "next-auth/react";
 import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
+import styles from "@/styles/layout.module.css";
+import { cn } from "@nextui-org/react";
 
 const menuItems = [
   "Profile",
@@ -54,7 +56,13 @@ const CustomNavbar = () => {
   );
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      className={cn(styles.header, "bg-gray-2")}
+      classNames={{ wrapper: "px-4" }}
+      onMenuOpenChange={setIsMenuOpen}
+      maxWidth="full"
+      isBordered
+    >
       <NavbarMenuToggle
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className="sm:hidden"
@@ -68,55 +76,60 @@ const CustomNavbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        <NavbarMenuItem key="my-projects" className="font-medium">
-          My projects
-        </NavbarMenuItem>
-
-        {!!sortedProjects?.myProjects &&
-          sortedProjects.myProjects.map((item, index) => (
-            <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                className="w-full flex items-center gap-2"
-                href={`/home/projects/${item.id}`}
-              >
-                <span>
-                  {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
-                </span>
-                <span>{item.title}</span>
-              </Link>
+        {!!sortedProjects && sortedProjects.myProjects.length > 0 && (
+          <>
+            <NavbarMenuItem key="my-projects" className="font-medium">
+              My projects
             </NavbarMenuItem>
-          ))}
-        <NavbarMenuItem className="font-medium" key="my-projects">
-          Other projects
-        </NavbarMenuItem>
-        {!!sortedProjects?.otherProjects &&
-          sortedProjects.otherProjects.map((item, index) => (
-            <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                className="w-full flex items-center gap-2"
-                href={`/home/projects/${item.id}`}
-              >
-                <span>
-                  {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
-                </span>
-                <span>{item.title}</span>
-              </Link>
+            {sortedProjects.myProjects.map((item, index) => (
+              <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
+                <Link
+                  color={
+                    index === 2
+                      ? "primary"
+                      : index === menuItems.length - 1
+                        ? "danger"
+                        : "foreground"
+                  }
+                  className="w-full flex items-center gap-2"
+                  href={`/home/projects/${item.id}`}
+                >
+                  <span>
+                    {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
+                  </span>
+                  <span>{item.title}</span>
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </>
+        )}
+        {!!sortedProjects && sortedProjects.otherProjects.length > 0 && (
+          <>
+            <NavbarMenuItem key="my-projects" className="font-medium">
+              Other
             </NavbarMenuItem>
-          ))}
+            {sortedProjects.otherProjects.map((item, index) => (
+              <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
+                <Link
+                  color={
+                    index === 2
+                      ? "primary"
+                      : index === menuItems.length - 1
+                        ? "danger"
+                        : "foreground"
+                  }
+                  className="w-full flex items-center gap-2"
+                  href={`/home/projects/${item.id}`}
+                >
+                  <span>
+                    {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
+                  </span>
+                  <span>{item.title}</span>
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </>
+        )}
       </NavbarMenu>
     </Navbar>
   );

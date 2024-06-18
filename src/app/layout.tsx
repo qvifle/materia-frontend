@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Providers from "@/components/providers/Providers";
 import DialogsContainer from "@/components/dialogs/DialogsContainer";
 import Toaster from "@/components/toaster/Toaster";
-import "./globals.css";
+import "../styles/globals.css";
 
 const inter = FontSans({
   subsets: ["latin"],

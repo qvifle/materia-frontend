@@ -1,14 +1,17 @@
 "use client";
-import ProjectCard from "@/components/cards/ProjectCard";
 import { useQuery } from "@tanstack/react-query";
 import projectService from "@/services/ProjectService";
 import { IProject } from "@/types/project.types";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import sortProjects from "@/lib/utils/sortProjects";
-import { Spinner } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
+import ProjectCard from "../cards/ProjectCard";
+import Link from "next/link";
+import useDialog from "@/lib/hooks/useDialog";
 
 const ProjectsContainer = () => {
+  const { open: openDialog } = useDialog();
   const {
     data: projects,
     isPending,
@@ -32,10 +35,17 @@ const ProjectsContainer = () => {
     return <Spinner />;
   }
 
-  if (!sortedProjects) {
+  if (!sortedProjects || projects?.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center text-3xl font-semibold">
-        No projects yet...
+      <div className="w-full h-full flex flex-col items-center justify-center text-2xl font-medium mt-[40px] sm:mt-0 gap-4">
+        <span> You doesn't have any project</span>
+        <Button
+          onClick={() => openDialog("createProject")}
+          size="lg"
+          color="primary"
+        >
+          Create new!
+        </Button>
       </div>
     );
   }
@@ -46,22 +56,28 @@ const ProjectsContainer = () => {
 
   return (
     <section className="flex flex-col gap-4">
-      <div>
-        <h2 className="text-2xl font-medium mb-2">My projects</h2>
-        <div className="grid grid-cols-4 gap-2 w-full auto-rows-[150px] px-2">
-          {sortedProjects.myProjects.map((el: IProject, key: number) => (
-            <ProjectCard key={key} project={el} />
-          ))}
+      {sortedProjects.myProjects.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-bold mb-2 w-full">My projects</h2>
+          <div className="grid  grid-rows-3 grid-flow-col overflow-x-scroll gap-2 w-full  py-2">
+            {sortedProjects.myProjects.map((project: IProject, key: number) => (
+              <ProjectCard key={key} project={project} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div>
-        <h2 className="text-2xl font-medium mb-2">Other</h2>
-        <div className="grid grid-cols-4 gap-2 w-full auto-rows-[150px] px-2">
-          {sortedProjects.otherProjects.map((el: IProject, key: number) => (
-            <ProjectCard key={key} project={el} />
-          ))}
+      )}
+      {sortedProjects.otherProjects.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-bold mb-2 w-full">Other</h2>
+          <div className="grid  grid-rows-3 grid-flow-col overflow-x-scroll gap-2 w-full  py-2">
+            {sortedProjects.otherProjects.map(
+              (project: IProject, key: number) => (
+                <ProjectCard key={key} project={project} />
+              ),
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

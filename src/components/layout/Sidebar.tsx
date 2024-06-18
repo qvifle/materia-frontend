@@ -1,51 +1,16 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@nextui-org/react";
 import React from "react";
-import { Button } from "../ui/button";
-import { ArrowRightCircle } from "lucide-react";
-import Link from "next/link";
-import SidebarProjects from "./SidebarProjects";
-import CreateProjectButton from "../buttons/CreateProjectButton";
+import styles from "@/styles/layout.module.css";
 
-interface ISidebar {
-  isOpen: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Sidebar: React.FC<ISidebar> = ({ isOpen, setOpen }) => {
+const Sidebar = () => {
   return (
     <aside
       className={cn(
-        "bg-background col-span-1 row-start-1 row-end-3 flex  flex-col",
+        styles.sidebar,
+        "w-full hidden sm:block border-r border-gray-4",
       )}
     >
-      <div className="flex items-center justify-between p-[15px] border-b border-b-border h-[70px]">
-        <Link href={"/home"}>
-          <h1
-            className={cn(
-              "scroll-m-20 text-4xl font-semibold tracking-tight lg:text-4xl w-max transition-all duration-100 delay-200",
-              isOpen ? "opacity-100" : " hidden opacity-0",
-            )}
-          >
-            Trello
-          </h1>
-        </Link>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => {
-            setOpen((state) => !state);
-          }}
-        >
-          <ArrowRightCircle
-            className="duration-200 delay-300"
-            style={{ rotate: `${isOpen ? "180deg" : ""}` }}
-          />
-        </Button>
-      </div>
-      <div key={"index"} className="flex flex-col gap-2 p-[15px] h-full">
-        <CreateProjectButton isOpen={isOpen} />
-        <SidebarProjects isOpen={isOpen} />
-      </div>
+      Sidebar
     </aside>
   );
 };

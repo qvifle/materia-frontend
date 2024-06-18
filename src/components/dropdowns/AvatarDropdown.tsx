@@ -42,21 +42,11 @@ const AvatarDropdown = () => {
   };
   return (
     <Dropdown placement="bottom-end">
-      {!!invites && invites?.length > 0 ? (
-        <Badge content={invites.length} color="primary">
-          <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="primary"
-              name={sessionData?.user.name}
-              size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-            />
-          </DropdownTrigger>
-        </Badge>
-      ) : (
+      <Badge
+        isInvisible={!invites?.length}
+        content={invites?.length}
+        color="primary"
+      >
         <DropdownTrigger>
           <Avatar
             isBordered
@@ -68,7 +58,8 @@ const AvatarDropdown = () => {
             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
           />
         </DropdownTrigger>
-      )}
+      </Badge>
+
       <DropdownMenu aria-label="Profile Actions" variant="flat">
         <DropdownItem key="profile" className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>
