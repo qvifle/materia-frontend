@@ -44,9 +44,9 @@
 }
 
 .sidebar {
-  @apply col-span-1 row-start-1 row-end-3 h-full;
+  @apply col-span-1 row-start-1 row-end-3 h-full px-3 pt-3;
 }
 
 .main {
-  @apply flex-grow bg-gray-3 p-4;
+  @apply flex-1 bg-gray-3 p-4 max-h-[calc(100vh-64px)] overflow-y-auto flex flex-col;
 }

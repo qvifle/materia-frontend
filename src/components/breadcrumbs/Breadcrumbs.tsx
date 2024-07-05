@@ -11,7 +11,7 @@ const CustomBreadcrumbs = () => {
   const pathName = usePathname();
   const pathNames = pathName.split("/").slice(1);
 
-  useEffect(() => {
+      useEffect(() => {
     const getTitles = async (pathNames: string[]) => {
       console.log("hello");
       setLoading(true);

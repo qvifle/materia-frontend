@@ -1,33 +1,41 @@
-import RegistrationForm from "@/components/forms/RegistrationForm";
-import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
-import { Github as GhIcon, Instagram } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+"use client"
+import RegistrationForm from "@/components/forms/RegistrationForm"
+import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
+import { Github as GhIcon, Instagram } from "lucide-react"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import React from "react"
 
 const RegistrationModule = () => {
+  const { status } = useSession()
+  const { push } = useRouter()
+
+  if (status === "authenticated") {
+    push("/home")
+  }
   return (
-    // <main className="h-screen bg-[url('/registrationImage.jpg')] bg-cover grid grid-cols-[4fr,5fr] grid-rows-1 max-[1100px]:flex">
-    <main className="bg-[url('/registrationImage.jpg')] bg-cover min-h-screen h-full  ">
-      <div className=" h-screen flex items-center md:grid md:grid-cols-[5fr,4fr]">
-        <section className="h-full w-full flex flex-col justify-between items-center py-[40px] md:p-0 md:items-center md:justify-center filter-opacity-15 px-4 backdrop-blur-md md:rounded-l-3xl">
-          <div className="flex flex-col max-w-max mx-auto md:hidden">
-            <h1 className="text-gray-1 text-4xl leading-[36px] font-semibold text-center">
+    <main className="h-full min-h-screen bg-[url('/registrationImage.jpg')] bg-cover">
+      <div className="flex h-screen items-center md:grid md:grid-cols-[5fr,4fr]">
+        <section className="filter-opacity-15 flex h-full w-full flex-col items-center justify-between px-4 py-[40px] backdrop-blur-md md:items-center md:justify-center md:rounded-l-3xl md:p-0">
+          <div className="mx-auto flex max-w-max flex-col md:hidden">
+            <h1 className="text-center text-4xl font-semibold leading-[36px] text-gray-1">
               Trello clone
             </h1>
-            <h3 className="text-primary-6 text-3xl font-bold text-end">
+            <h3 className="text-end text-3xl font-bold text-primary-6">
               by qvifle
             </h3>
           </div>
 
-          <Card className="max-w-[400px] w-full">
+          <Card className="w-full max-w-[400px]">
             <CardHeader>
               <h2 className="text-2xl font-medium md:text-4xl">Registration</h2>
             </CardHeader>
             <Divider />
             <CardBody>
-              <p className="text-sm text-gray-10 mx-1 mb-4 md:text-md">
+              <p className="md:text-md mx-1 mb-4 text-sm text-gray-10">
                 If you already have account -{" "}
-                <Link className="text-primary-9 font-medium" href="/login">
+                <Link className="font-medium text-primary-9" href="/login">
                   Sign in
                 </Link>
               </p>
@@ -36,7 +44,7 @@ const RegistrationModule = () => {
             </CardBody>
           </Card>
 
-          <div className="w-full flex items-center justify-center gap-2 md:hidden">
+          <div className="flex w-full items-center justify-center gap-2 md:hidden">
             <Link target="_blank" href="https://github.com/qvifle">
               <Button variant="faded" isIconOnly>
                 <GhIcon color="var(--gray-12)" />
@@ -50,17 +58,17 @@ const RegistrationModule = () => {
           </div>
         </section>
 
-        <section className="hidden md:flex flex-col justify-between items-end h-screen w-full p-[40px]">
-          <div className="flex flex-col max-w-max items-end">
-            <h1 className="text-gray-1 text-4xl leading-[36px] font-semibold text-right w-full">
+        <section className="hidden h-screen w-full flex-col items-end justify-between p-[40px] md:flex">
+          <div className="flex max-w-max flex-col items-end">
+            <h1 className="w-full text-right text-4xl font-semibold leading-[36px] text-gray-1">
               Trello clone
             </h1>
-            <h3 className="text-primary-6 text-3xl font-bold text-right">
+            <h3 className="text-right text-3xl font-bold text-primary-6">
               by qvifle
             </h3>
           </div>
 
-          <div className="w-full flex items-center justify-end gap-2">
+          <div className="flex w-full items-center justify-end gap-2">
             <Link target="_blank" href="https://github.com/qvifle">
               <Button variant="faded" isIconOnly>
                 <GhIcon color="var(--gray-12)" />
@@ -75,7 +83,7 @@ const RegistrationModule = () => {
         </section>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default RegistrationModule;
+export default RegistrationModule

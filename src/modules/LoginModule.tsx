@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect } from "react";
+"use client"
+import React, { useEffect } from "react"
 import {
   Button,
   Card,
@@ -7,26 +7,35 @@ import {
   CardHeader,
   Divider,
   Input,
-} from "@nextui-org/react";
-import Link from "next/link";
-import { Github as GhIcon, Instagram } from "lucide-react";
-import LoginForm from "@/components/forms/LoginForm";
+} from "@nextui-org/react"
+import Link from "next/link"
+import { Github as GhIcon, Instagram } from "lucide-react"
+import LoginForm from "@/components/forms/LoginForm"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 const LoginModule = () => {
+  const { status } = useSession()
+  const { push } = useRouter()
+
+  if (status === "authenticated") {
+    push("/home")
+  }
+
   return (
-    <main className="bg-[url('/loginImage.png')] bg-cover min-h-screen h-full  ">
-      <div className=" h-screen flex items-center md:grid md:grid-cols-[4fr,5fr]">
-        <section className="hidden md:flex flex-col justify-between h-screen w-full p-[40px]">
-          <div className="flex flex-col max-w-max  ">
-            <h1 className="text-gray-1 text-4xl leading-[36px] font-semibold text-left w-full">
+    <main className="h-full min-h-screen bg-[url('/loginImage.png')] bg-cover">
+      <div className="flex h-screen items-center md:grid md:grid-cols-[4fr,5fr]">
+        <section className="hidden h-screen w-full flex-col justify-between p-[40px] md:flex">
+          <div className="flex max-w-max flex-col">
+            <h1 className="w-full text-left text-4xl font-semibold leading-[36px] text-gray-1">
               Trello clone
             </h1>
-            <h3 className="text-primary-6 text-3xl font-bold text-left">
+            <h3 className="text-left text-3xl font-bold text-primary-6">
               by qvifle
             </h3>
           </div>
 
-          <div className="w-full flex items-center justify-start gap-2">
+          <div className="flex w-full items-center justify-start gap-2">
             <Link target="_blank" href="https://github.com/qvifle">
               <Button variant="faded" isIconOnly>
                 <GhIcon color="var(--gray-12)" />
@@ -40,26 +49,26 @@ const LoginModule = () => {
           </div>
         </section>
 
-        <section className="h-full w-full flex flex-col justify-between items-center py-[40px] md:p-0 md:items-center md:justify-center filter-opacity-15 px-4 backdrop-blur-md md:rounded-l-3xl">
-          <div className="flex flex-col max-w-max mx-auto md:hidden">
-            <h1 className="text-gray-1 text-4xl leading-[36px] font-semibold text-center">
+        <section className="filter-opacity-15 flex h-full w-full flex-col items-center justify-between px-4 py-[40px] backdrop-blur-md md:items-center md:justify-center md:rounded-l-3xl md:p-0">
+          <div className="mx-auto flex max-w-max flex-col md:hidden">
+            <h1 className="text-center text-4xl font-semibold leading-[36px] text-gray-1">
               Trello clone
             </h1>
-            <h3 className="text-primary-6 text-3xl font-bold text-end">
+            <h3 className="text-end text-3xl font-bold text-primary-6">
               by qvifle
             </h3>
           </div>
 
-          <Card className="max-w-[400px] w-full">
+          <Card className="w-full max-w-[400px]">
             <CardHeader>
-              <h2 className="text-2xl font-medium md:text-4xl ">Login</h2>
+              <h2 className="text-2xl font-medium md:text-4xl">Login</h2>
             </CardHeader>
             <Divider />
             <CardBody>
-              <p className="text-sm text-gray-10 mx-1 mb-4 md:text-md">
+              <p className="md:text-md mx-1 mb-4 text-sm text-gray-10">
                 Login to your account if you have already or{" "}
                 <Link
-                  className="text-primary-9 font-medium"
+                  className="font-medium text-primary-9"
                   href="/registration"
                 >
                   Sign up
@@ -69,7 +78,7 @@ const LoginModule = () => {
             </CardBody>
           </Card>
 
-          <div className="w-full flex items-center justify-center gap-2 md:hidden">
+          <div className="flex w-full items-center justify-center gap-2 md:hidden">
             <Link target="_blank" href="https://github.com/qvifle">
               <Button variant="faded" isIconOnly>
                 <GhIcon color="var(--gray-12)" />
@@ -84,7 +93,7 @@ const LoginModule = () => {
         </section>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default LoginModule;
+export default LoginModule

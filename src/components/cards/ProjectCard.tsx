@@ -13,15 +13,18 @@ import Link from "next/link";
 const ProjectCard = ({ project }: { project: IProject }) => {
   return (
     <Link href={`/home/projects/${project.id}`} className="h-full">
-      <Card className="w-[calc(100vw-32px)] h-full" shadow="none">
+      <Card
+        className="w-[calc(100vw-32px)] min-[420px]:w-full h-full min-[420px]:h-[200px]"
+        shadow="none"
+      >
         <CardHeader className="flex flex-col pt-6 pb-0">
-          <span className="text-4xl mb-2">
+          <span className="text-4xl mb-2 ">
             {project.iconUrl && unifiedToEmoji(project.iconUrl)}
           </span>
-          <p className="text-xl font-medium">{project.title}</p>
+          <p className="text-xl font-medium text-center">{project.title}</p>
         </CardHeader>
         <CardBody>
-          <p className="text-gray-9 leading-5 text-center">
+          <p className="text-gray-9 leading-5 text-center truncate">
             {project.description}
           </p>
         </CardBody>
