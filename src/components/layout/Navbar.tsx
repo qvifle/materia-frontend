@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import {
   Navbar,
   NavbarBrand,
@@ -7,19 +7,19 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
+} from "@nextui-org/navbar"
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
-import AvatarDropdown from "../dropdowns/AvatarDropdown";
-import { useQuery } from "@tanstack/react-query";
-import { IProject } from "@/types/project.types";
-import projectService from "@/services/ProjectService";
-import sortProjects from "@/lib/utils/sortProjects";
-import { useSession } from "next-auth/react";
-import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
-import styles from "@/styles/layout.module.css";
-import { cn } from "@nextui-org/react";
+import Link from "next/link"
+import { useMemo, useState } from "react"
+import AvatarDropdown from "../dropdowns/AvatarDropdown"
+import { useQuery } from "@tanstack/react-query"
+import { IProject } from "@/types/project.types"
+import projectService from "@/services/ProjectService"
+import sortProjects from "@/lib/utils/sortProjects"
+import { useSession } from "next-auth/react"
+import Emoji from "@/lib/utils/Emoji"
+import styles from "@/styles/layout.module.css"
+import { cn } from "@nextui-org/react"
 
 const menuItems = [
   "Profile",
@@ -32,11 +32,11 @@ const menuItems = [
   "Team Settings",
   "Help & Feedback",
   "Log Out",
-];
+]
 
 const CustomNavbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session } = useSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { data: session } = useSession()
 
   const {
     data: projects,
@@ -45,15 +45,15 @@ const CustomNavbar = () => {
   } = useQuery<IProject[]>({
     queryKey: ["projects"],
     queryFn: async () => {
-      const { data } = await projectService.getProjects();
-      return data;
+      const { data } = await projectService.getProjects()
+      return data
     },
-  });
+  })
 
   const sortedProjects = useMemo(
     () => sortProjects(projects, session?.user.email || ""),
     [projects, session],
-  );
+  )
 
   return (
     <Navbar
@@ -91,11 +91,11 @@ const CustomNavbar = () => {
                         ? "danger"
                         : "foreground"
                   }
-                  className="w-full flex items-center gap-2"
+                  className="flex w-full items-center gap-2"
                   href={`/home/projects/${item.id}`}
                 >
                   <span>
-                    {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
+                    {item.iconUrl ? <Emoji unifiedCode={item.iconUrl} /> : null}
                   </span>
                   <span>{item.title}</span>
                 </Link>
@@ -118,11 +118,11 @@ const CustomNavbar = () => {
                         ? "danger"
                         : "foreground"
                   }
-                  className="w-full flex items-center gap-2"
+                  className="flex w-full items-center gap-2"
                   href={`/home/projects/${item.id}`}
                 >
                   <span>
-                    {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
+                    {item.iconUrl ? <Emoji unifiedCode={item.iconUrl} /> : null}
                   </span>
                   <span>{item.title}</span>
                 </Link>
@@ -132,7 +132,7 @@ const CustomNavbar = () => {
         )}
       </NavbarMenu>
     </Navbar>
-  );
-};
+  )
+}
 
-export default CustomNavbar;
+export default CustomNavbar

@@ -1,45 +1,45 @@
-"use client";
-import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
-import { Trash, User } from "lucide-react";
-import Link from "next/link";
-import React, { HTMLAttributes } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { IProject } from "@/types/project.types";
-import truncate from "@/lib/utils/truncate";
+"use client"
+import Emoji from "@/lib/utils/Emoji"
+import { Trash, User } from "lucide-react"
+import Link from "next/link"
+import React, { HTMLAttributes } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { IProject } from "@/types/project.types"
+import truncate from "@/lib/utils/truncate"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ProjectCardDropdown from "../dropdowns/ProjectCardDropdown";
+} from "@/components/ui/tooltip"
+import ProjectCardDropdown from "../dropdowns/ProjectCardDropdown"
 
 interface IProjectCard extends HTMLAttributes<HTMLAnchorElement> {
-  project: IProject;
+  project: IProject
 }
 
 const ProjectCard: React.FC<IProjectCard> = ({ project, ...rest }) => {
   const { isTruncated: isDescriptionTruncated, value: truncatedDesctiption } =
-    truncate(project.description || undefined, 50);
+    truncate(project.description || undefined, 50)
 
-  const formatedData = new Date(project.createdAt);
+  const formatedData = new Date(project.createdAt)
 
   return (
     <Link href={`projects/${project.id}`} {...rest}>
-      <Card className="flex flex-col justify-between bg-card duration-100 h-full">
+      <Card className="flex h-full flex-col justify-between bg-card duration-100">
         <CardHeader>
           <div>
             <CardTitle>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  {project.iconUrl && unifiedToEmoji(project.iconUrl)}
+                  {project.iconUrl && <Emoji unifiedCode={project.iconUrl} />}
                   <span>{project.title}</span>
                 </div>
                 <ProjectCardDropdown projectId={project.id} />
@@ -70,7 +70,7 @@ const ProjectCard: React.FC<IProjectCard> = ({ project, ...rest }) => {
             <Avatar>
               <AvatarImage alt="avatar"></AvatarImage>
               <AvatarFallback>
-                <div className="bg-border rounded-full p-1">
+                <div className="rounded-full bg-border p-1">
                   <User />
                 </div>
               </AvatarFallback>
@@ -79,7 +79,7 @@ const ProjectCard: React.FC<IProjectCard> = ({ project, ...rest }) => {
         </CardContent>
       </Card>
     </Link>
-  );
-};
+  )
+}
 
-export default ProjectCard;
+export default ProjectCard

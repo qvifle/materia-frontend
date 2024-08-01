@@ -12,7 +12,9 @@ import useDialog from "@/lib/hooks/useDialog"
 import ProjectsContainer from "@/components/containers/ProjectsContainer"
 
 const ProjectsModule = () => {
+  const { data: session } = useSession()
   const { open: openDialog } = useDialog()
+
   const {
     data: projects,
     isPending,
@@ -24,8 +26,6 @@ const ProjectsModule = () => {
       return data
     },
   })
-
-  const { data: session } = useSession()
 
   const sortedProjects = useMemo(
     () => sortProjects(projects, session?.user.email || ""),
@@ -47,10 +47,14 @@ const ProjectsModule = () => {
     )
   }
 
+  if (isError) {
+    return <div className="h-full w-full">Error</div>
+  }
+
   if (!sortedProjects || projects?.length === 0) {
     return (
       <div className="mt-[40px] flex h-full w-full flex-col items-center justify-center gap-4 text-2xl font-medium sm:mt-0">
-        <span className="text-center"> You doesn't have any project</span>
+        <span className="text-center"> You doesn&apos;t have any project</span>
         <Button
           onClick={() => openDialog("createProject")}
           size="lg"
@@ -60,10 +64,6 @@ const ProjectsModule = () => {
         </Button>
       </div>
     )
-  }
-
-  if (isError) {
-    return <div>Error</div>
   }
 
   return (

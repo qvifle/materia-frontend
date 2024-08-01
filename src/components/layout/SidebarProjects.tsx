@@ -1,17 +1,17 @@
-"use client";
-import { cn } from "@/lib/utils";
-import React, { useMemo } from "react";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
-import projectService from "@/services/ProjectService";
-import { IProject } from "@/types/project.types";
-import { useSession } from "next-auth/react";
-import sortProjects from "@/lib/utils/sortProjects";
+"use client"
+import { cn } from "@/lib/utils"
+import React, { useMemo } from "react"
+import { Button } from "../ui/button"
+import Link from "next/link"
+import { useQuery } from "@tanstack/react-query"
+import projectService from "@/services/ProjectService"
+import { IProject } from "@/types/project.types"
+import { useSession } from "next-auth/react"
+import sortProjects from "@/lib/utils/sortProjects"
+import Emoji from "@/lib/utils/Emoji"
 
 const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   const {
     data: projects,
     isLoading,
@@ -19,26 +19,26 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
   } = useQuery<IProject[]>({
     queryKey: ["projects"],
     queryFn: async () => {
-      const { data } = await projectService.getProjects();
-      return data;
+      const { data } = await projectService.getProjects()
+      return data
     },
-  });
+  })
 
   const sortedProjects = useMemo(
     () => sortProjects(projects, session?.user.email || ""),
     [projects, session],
-  );
+  )
 
   if (isLoading) {
-    return "Loading";
+    return "Loading"
   }
 
   if (!sortedProjects) {
-    return;
+    return
   }
 
   if (isError) {
-    return "Error";
+    return "Error"
   }
 
   return (
@@ -67,7 +67,9 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
           >
             <Link href={`/home/projects/${project.id}`} className="text-left">
               <div className="flex items-center gap-2">
-                {project.iconUrl ? unifiedToEmoji(project.iconUrl) : null}
+                {project.iconUrl ? (
+                  <Emoji unifiedCode={project.iconUrl} />
+                ) : null}
                 {isOpen ? <span>{project.title}</span> : null}
               </div>
             </Link>
@@ -98,7 +100,9 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
           >
             <Link href={`/home/projects/${project.id}`} className="text-left">
               <div className="flex items-center gap-2">
-                {project.iconUrl ? unifiedToEmoji(project.iconUrl) : null}
+                {project.iconUrl ? (
+                  <Emoji unifiedCode={project.iconUrl} />
+                ) : null}
                 {isOpen ? <span>{project.title}</span> : null}
               </div>
             </Link>
@@ -106,7 +110,7 @@ const SidebarProjects = ({ isOpen }: { isOpen: boolean }) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SidebarProjects;
+export default SidebarProjects

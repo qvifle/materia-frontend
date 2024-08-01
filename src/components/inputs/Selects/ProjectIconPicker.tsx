@@ -1,30 +1,30 @@
-"use client";
-import { Button } from "@/components/ui/button";
+"use client"
+import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import React, { useEffect, useRef, useState } from "react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import { useTheme } from "next-themes";
-import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from "@/components/ui/popover"
+import React, { ReactNode, useEffect, useRef, useState } from "react"
+import data from "@emoji-mart/data"
+import Picker from "@emoji-mart/react"
+import { useTheme } from "next-themes"
+import Emoji from "@/lib/utils/Emoji"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const ProjectIconPicker = ({
   onChange,
   value,
 }: {
-  onChange: any;
-  value?: string;
+  onChange: any
+  value?: string
 }) => {
-  const [isOpen, setOpen] = useState(false);
-  const { theme } = useTheme();
-  const pickerRef = useRef<HTMLDivElement>(null);
-  const [selectedEmoji, setSelectedEmoji] = useState<string | undefined>(
-    value ? unifiedToEmoji(value) : undefined,
-  );
+  const [isOpen, setOpen] = useState(false)
+  const { theme } = useTheme()
+  const pickerRef = useRef<HTMLDivElement>(null)
+  const [selectedEmoji, setSelectedEmoji] = useState<ReactNode | undefined>(
+    value ? <Emoji unifiedCode={value} /> : undefined,
+  )
 
   return (
     <Popover open={isOpen} onOpenChange={setOpen} modal={true}>
@@ -40,21 +40,21 @@ const ProjectIconPicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
-        <ScrollArea className="h-[430px] rounded-md w-[352px] ">
+        <ScrollArea className="h-[430px] w-[352px] rounded-md">
           <Picker
             autoFocus
             theme={theme}
             data={data}
             onEmojiSelect={(e: any) => {
-              setSelectedEmoji(e.native);
-              onChange(e.unified);
-              setOpen(false);
+              setSelectedEmoji(e.native)
+              onChange(e.unified)
+              setOpen(false)
             }}
           />
         </ScrollArea>
       </PopoverContent>
     </Popover>
-  );
-};
+  )
+}
 
-export default ProjectIconPicker;
+export default ProjectIconPicker
