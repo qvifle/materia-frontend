@@ -179,4 +179,10 @@
   color-scheme: "root";
 }
 
+.outline-no:focus {
+  outline: none !important;
+}
 
+.outline-no[data-focus-visible="true"] {
+  outline: none !important;
+}

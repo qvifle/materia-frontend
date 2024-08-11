@@ -12,7 +12,7 @@ const inter = FontSans({
 })
 
 export const metadata: Metadata = {
-  title: "Materia",
+  title: "Matēria",
   description: "Creating portfolio",
 }
 

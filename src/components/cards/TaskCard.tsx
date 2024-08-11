@@ -1,30 +1,31 @@
-"use client";
-import React, { HTMLAttributes, useRef, useState } from "react";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+"use client"
+import React, { HTMLAttributes, useRef, useState } from "react"
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import capitalize from "@/lib/utils/capitalize";
-import TaskStatusIndicator from "../indicators/TaskStatusIndicator";
-import { Button } from "../ui/button";
-import { CheckCircle, Pencil, Check } from "lucide-react/";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import ChangeStatusButtonsGroup from "../buttons/ChangeStatusButtonsGroup";
-import EditTaskButtonGroup from "../buttons/EditTaskButtonGroup";
-import { Input } from "../ui/input";
-import ChangeTaskTitleInput from "../inputs/ChangeTaskTitleInput";
-import ChangeTaskDescriptionInput from "../inputs/ChangeTaskDescriptionInput";
-import { ITask } from "@/types/task.types";
-import { cn } from "@/lib/utils";
-import { Draggable } from "@hello-pangea/dnd";
+  Card as ShadcnCard,
+  CardDescription,
+  CardHeader as ShadcnCardheader,
+  CardTitle,
+} from "../ui/card"
+import capitalize from "@/lib/utils/capitalize"
+import TaskStatusIndicator from "../indicators/TaskStatusIndicator"
+import { Button } from "../ui/button"
+import { CheckCircle, Pencil, Check } from "lucide-react/"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import ChangeStatusButtonsGroup from "../buttons/ChangeStatusButtonsGroup"
+import EditTaskButtonGroup from "../buttons/EditTaskButtonGroup"
+import ChangeTaskTitleInput from "../inputs/ChangeTaskTitleInput"
+import ChangeTaskDescriptionInput from "../inputs/ChangeTaskDescriptionInput"
+import { ITask } from "@/types/task.types"
+import { cn } from "@/lib/utils"
+import { Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react"
+import UpdateTaskTitleInput from "../inputs/UpdateTaskTitleInput"
+import preventScrollOnFocusByElementId from "@/lib/utils/focus-on-element-without-scroll"
+import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
 
 interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
-  task: ITask;
-  hidden?: boolean;
-  draggable?: boolean;
+  task: ITask
+  hidden?: boolean
+  draggable?: boolean
 }
 
 const TaskCard: React.FC<ITaskCard> = ({
@@ -33,29 +34,57 @@ const TaskCard: React.FC<ITaskCard> = ({
   draggable = false,
   ...rest
 }) => {
-  const [isTitleEdit, setTitleEdit] = useState(false);
-  const [isDescriptionEdit, setDescriptionEdit] = useState(false);
+  const [isTitleEdit, setTitleEdit] = useState(false)
+  const [title, setTitle] = useState(task.title)
+  const [isDescriptionEdit, setDescriptionEdit] = useState(false)
 
   return (
-    <Card
+    <Card isBlurred className="w-full bg-gray-4 px-4 py-3 text-base">
+      <CardHeader className="w-full p-0 text-gray-12">
+        <div className="flex w-full items-center gap-2">
+          <TaskStatusIndicator status={task.status} />
+          {isTitleEdit ? (
+            <UpdateTaskTitleInput
+              task={task}
+              setTitle={setTitle}
+              title={title}
+              setTitleEdit={setTitleEdit}
+            />
+          ) : (
+            <span
+              onClick={() => {
+                focusOnElementWithoutScroll("update-task-title-input")
+                setTitleEdit(true)
+              }}
+            >
+              {title}
+            </span>
+          )}
+        </div>
+      </CardHeader>
+      {task.description && (
+        <CardBody className="pt-0">
+          <span className="text-sm text-gray-11">{task.description}</span>
+        </CardBody>
+      )}
+    </Card>
+  )
+
+  return (
+    <ShadcnCard
       className={cn(
-        "max-w-[350px] py-1 px-2 group relative z-20",
+        "group relative z-20 max-w-[350px] px-2 py-1",
         hidden ? "opacity-0" : "",
         draggable && "taskAppear",
       )}
       {...rest}
     >
-      <CardHeader className="py-1 px-2">
-        <CardTitle className="text-sm font-medium flex items-center justify-between">
+      <ShadcnCardheader className="px-2 py-1">
+        <CardTitle className="flex items-center justify-between text-sm font-medium">
           <div className="flex items-center gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <TaskStatusIndicator status={task.status} />
-                </TooltipTrigger>
-                <TooltipContent>{capitalize(task.status)}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            {/* task status */}
+
+            {/* task title */}
 
             {isTitleEdit ? (
               <ChangeTaskTitleInput toggle={setTitleEdit} task={task} />
@@ -63,10 +92,11 @@ const TaskCard: React.FC<ITaskCard> = ({
               <span onDoubleClick={() => setTitleEdit(true)}>{task.title}</span>
             )}
           </div>
-          <div className="group-hover:visible group-hover:opacity-100 invisible opacity-0 duration-200 relative z-10">
+          <div className="invisible relative z-10 opacity-0 duration-200 group-hover:visible group-hover:opacity-100">
+            {/* change task status */}
             <Popover>
               <PopoverTrigger asChild className="z-50">
-                <Button size="icon" variant="ghost" className="w-6 h-6">
+                <Button size="icon" variant="ghost" className="h-6 w-6">
                   <CheckCircle size={14} />
                 </Button>
               </PopoverTrigger>
@@ -76,9 +106,10 @@ const TaskCard: React.FC<ITaskCard> = ({
                 </div>
               </PopoverContent>
             </Popover>
+            {/* edit task */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button size="icon" variant="ghost" className="w-6 h-6">
+                <Button size="icon" variant="ghost" className="h-6 w-6">
                   <Pencil size={14} />
                 </Button>
               </PopoverTrigger>
@@ -92,7 +123,8 @@ const TaskCard: React.FC<ITaskCard> = ({
             </Popover>
           </div>
         </CardTitle>
-      </CardHeader>
+      </ShadcnCardheader>
+      {/* card description */}
       <CardDescription
         className="pl-6"
         onDoubleClick={() => setDescriptionEdit(true)}
@@ -104,13 +136,13 @@ const TaskCard: React.FC<ITaskCard> = ({
             task={task}
           />
         ) : (
-          <span className="block text-ellipsis overflow-hidden">
+          <span className="block overflow-hidden text-ellipsis">
             {task.description}
           </span>
         )}
       </CardDescription>
-    </Card>
-  );
-};
+    </ShadcnCard>
+  )
+}
 
-export default TaskCard;
+export default TaskCard

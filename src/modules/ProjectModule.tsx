@@ -4,6 +4,7 @@ import Emoji from "@/lib/utils/Emoji"
 import projectService from "@/services/ProjectService"
 import { IProject } from "@/types/project.types"
 import DesksWidget from "@/widgets/DesksWidget"
+import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
 import React from "react"
 
@@ -30,7 +31,7 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="">
+      <div className="px-4 pt-4">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
           <span>
             {data.iconUrl ? <Emoji unifiedCode={data.iconUrl} /> : null}
@@ -42,9 +43,8 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
         </p>
         <ProjectSettingsDropdown />
       </div>
-      <div className="custom-scroll flex-grow overflow-x-auto">
-        <DesksWidget projectId={projectId} />
-      </div>
+
+      <DesksWidget projectId={projectId} />
     </div>
   )
 }

@@ -28,13 +28,15 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
     <Button
       isIconOnly={!isDesktop}
       className={cn(
-        "lg:flex lg:w-full lg:items-center lg:justify-start lg:gap-2",
+        "juistify-center flex w-full items-center lg:justify-start lg:gap-2 lg:pl-1 lg:pr-4",
         className,
       )}
       {...rest}
     >
-      {icon}
-      <span className="hidden lg:block">{children}</span>
+      <span className="flex h-7 w-7 items-center justify-center text-xl">
+        {icon}
+      </span>
+      <span className="hidden w-full text-start lg:block">{children}</span>
     </Button>
   )
 }

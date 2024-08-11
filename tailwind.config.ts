@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
-const { nextui } = require("@nextui-org/react");
+import type { Config } from "tailwindcss"
+const { nextui } = require("@nextui-org/react")
 const config = {
   // darkMode: ["class"],
   content: [
@@ -149,6 +149,6 @@ const config = {
   },
   darkMode: "class",
   plugins: [require("tailwindcss-animate"), nextui()],
-} satisfies Config;
+} satisfies Config
 
-export default config;
+export default config
