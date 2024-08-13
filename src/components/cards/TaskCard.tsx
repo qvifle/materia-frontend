@@ -53,18 +53,17 @@ const TaskCard: React.FC<ITaskCard> = ({
               setTitleEdit={setTitleEdit}
             />
           ) : (
-            <span
-              className="z-30 cursor-pointer"
+            <button
               onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                console.log("hello")
+                // e.preventDefault()
+                // e.stopPropagation()
+                // console.log("hello")
                 focusOnElementWithoutScroll("update-task-title-input")
                 setTitleEdit(true)
               }}
             >
               {title}
-            </span>
+            </button>
           )}
         </div>
       </CardHeader>
@@ -98,7 +97,6 @@ const TaskCard: React.FC<ITaskCard> = ({
       className={cn(
         "group relative z-20 max-w-[350px] px-2 py-1",
         hidden ? "opacity-0" : "",
-        draggable && "taskAppear",
       )}
       {...rest}
     >

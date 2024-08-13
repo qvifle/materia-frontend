@@ -43,7 +43,7 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
     <Card
       isPressable={isInit}
       onClick={() => setInit(false)}
-      className="outline-no h-[64px] min-w-[calc(100vw-18px-16px)] cursor-pointer px-4 py-5"
+      className="outline-no h-[64px] min-w-[calc(100vw-18px-16px)] cursor-pointer px-4 py-5 md:min-w-[350px]"
     >
       {isInit ? (
         <CardBody className="flex items-center justify-center p-0">
