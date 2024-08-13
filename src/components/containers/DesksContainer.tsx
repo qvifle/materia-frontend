@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import DeskCard from "../cards/DeskWIdget"
 import getIndexOfElementById from "@/lib/utils/getIndexOfElementById"
 import taskService from "@/services/TaskService"
-import { DragDropContext, DropResult } from "@hello-pangea/dnd"
+import { DragDropContext, DropResult, useMouseSensor } from "@hello-pangea/dnd"
 import { arrayMove } from "@/lib/utils/arrayMove"
 import insert from "@/lib/utils/insert"
 import { IDesk } from "@/types/desk.types"
@@ -162,11 +162,6 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     changeDesk({ overTaskId: overTaskId, taskId: activeTaskId })
   }
 
-  const [dragging, setDragging] = useState(false)
-
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms))
-
   useEffect(() => {
     if (desks) {
       setReorderDesks(desks.data)
@@ -187,18 +182,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
 
   return (
     <>
-      <DragDropContext
-        onBeforeCapture={() => {
-          return
-        }}
-        onBeforeDragStart={() => {
-          return
-        }}
-        onDragStart={() => {
-          return
-        }}
-        onDragEnd={handleDragEnd}
-      >
+      <DragDropContext enableDefaultSensors onDragEnd={handleDragEnd}>
         {reorderDesks.map((desk, key) => (
           <DeskCard key={key} desk={desk} tasks={desk.tasks} />
         ))}

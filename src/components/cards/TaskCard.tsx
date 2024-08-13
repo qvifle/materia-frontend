@@ -36,7 +36,9 @@ const TaskCard: React.FC<ITaskCard> = ({
 }) => {
   const [isTitleEdit, setTitleEdit] = useState(false)
   const [title, setTitle] = useState(task.title)
+
   const [isDescriptionEdit, setDescriptionEdit] = useState(false)
+  const [description, setDescription] = useState(task.description)
 
   return (
     <Card isBlurred className="w-full bg-gray-4 px-4 py-3 text-base">
@@ -52,7 +54,11 @@ const TaskCard: React.FC<ITaskCard> = ({
             />
           ) : (
             <span
-              onClick={() => {
+              className="z-30 cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                console.log("hello")
                 focusOnElementWithoutScroll("update-task-title-input")
                 setTitleEdit(true)
               }}
@@ -62,9 +68,26 @@ const TaskCard: React.FC<ITaskCard> = ({
           )}
         </div>
       </CardHeader>
-      {task.description && (
+      {description && (
         <CardBody className="pt-0">
-          <span className="text-sm text-gray-11">{task.description}</span>
+          {isDescriptionEdit ? (
+            <ChangeTaskDescriptionInput
+              toggle={setDescriptionEdit}
+              description={description}
+              setDescription={setDescription}
+              task={task}
+            />
+          ) : (
+            <span
+              onClick={() => {
+                focusOnElementWithoutScroll("task-description-edit")
+                setDescriptionEdit(true)
+              }}
+              className="cursor-pointer text-sm text-gray-11"
+            >
+              {description}
+            </span>
+          )}
         </CardBody>
       )}
     </Card>
@@ -125,22 +148,6 @@ const TaskCard: React.FC<ITaskCard> = ({
         </CardTitle>
       </ShadcnCardheader>
       {/* card description */}
-      <CardDescription
-        className="pl-6"
-        onDoubleClick={() => setDescriptionEdit(true)}
-      >
-        {isDescriptionEdit ? (
-          <ChangeTaskDescriptionInput
-            key="input-description"
-            toggle={setDescriptionEdit}
-            task={task}
-          />
-        ) : (
-          <span className="block overflow-hidden text-ellipsis">
-            {task.description}
-          </span>
-        )}
-      </CardDescription>
     </ShadcnCard>
   )
 }
