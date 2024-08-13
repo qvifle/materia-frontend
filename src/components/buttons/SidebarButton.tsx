@@ -20,10 +20,6 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
 }) => {
   const isDesktop = useMediaQuery("only screen and (min-width : 1024px)")
 
-  useEffect(() => {
-    console.log(isDesktop)
-  }, [isDesktop])
-
   return (
     <Button
       isIconOnly={!isDesktop}

@@ -55,9 +55,6 @@ const TaskCard: React.FC<ITaskCard> = ({
           ) : (
             <button
               onClick={(e) => {
-                // e.preventDefault()
-                // e.stopPropagation()
-                // console.log("hello")
                 focusOnElementWithoutScroll("update-task-title-input")
                 setTitleEdit(true)
               }}

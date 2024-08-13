@@ -13,7 +13,6 @@ const CustomBreadcrumbs = () => {
 
   useEffect(() => {
     const getTitles = async (pathNames: string[]) => {
-      console.log("hello")
       setLoading(true)
       const titles = []
       for (let i = 0; i < pathNames.length; i++) {

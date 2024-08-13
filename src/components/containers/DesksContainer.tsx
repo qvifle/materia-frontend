@@ -15,6 +15,7 @@ import {
   defaultDropAnimation,
   DndContext,
   DragOverEvent,
+  DragEndEvent,
   DragOverlay,
   DragStartEvent,
   DropAnimation,
@@ -40,6 +41,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const queryClient = useQueryClient()
   const [activeTask, setActiveTask] = useState<undefined | ITask>(undefined)
   const [reorderDesks, setReorderDesks] = useState<IDesk[]>(fakeData as any)
+  const [isOvered, setOvered] = useState(false)
 
   // const {
   //   data: desks,
@@ -91,9 +93,47 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   }
 
   const handleDragOver = ({ active, over }: DragOverEvent) => {
+    if (isOvered) {
+      return
+    }
+
+    console.log(active, over)
+
     // Find the containers
     const activeDeskId = active.data.current?.sortable?.containerId
     const overDeskId = over?.data.current?.sortable?.containerId
+    if (!over) {
+      return
+    }
+
+    const overDesk = reorderDesks.find((el) => el.id === over.id)
+    if (!!overDesk && activeDeskId != over.id) {
+      setReorderDesks((desks) => {
+        const activeDesk = desks.find((desk) => desk.id === activeDeskId)
+        const activeTask = activeDesk?.tasks.find(
+          (task) => task.id == active.id,
+        ) as ITask
+
+        return desks.map((desk) => {
+          if (desk.id === activeDeskId) {
+            return {
+              ...desk,
+              tasks: desk.tasks.filter((task) => task.id !== active.id),
+            }
+          }
+
+          if (desk.id == over.id) {
+            return {
+              ...desk,
+              tasks: [activeTask],
+            }
+          }
+
+          return desk
+        })
+      })
+      return
+    }
 
     if (!activeDeskId || !overDeskId || activeDeskId === overDeskId) {
       return
@@ -101,10 +141,8 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
 
     setReorderDesks((desks) => {
       const activeTasks = desks.find((desk) => desk.id === activeDeskId)!.tasks
-      const overTasks = desks.find((desk) => desk.id === overDeskId)!.tasks
 
       const activeTaskIndex = activeTasks.findIndex((el) => el.id == active.id)
-      const overTaskIndex = overTasks.findIndex((el) => el.id == over?.id)
 
       const activeTask = activeTasks[activeTaskIndex]
       return desks.map((desk) => {
@@ -128,113 +166,44 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         return desk
       })
     })
+
+    setOvered(true)
   }
 
-  // const handleDragEnd = (e: DropResult) => {
-  //   if (!e.destination) {
-  //     return
-  //   }
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    const activeDeskId = active.data.current?.sortable?.containerId
+    const overDeskId = over?.data.current?.sortable?.containerId
 
-  //   const activeTaskId = e.draggableId
-  //   const activeDesk = reorderDesks.find((desk) =>
-  //     desk.tasks.some((task) => task.id === activeTaskId),
-  //   )
+    if (!activeDeskId || !overDeskId || overDeskId != activeDeskId) {
+      return
+    }
 
-  //   if (!activeDesk) {
-  //     return
-  //   }
+    setReorderDesks((desks) => {
+      const tasks = desks.find((desk) => desk.id === activeDeskId)!.tasks
+      const activeTaskIndex = tasks.findIndex((el) => el.id == active.id)
+      const overTaskIndex = tasks.findIndex((el) => el.id == over?.id)
 
-  //   const activeTaskIndex = e.source.index
-  //   const overTaskIndex = e.destination.index
-
-  //   const activeDeskId = activeDesk.id
-  //   const overDeskId = e.destination.droppableId
-
-  //   if (activeDeskId === overDeskId && activeTaskIndex === overTaskIndex) {
-  //     return
-  //   }
-
-  //   const activeDeskIndex = getIndexOfElementById(activeDeskId, reorderDesks)
-  //   const overDeskIndex = getIndexOfElementById(overDeskId, reorderDesks)
-  //   const overTask = reorderDesks[overDeskIndex].tasks[overTaskIndex]
-  //   if (!overTask) {
-  //     // empty desk
-  //     const activeTask = reorderDesks[activeDeskIndex].tasks[activeTaskIndex]
-  //     setReorderDesks((prev) => {
-  //       return prev.map((desk) => {
-  //         if (desk.id === activeDeskId) {
-  //           return {
-  //             ...desk,
-  //             tasks: desk.tasks.filter((task) => task.id != activeTaskId),
-  //           }
-  //         } else if (desk.id === overDeskId) {
-  //           return {
-  //             ...desk,
-  //             tasks: [activeTask],
-  //           }
-  //         }
-  //         return desk
-  //       })
-  //     })
-
-  //     addToDesk({ taskId: activeTaskId, overDeskId: overDeskId })
-  //     return
-  //   }
-
-  //   const { id: overTaskId } = overTask
-
-  //   if (activeDeskId === overDeskId) {
-  //     // reorder in same desk
-  //     setReorderDesks((prev) => {
-  //       const newState = [...prev]
-  //       newState[activeDeskIndex] = {
-  //         ...newState[activeDeskIndex],
-  //         tasks: arrayMove(
-  //           newState[activeDeskIndex].tasks,
-  //           activeTaskIndex,
-  //           overTaskIndex,
-  //         ),
-  //       }
-
-  //       return newState
-  //     })
-
-  //     changeOrder({ overTaskId: overTaskId, taskId: activeTaskId })
-  //     return
-  //   }
-  //   //reorder in not the same desks
-  //   setReorderDesks((prev) => {
-  //     const activeDeskIndex = getIndexOfElementById(activeDeskId, prev)
-  //     return prev.map((desk) => {
-  //       if (desk.id === activeDeskId) {
-  //         return {
-  //           ...desk,
-  //           tasks: prev[activeDeskIndex].tasks.filter(
-  //             (task) => task.id != activeTaskId,
-  //           ),
-  //         }
-  //       } else if (desk.id === overDeskId) {
-  //         return {
-  //           ...desk,
-  //           tasks: insert(activeDesk.tasks[activeTaskIndex], overTaskIndex, [
-  //             ...desk.tasks,
-  //           ]),
-  //         }
-  //       }
-
-  //       return desk
-  //     })
-  //   })
-  //   changeDesk({ overTaskId: overTaskId, taskId: activeTaskId })
-  // }
-
-  // useEffect(() => {
-  //   setReorderDesks(desks)
-  // }, [desks])
+      return desks.map((desk) => {
+        if (desk.id === activeDeskId) {
+          return {
+            ...desk,
+            tasks: arrayMove(tasks, activeTaskIndex, overTaskIndex),
+          }
+        }
+        return desk
+      })
+    })
+  }
 
   useEffect(() => {
-    console.log(reorderDesks)
-  }, [reorderDesks])
+    if (!isOvered) {
+      return
+    }
+
+    setTimeout(() => {
+      setOvered(false)
+    }, 100)
+  }, [isOvered])
 
   const dropAnimation: DropAnimation = {
     ...defaultDropAnimation,
@@ -249,6 +218,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
       <DndContext
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
         collisionDetection={closestCenter}
       >
         {reorderDesks.map((desk, key) => (

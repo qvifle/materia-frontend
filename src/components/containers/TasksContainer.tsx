@@ -12,9 +12,7 @@ interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
 }
 
 const TasksContainer: React.FC<ITasksContainer> = ({ tasks, desk }) => {
-  const { setNodeRef } = useDroppable({
-    id: desk.id,
-  })
+ 
   if (!tasks || tasks.length === 0) {
     return null
   }
@@ -25,7 +23,7 @@ const TasksContainer: React.FC<ITasksContainer> = ({ tasks, desk }) => {
       items={tasks}
       strategy={verticalListSortingStrategy}
     >
-      <div className="relative flex flex-col gap-1">
+      <div  className="relative flex flex-col gap-1">
         {/* <div id="dropable" className="bg-red-500" ref={setNodeRef}></div> */}
 
         {tasks.map((task, index) => (

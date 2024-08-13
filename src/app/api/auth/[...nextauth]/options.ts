@@ -38,12 +38,6 @@ export const options: NextAuthOptions = {
             return null;
           }
 
-          // const res = await api.post(`/signIn`, {
-          //   email: credentials?.email,
-          //   password: credentials?.password,
-          // });
-
-          console.log("qvifle");
           const res = await authService.signIn(credentials);
 
           if (!res) {
