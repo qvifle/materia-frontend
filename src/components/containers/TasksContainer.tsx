@@ -4,7 +4,6 @@ import TaskCard from "../cards/TaskCard"
 import { IDesk } from "@/types/desk.types"
 import { ITask } from "@/types/task.types"
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
-import { useDroppable } from "@dnd-kit/core"
 import SortableItem from "../dnd/SortableItem"
 interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
   tasks: ITask[]
@@ -12,7 +11,6 @@ interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
 }
 
 const TasksContainer: React.FC<ITasksContainer> = ({ tasks, desk }) => {
- 
   if (!tasks || tasks.length === 0) {
     return null
   }
@@ -23,9 +21,7 @@ const TasksContainer: React.FC<ITasksContainer> = ({ tasks, desk }) => {
       items={tasks}
       strategy={verticalListSortingStrategy}
     >
-      <div  className="relative flex flex-col gap-1">
-        {/* <div id="dropable" className="bg-red-500" ref={setNodeRef}></div> */}
-
+      <div className="relative flex flex-col gap-1">
         {tasks.map((task, index) => (
           <SortableItem key={task.id} id={task.id}>
             <TaskCard task={task} />

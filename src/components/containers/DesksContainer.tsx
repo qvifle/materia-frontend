@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useOptimistic, useState } from "react"
 import deskService from "@/services/DeskService"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import DeskCard from "../cards/DeskWIdget"
@@ -40,20 +40,16 @@ interface IAddToDesk {
 const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const queryClient = useQueryClient()
   const [activeTask, setActiveTask] = useState<undefined | ITask>(undefined)
-  const [reorderDesks, setReorderDesks] = useState<IDesk[]>(fakeData as any)
+  const [reorderDesks, setReorderDesks] = useState<IDesk[]>([])
   const [isOvered, setOvered] = useState(false)
 
-  // const {
-  //   data: desks,
-  //   isLoading,
-  //   isError,
-  // } = useQuery({
-  //   queryKey: ["desks"],
-  //   queryFn: async () => {
-  //     const { data } = await deskService.getDesks(projectId)
-  //     return data
-  //   },
-  // })
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["desks"],
+    queryFn: async () => {
+      const { data } = await deskService.getDesks(projectId)
+      return data
+    },
+  })
 
   const { mutate: changeOrder } = useMutation({
     mutationKey: ["changeOrderId"],
@@ -97,17 +93,17 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
       return
     }
 
-    console.log(active, over)
-
     // Find the containers
     const activeDeskId = active.data.current?.sortable?.containerId
     const overDeskId = over?.data.current?.sortable?.containerId
+
     if (!over) {
       return
     }
 
     const overDesk = reorderDesks.find((el) => el.id === over.id)
-    if (!!overDesk && activeDeskId != over.id) {
+
+    if (!!overDesk && activeDeskId != over.id && overDesk.tasks.length === 0) {
       setReorderDesks((desks) => {
         const activeDesk = desks.find((desk) => desk.id === activeDeskId)
         const activeTask = activeDesk?.tasks.find(
@@ -132,10 +128,16 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
           return desk
         })
       })
+      setOvered(true)
       return
     }
 
-    if (!activeDeskId || !overDeskId || activeDeskId === overDeskId) {
+    if (
+      !activeDeskId ||
+      !overDeskId ||
+      activeDeskId === overDeskId ||
+      !over.data.current
+    ) {
       return
     }
 
@@ -177,13 +179,11 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     if (!activeDeskId || !overDeskId || overDeskId != activeDeskId) {
       return
     }
-
     setReorderDesks((desks) => {
       const tasks = desks.find((desk) => desk.id === activeDeskId)!.tasks
       const activeTaskIndex = tasks.findIndex((el) => el.id == active.id)
       const overTaskIndex = tasks.findIndex((el) => el.id == over?.id)
-
-      return desks.map((desk) => {
+      const newState = desks.map((desk) => {
         if (desk.id === activeDeskId) {
           return {
             ...desk,
@@ -192,8 +192,14 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         }
         return desk
       })
+      console.log(newState)
+      return newState
     })
   }
+
+  useEffect(() => {
+    setReorderDesks(data)
+  }, [data])
 
   useEffect(() => {
     if (!isOvered) {

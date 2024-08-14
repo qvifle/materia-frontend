@@ -4,7 +4,6 @@ import Emoji from "@/lib/utils/Emoji"
 import projectService from "@/services/ProjectService"
 import { IProject } from "@/types/project.types"
 import DesksWidget from "@/widgets/DesksWidget"
-import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
 import React from "react"
 

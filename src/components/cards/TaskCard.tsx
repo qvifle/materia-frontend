@@ -41,7 +41,11 @@ const TaskCard: React.FC<ITaskCard> = ({
   const [description, setDescription] = useState(task.description)
 
   return (
-    <Card isBlurred className="w-full bg-gray-4 px-4 py-3 text-base">
+    <Card
+      style={{ touchAction: "none" }}
+      isBlurred
+      className="w-full bg-gray-4 px-4 py-3 text-base"
+    >
       <CardHeader className="w-full p-0 text-gray-12">
         <div className="flex w-full items-center gap-2">
           <TaskStatusIndicator status={task.status} />

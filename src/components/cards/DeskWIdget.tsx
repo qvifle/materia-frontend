@@ -12,9 +12,6 @@ interface DeskWidgetProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const DeskWidget: React.FC<DeskWidgetProps> = ({ desk, ...rest }) => {
-  const { setNodeRef } = useDroppable({
-    id: desk.id,
-  })
   return (
     <div
       className="flex min-w-[calc(100vw-18px-16px)] flex-col md:min-w-[350px]"
@@ -22,7 +19,7 @@ const DeskWidget: React.FC<DeskWidgetProps> = ({ desk, ...rest }) => {
     >
       <DeskCard desk={desk} />
 
-      <div ref={setNodeRef} className="flex w-full flex-col gap-1">
+      <div className="flex w-full flex-col gap-1">
         <Tasks desk={desk} tasks={desk.tasks} />
         <AddTaskButton desk={desk} />
       </div>

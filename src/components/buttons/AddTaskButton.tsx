@@ -1,53 +1,60 @@
-"use client";
-import React, { HTMLAttributes, useState } from "react";
-import { Plus, Check } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import taskService from "@/services/TaskService";
-import { IDesk } from "@/types/desk.types";
+"use client"
+import React, { HTMLAttributes, useState } from "react"
+import { Plus, Check } from "lucide-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Input } from "../ui/input"
+import { Button } from "../ui/button"
+import taskService from "@/services/TaskService"
+import { IDesk } from "@/types/desk.types"
+import { useDroppable } from "@dnd-kit/core"
 
 interface IAddTaskButton extends HTMLAttributes<HTMLButtonElement> {
-  desk: IDesk;
+  desk: IDesk
 }
 
 const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
-  const [isInit, setInit] = useState(true);
-  const [value, setValue] = useState("");
+  const [isInit, setInit] = useState(true)
+  const [value, setValue] = useState("")
 
-  const queryClient = useQueryClient();
+  const { setNodeRef } = useDroppable({
+    id: desk.id,
+    disabled: desk.tasks.length > 0,
+  })
+
+  const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationKey: ["tasks", desk.id],
     mutationFn: async () => {
-      const { data } = await taskService.createTask(desk.id, { title: value });
-      return data;
+      const { data } = await taskService.createTask(desk.id, { title: value })
+      return data
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["desks"] });
-      setValue("");
-      setInit(true);
+      queryClient.invalidateQueries({ queryKey: ["desks"] })
+      setValue("")
+      setInit(true)
     },
-  });
+  })
 
   const createNewTask = () => {
     if (value === "") {
-      setInit(true);
-      return;
+      setInit(true)
+      return
     }
-    mutate();
-  };
+    mutate()
+  }
 
   if (isInit) {
     return (
       <button
+        ref={setNodeRef}
         onClick={() => setInit(false)}
-        className="w-full flex gap-1 items-center border-border border bg-card shadow-sm px-2 py-1 rounded-md hover:bg-secondary duration-200"
+        className="flex w-full items-center gap-1 rounded-md border border-border bg-card px-2 py-1 shadow-sm duration-200 hover:bg-secondary"
         {...rest}
       >
         <Plus size={14} />
         <span className="text-sm text-card-foreground">Add task</span>
       </button>
-    );
+    )
   }
 
   return (
@@ -57,14 +64,14 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              createNewTask();
+              createNewTask()
             }
           }}
-          className="z-30 mx-1 max-w-[348px] py-0 h-[28px]"
+          className="z-30 mx-1 h-[28px] max-w-[348px] py-0"
           autoFocus
         />
         <Button
-          className="z-30 h-5 w-5 p-1 absolute top-1 right-[3px]"
+          className="absolute right-[3px] top-1 z-30 h-5 w-5 p-1"
           onClick={createNewTask}
           size="icon"
         >
@@ -73,10 +80,10 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
       </div>
       <div
         onClick={() => setInit(true)}
-        className="absolute top-0 left-0 h-screen w-screen"
+        className="absolute left-0 top-0 h-screen w-screen"
       ></div>
     </>
-  );
-};
+  )
+}
 
-export default AddTaskButton;
+export default AddTaskButton

@@ -1,5 +1,5 @@
-"use client";
-import React from "react";
+"use client"
+import React from "react"
 import {
   Avatar,
   Badge,
@@ -7,18 +7,18 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@nextui-org/react";
-import { Bell, Sun, LogOut, Moon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
-import useDialog from "@/lib/hooks/useDialog";
-import { useQuery } from "@tanstack/react-query";
-import inviteService from "@/services/InviteService";
+} from "@nextui-org/react"
+import { Bell, Sun, LogOut, Moon } from "lucide-react"
+import { signOut, useSession } from "next-auth/react"
+import { useTheme } from "next-themes"
+import useDialog from "@/lib/hooks/useDialog"
+import { useQuery } from "@tanstack/react-query"
+import inviteService from "@/services/InviteService"
 
 const AvatarDropdown = () => {
-  const { data: sessionData } = useSession();
-  const { theme, setTheme } = useTheme();
-  const { open: openDialog } = useDialog();
+  const { data: sessionData } = useSession()
+  const { theme, setTheme } = useTheme()
+  const { open: openDialog } = useDialog()
 
   const {
     data: invites,
@@ -27,19 +27,18 @@ const AvatarDropdown = () => {
   } = useQuery({
     queryKey: ["my-invites"],
     queryFn: async () => {
-      const { data } = await inviteService.getMyInvites();
-      console.log(invites);
-      return data;
+      const { data } = await inviteService.getMyInvites()
+      return data
     },
-  });
+  })
 
   const toggleTheme = () => {
     if (theme === "light") {
-      setTheme("dark");
-      return;
+      setTheme("dark")
+      return
     }
-    setTheme("light");
-  };
+    setTheme("light")
+  }
   return (
     <Dropdown placement="bottom-end">
       <Badge
@@ -91,7 +90,7 @@ const AvatarDropdown = () => {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
-  );
-};
+  )
+}
 
-export default AvatarDropdown;
+export default AvatarDropdown
