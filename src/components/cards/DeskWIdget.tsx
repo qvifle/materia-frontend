@@ -14,7 +14,7 @@ interface DeskWidgetProps extends HTMLAttributes<HTMLDivElement> {
 const DeskWidget: React.FC<DeskWidgetProps> = ({ desk, ...rest }) => {
   return (
     <div
-      className="flex min-w-[calc(100vw-18px-16px)] flex-col min-[500px]:min-w-[350px]"
+      className="flex h-max min-w-[calc(100vw-18px-16px)] flex-col min-[500px]:min-w-[350px]"
       {...rest}
     >
       <DeskCard desk={desk} />

@@ -26,6 +26,7 @@ const EditTaskButtonGroup: React.FC<IEditTaskButtonGroup> = ({
       queryClient.invalidateQueries({ queryKey: ["desks"] });
     },
   });
+  
   return (
     <div className="flex flex-col gap-2">
       <Button size="sm" variant="ghost" onClick={() => setTitleEdit(true)}>

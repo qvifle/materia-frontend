@@ -51,14 +51,12 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
-        delay: 300,
-        tolerance: 100,
+        distance: 30,
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 300,
-        tolerance: 100,
+        distance: 30,
       },
     }),
   )
@@ -255,7 +253,6 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
-      
         collisionDetection={closestCenter}
       >
         {reorderDesks.map((desk, key) => (

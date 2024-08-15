@@ -1,5 +1,6 @@
 const focusOnElementWithoutScroll = (id: string) => {
-  setTimeout(() => {
+  setInterval(() => {
+    console.log(document.getElementById(id))
     document.getElementById(id)?.focus({ preventScroll: true })
   }, 1)
 }

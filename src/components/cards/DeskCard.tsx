@@ -33,7 +33,7 @@ const DeskCard: FC<DeskCardProps> = ({ desk }) => {
   })
 
   return (
-    <Card className="relative mb-1 px-4 py-5">
+    <Card className="relative mb-1 h-[64px] px-4 py-5">
       <CardBody className="flex w-full flex-row items-center justify-between p-0">
         {isTitleEdit ? (
           <UpdateDeskTitleInput

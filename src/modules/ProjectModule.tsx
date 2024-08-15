@@ -29,7 +29,7 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col overflow-y-hidden">
       <div className="px-4 pt-4">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
           <span>

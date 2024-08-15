@@ -65,6 +65,7 @@ const UpdateTaskTitleInput: FC<UpdateTaskTitleInputProps> = ({
       className="flex w-full items-center justify-between gap-2"
     >
       <input
+        autoFocus
         id="update-task-title-input"
         className="w-full bg-transparent outline-none"
         value={title}

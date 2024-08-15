@@ -16,9 +16,7 @@ const ChangeTaskDescriptionInput = ({
   task,
 }: {
   description: string
-  setDescription: React.Dispatch<
-    React.SetStateAction<string | undefined | null>
-  >
+  setDescription: React.Dispatch<React.SetStateAction<string>>
   toggle: React.Dispatch<React.SetStateAction<boolean>>
   task: ITask
 }) => {
@@ -66,9 +64,6 @@ const ChangeTaskDescriptionInput = ({
         ref={textAreaRef}
         value={description}
         onChange={(e) => {
-          if (e.target.value == "") {
-            return
-          }
           setDescription(e.target.value)
         }}
         onKeyDown={(e) => {
