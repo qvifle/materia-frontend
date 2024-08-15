@@ -1,6 +1,6 @@
 "use client"
 import { useSortable } from "@dnd-kit/sortable"
-import React, { ReactNode } from "react"
+import React, { ReactNode, useEffect } from "react"
 import { CSS } from "@dnd-kit/utilities"
 
 interface SortableItemProps {
@@ -23,6 +23,8 @@ const SortableItem = ({ children, id }: SortableItemProps) => {
     transition,
     opacity: isDragging ? 0 : 1,
   }
+
+
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       {children}

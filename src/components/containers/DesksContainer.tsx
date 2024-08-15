@@ -19,10 +19,15 @@ import {
   DragOverlay,
   DragStartEvent,
   DropAnimation,
+  useSensors,
+  useSensor,
+  PointerSensor,
+  MouseSensor,
+  TouchSensor,
 } from "@dnd-kit/core"
 import TaskCard from "../cards/TaskCard"
 import { ITask, TaskStatus } from "@/types/task.types"
-import fakeData from "./data.json"
+
 interface IDesksContainer {
   projectId: string
 }
@@ -43,6 +48,21 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const [reorderDesks, setReorderDesks] = useState<IDesk[]>([])
   const [isOvered, setOvered] = useState(false)
 
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        delay: 300,
+        tolerance: 100,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 300,
+        tolerance: 100,
+      },
+    }),
+  )
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["desks"],
     queryFn: async () => {
@@ -59,9 +79,8 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
       queryClient.invalidateQueries({ queryKey: ["desks"] })
     },
   })
-
-  const { mutate: changeDesk } = useMutation({
-    mutationKey: ["changeDesk"],
+  const { mutate: changeDeskById } = useMutation({
+    mutationKey: ["changeDeskById"],
     mutationFn: async ({ taskId, overTaskId }: IChangeTaskOrderId) =>
       taskService.changeDeskById(taskId, { overTaskId }),
     onSuccess: () => {
@@ -69,10 +88,10 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     },
   })
 
-  const { mutate: addToDesk } = useMutation({
-    mutationKey: ["addToDesk"],
+  const { mutate: addToEmptyDesk } = useMutation({
+    mutationKey: ["addToEmptyDesk"],
     mutationFn: async ({ taskId, overDeskId }: IAddToDesk) =>
-      taskService.addToDesk(taskId, { overDeskId }),
+      taskService.addToDesk(taskId, { overDeskId: overDeskId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["desks"] })
     },
@@ -104,6 +123,10 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     const overDesk = reorderDesks.find((el) => el.id === over.id)
 
     if (!!overDesk && activeDeskId != over.id && overDesk.tasks.length === 0) {
+      addToEmptyDesk({
+        taskId: active.id as string,
+        overDeskId: over.id as string,
+      })
       setReorderDesks((desks) => {
         const activeDesk = desks.find((desk) => desk.id === activeDeskId)
         const activeTask = activeDesk?.tasks.find(
@@ -141,6 +164,10 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
       return
     }
 
+    changeDeskById({
+      taskId: active.id as string,
+      overTaskId: over.id as string,
+    })
     setReorderDesks((desks) => {
       const activeTasks = desks.find((desk) => desk.id === activeDeskId)!.tasks
 
@@ -179,6 +206,8 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     if (!activeDeskId || !overDeskId || overDeskId != activeDeskId) {
       return
     }
+
+    changeOrder({ taskId: active.id as string, overTaskId: over.id as string })
     setReorderDesks((desks) => {
       const tasks = desks.find((desk) => desk.id === activeDeskId)!.tasks
       const activeTaskIndex = tasks.findIndex((el) => el.id == active.id)
@@ -192,12 +221,12 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         }
         return desk
       })
-      console.log(newState)
       return newState
     })
   }
 
   useEffect(() => {
+    console.log(data)
     setReorderDesks(data)
   }, [data])
 
@@ -222,9 +251,11 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   return (
     <>
       <DndContext
+        sensors={sensors}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
+      
         collisionDetection={closestCenter}
       >
         {reorderDesks.map((desk, key) => (

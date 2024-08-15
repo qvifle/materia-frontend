@@ -6,13 +6,13 @@ export enum TaskStatus {
 }
 
 export interface ITask {
-  id: string;
-  createdAt: Date;
-  title: string;
-  description?: string | null;
-  status: TaskStatus;
-  orderId: number;
-  deskId: string;
+  id: string
+  createdAt: Date
+  title: string
+  description?: string | null
+  status: TaskStatus
+  orderId: number
+  deskId: string
 }
 
 export interface ITaskFormFields extends Pick<ITask, "title" | "description"> {}
@@ -20,8 +20,9 @@ export interface ITaskFormFields extends Pick<ITask, "title" | "description"> {}
 export interface ITaskStatusFormFields extends Pick<ITask, "status"> {}
 
 export interface IOrderIdFormFields {
-  overTaskId: string;
+  overTaskId?: string
+  overDeskId?: string
 }
 export interface IAddToDeskFields {
-  overDeskId: string;
+  overDeskId: string
 }

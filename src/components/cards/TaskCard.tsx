@@ -28,17 +28,28 @@ interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
   draggable?: boolean
 }
 
-const TaskCard: React.FC<ITaskCard> = ({
-  task,
-  hidden = false,
-  draggable = false,
-  ...rest
-}) => {
+const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
   const [isTitleEdit, setTitleEdit] = useState(false)
   const [title, setTitle] = useState(task.title)
+  const [clickTimeout, setClickTimeout] = useState<NodeJS.Timeout | null>(null)
 
   const [isDescriptionEdit, setDescriptionEdit] = useState(false)
   const [description, setDescription] = useState(task.description)
+
+  const onSingleClick = (cb: () => void) => {
+    console.log(clickTimeout)
+    if (clickTimeout) {
+      clearTimeout(clickTimeout)
+      setClickTimeout(null) // Reset the timeout
+    } else {
+      const timeout = setTimeout(() => {
+        cb()
+        setClickTimeout(null)
+      }, 300)
+
+      setClickTimeout(timeout)
+    }
+  }
 
   return (
     <Card
@@ -58,7 +69,14 @@ const TaskCard: React.FC<ITaskCard> = ({
             />
           ) : (
             <button
-              onClick={(e) => {
+          
+              onTouchEnd={() => {
+                onSingleClick(() => {
+                  focusOnElementWithoutScroll("update-task-title-input")
+                  setTitleEdit(true)
+                })
+              }}
+              onDoubleClick={() => {
                 focusOnElementWithoutScroll("update-task-title-input")
                 setTitleEdit(true)
               }}
@@ -79,7 +97,13 @@ const TaskCard: React.FC<ITaskCard> = ({
             />
           ) : (
             <span
-              onClick={() => {
+              onTouchEnd={() => {
+                onSingleClick(() => {
+                  focusOnElementWithoutScroll("task-description-edit")
+                  setDescriptionEdit(true)
+                })
+              }}
+              onDoubleClick={() => {
                 focusOnElementWithoutScroll("task-description-edit")
                 setDescriptionEdit(true)
               }}
