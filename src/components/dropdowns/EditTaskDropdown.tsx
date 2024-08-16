@@ -69,10 +69,10 @@ const EditTaskDropdown = ({
         </DropdownItem>
         <DropdownItem
           onClick={() => deleteTask()}
-          startContent={<Trash size={12} />}
+          startContent={<Trash size={12} color="var(--error-9)" />}
           key="delete"
         >
-          Delete
+          <span className="text-danger-600">Delete</span>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

@@ -64,12 +64,12 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
     <Card
       style={{ touchAction: "none" }}
       isBlurred
-      className="w-full bg-gray-4 px-4 py-3 text-base"
+      className="w-full bg-gray-4 px-4 py-3 text-base md:max-w-[350px]"
     >
       <CardHeader className="w-full p-0 text-gray-12">
         <div className="flex w-full items-center justify-between gap-2">
-          <div className="flex w-full items-center gap-2">
-            <TaskStatusIndicator status={task.status} />
+          <div className="grid w-full grid-cols-[16px,1fr] items-center gap-2">
+            <TaskStatusIndicator task={task} />
             {isTitleEdit ? (
               <UpdateTaskTitleInput
                 task={task}
@@ -79,6 +79,7 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
               />
             ) : (
               <button
+                className="max-w-full text-balance text-start leading-[18px]"
                 onTouchEnd={() => onSingleClick(() => handleEditTitleClick())}
                 onDoubleClick={handleEditTitleClick}
               >
@@ -94,7 +95,7 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
         </div>
       </CardHeader>
       {(!!description || isDescriptionEdit) && (
-        <CardBody className="pt-0">
+        <CardBody className="px-4 pt-1">
           {isDescriptionEdit ? (
             <ChangeTaskDescriptionInput
               toggle={setDescriptionEdit}

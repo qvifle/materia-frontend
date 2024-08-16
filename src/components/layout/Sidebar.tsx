@@ -10,11 +10,10 @@ import sortProjects from "@/lib/utils/sortProjects"
 import { useSession } from "next-auth/react"
 import Emoji from "@/lib/utils/Emoji"
 import useDialog from "@/lib/hooks/useDialog"
-import { useMediaQuery } from "usehooks-ts"
 import SidebarButton from "../buttons/SidebarButton"
+import { useMediaQuery } from "@uidotdev/usehooks"
 
 const Sidebar = () => {
-  const [isClient, setClient] = useState(false)
   const isMobile = useMediaQuery("(max-width: 639px)")
   const isDesktop = useMediaQuery("only screen and (min-width : 1024px)")
   const { open: openDialog } = useDialog()
@@ -38,26 +37,6 @@ const Sidebar = () => {
     [projects, session],
   )
 
-  useEffect(() => {
-    setClient(true)
-  }, [])
-
-  if (!isClient) {
-    return <div></div>
-  }
-
-  if (isMobile) {
-    return null
-  }
-
-  if (isLoading) {
-    return "..."
-  }
-
-  if (isError || !sortedProjects) {
-    return "Error"
-  }
-
   return (
     <aside
       className={cn(
@@ -78,7 +57,7 @@ const Sidebar = () => {
       >
         Create project
       </SidebarButton>
-      {sortedProjects.myProjects.length > 0 && (
+      {sortedProjects && sortedProjects.myProjects.length > 0 && (
         <SidebarButton
           onClick={() => setMyProjects((s) => !s)}
           variant="light"
@@ -94,6 +73,7 @@ const Sidebar = () => {
         </SidebarButton>
       )}
       {isMyProjects &&
+        sortedProjects &&
         sortedProjects.myProjects.map((el, key) => (
           <SidebarButton
             variant="light"
@@ -103,7 +83,7 @@ const Sidebar = () => {
             {el.title}
           </SidebarButton>
         ))}
-      {sortedProjects.otherProjects.length > 0 && (
+      {sortedProjects && sortedProjects.otherProjects.length > 0 && (
         <SidebarButton
           icon={<Globe />}
           variant="light"
@@ -122,6 +102,7 @@ const Sidebar = () => {
         </SidebarButton>
       )}
       {isOtherProjects &&
+        sortedProjects &&
         sortedProjects.otherProjects.map((el, key) => (
           <SidebarButton
             icon={el.iconUrl ? <Emoji unifiedCode={el.iconUrl} /> : el.title}

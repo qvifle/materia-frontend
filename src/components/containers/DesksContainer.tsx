@@ -51,12 +51,12 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
-        distance: 30,
+        distance: 10,
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        distance: 30,
+        distance: 10,
       },
     }),
   )
@@ -224,7 +224,6 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   }
 
   useEffect(() => {
-    console.log(data)
     setReorderDesks(data)
   }, [data])
 
@@ -240,6 +239,10 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
 
   const dropAnimation: DropAnimation = {
     ...defaultDropAnimation,
+  }
+
+  if (isLoading) {
+    return "loading"
   }
 
   if (!reorderDesks || reorderDesks.length === 0) {

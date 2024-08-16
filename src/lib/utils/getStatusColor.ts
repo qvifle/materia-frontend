@@ -1,16 +1,16 @@
-import { TaskStatus } from "@/types/task.types";
+import { TaskStatus } from "@/types/task.types"
 
 const getStatusColor = (status: TaskStatus) => {
   switch (status) {
     case TaskStatus.PENDING:
-      return "yellow";
+      return "warning"
     case TaskStatus.CANCELED:
-      return "red";
+      return "error"
     case TaskStatus.COMPLETED:
-      return "green";
+      return "succes"
     case TaskStatus.PAUSED:
-      return "blue";
+      return "info"
   }
-};
+}
 
-export default getStatusColor;
+export default getStatusColor
