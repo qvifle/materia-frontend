@@ -79,7 +79,6 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
                 backgroundColor: `var(--info-9)`,
               }}
               className={cn("h-2 w-2 rounded-full")}
-              {...rest}
             ></div>
           </Button>
 
