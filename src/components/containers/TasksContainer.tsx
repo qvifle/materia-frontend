@@ -1,40 +1,36 @@
-"use client";
-import React, { HTMLAttributes } from "react";
-import TaskCard from "../cards/TaskCard";
-import { IDesk } from "@/types/desk.types";
-import { ITask } from "@/types/task.types";
-import { Draggable, Droppable } from "@hello-pangea/dnd";
+"use client"
+import React, { HTMLAttributes, useState } from "react"
+import TaskCard from "../cards/TaskCard"
+import { IDesk } from "@/types/desk.types"
+import { ITask } from "@/types/task.types"
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import SortableItem from "../dnd/SortableItem"
 interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
-  tasks: ITask[];
-  desk: IDesk;
+  tasks: ITask[]
+  desk: IDesk
 }
 
-const TasksContainer: React.FC<ITasksContainer> = ({
-  tasks,
-  desk,
-  ...rest
-}) => {
+const TasksContainer: React.FC<ITasksContainer> = ({ tasks, desk }) => {
   if (!tasks || tasks.length === 0) {
-    return null;
+    return null
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      {tasks.map((task, index) => (
-        <Draggable index={index} key={task.id} draggableId={task.id}>
-          {(dragProvider) => (
-            <div
-              ref={dragProvider.innerRef}
-              {...dragProvider.draggableProps}
-              {...dragProvider.dragHandleProps}
-            >
-              <TaskCard task={task} />
-            </div>
-          )}
-        </Draggable>
-      ))}
-    </div>
-  );
-};
+    <SortableContext
+      id={desk.id}
+      items={tasks}
+      strategy={verticalListSortingStrategy}
+      
+    >
+      <div className="relative flex flex-col gap-1">
+        {tasks.map((task, index) => (
+          <SortableItem key={task.id} id={task.id}>
+            <TaskCard task={task} />
+          </SortableItem>
+        ))}
+      </div>
+    </SortableContext>
+  )
+}
 
-export default TasksContainer;
+export default TasksContainer

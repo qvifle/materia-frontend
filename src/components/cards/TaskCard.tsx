@@ -1,116 +1,123 @@
-"use client";
-import React, { HTMLAttributes, useRef, useState } from "react";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+"use client"
+import React, { HTMLAttributes, useRef, useState } from "react"
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import capitalize from "@/lib/utils/capitalize";
-import TaskStatusIndicator from "../indicators/TaskStatusIndicator";
-import { Button } from "../ui/button";
-import { CheckCircle, Pencil, Check } from "lucide-react/";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import ChangeStatusButtonsGroup from "../buttons/ChangeStatusButtonsGroup";
-import EditTaskButtonGroup from "../buttons/EditTaskButtonGroup";
-import { Input } from "../ui/input";
-import ChangeTaskTitleInput from "../inputs/ChangeTaskTitleInput";
-import ChangeTaskDescriptionInput from "../inputs/ChangeTaskDescriptionInput";
-import { ITask } from "@/types/task.types";
-import { cn } from "@/lib/utils";
-import { Draggable } from "@hello-pangea/dnd";
+  Card as ShadcnCard,
+  CardDescription,
+  CardHeader as ShadcnCardheader,
+  CardTitle,
+} from "../ui/card"
+import capitalize from "@/lib/utils/capitalize"
+import TaskStatusIndicator from "../indicators/TaskStatusIndicator"
+import { CheckCircle, Pencil } from "lucide-react/"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import ChangeStatusButtonsGroup from "../buttons/ChangeStatusButtonsGroup"
+import EditTaskButtonGroup from "../buttons/EditTaskButtonGroup"
+import ChangeTaskTitleInput from "../inputs/ChangeTaskTitleInput"
+import ChangeTaskDescriptionInput from "../inputs/ChangeTaskDescriptionInput"
+import { ITask } from "@/types/task.types"
+import { cn } from "@/lib/utils"
+import { Button, Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react"
+import UpdateTaskTitleInput from "../inputs/UpdateTaskTitleInput"
+import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
+import EditTaskDropdown from "../dropdowns/EditTaskDropdown"
 
 interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
-  task: ITask;
-  hidden?: boolean;
-  draggable?: boolean;
+  task: ITask
+  hidden?: boolean
+  draggable?: boolean
 }
 
-const TaskCard: React.FC<ITaskCard> = ({
-  task,
-  hidden = false,
-  draggable = false,
-  ...rest
-}) => {
-  const [isTitleEdit, setTitleEdit] = useState(false);
-  const [isDescriptionEdit, setDescriptionEdit] = useState(false);
+const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
+  const [isTitleEdit, setTitleEdit] = useState(false)
+  const [title, setTitle] = useState(task.title)
+  const [clickTimeout, setClickTimeout] = useState<NodeJS.Timeout | null>(null)
+
+  const [isDescriptionEdit, setDescriptionEdit] = useState(false)
+  const [description, setDescription] = useState(task.description ?? "")
+
+  const onSingleClick = (cb: () => void) => {
+    console.log(clickTimeout)
+    if (clickTimeout) {
+      clearTimeout(clickTimeout)
+      setClickTimeout(null) // Reset the timeout
+    } else {
+      const timeout = setTimeout(() => {
+        cb()
+        setClickTimeout(null)
+      }, 300)
+
+      setClickTimeout(timeout)
+    }
+  }
+
+  const handleEditTitleClick = () => {
+    focusOnElementWithoutScroll("update-task-title-input")
+    setTitleEdit(true)
+  }
+
+  const handleEditDescriptionClick = () => {
+    focusOnElementWithoutScroll("task-description-edit")
+    setDescriptionEdit(true)
+  }
 
   return (
     <Card
-      className={cn(
-        "max-w-[350px] py-1 px-2 group relative z-20",
-        hidden ? "opacity-0" : "",
-        draggable && "taskAppear",
-      )}
-      {...rest}
+      style={{ touchAction: "none" }}
+      isBlurred
+      className="w-full bg-gray-4 px-4 py-3 text-base md:max-w-[350px]"
     >
-      <CardHeader className="py-1 px-2">
-        <CardTitle className="text-sm font-medium flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <TaskStatusIndicator status={task.status} />
-                </TooltipTrigger>
-                <TooltipContent>{capitalize(task.status)}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
+      <CardHeader className="w-full p-0 text-gray-12">
+        <div className="flex w-full items-center justify-between gap-2">
+          <div className="grid w-full grid-cols-[16px,1fr] items-center gap-2">
+            <TaskStatusIndicator task={task} />
             {isTitleEdit ? (
-              <ChangeTaskTitleInput toggle={setTitleEdit} task={task} />
+              <UpdateTaskTitleInput
+                task={task}
+                setTitle={setTitle}
+                title={title}
+                setTitleEdit={setTitleEdit}
+              />
             ) : (
-              <span onDoubleClick={() => setTitleEdit(true)}>{task.title}</span>
+              <button
+                className="max-w-full text-balance text-start leading-[18px]"
+                onTouchEnd={() => onSingleClick(() => handleEditTitleClick())}
+                onDoubleClick={handleEditTitleClick}
+              >
+                {title}
+              </button>
             )}
           </div>
-          <div className="group-hover:visible group-hover:opacity-100 invisible opacity-0 duration-200 relative z-10">
-            <Popover>
-              <PopoverTrigger asChild className="z-50">
-                <Button size="icon" variant="ghost" className="w-6 h-6">
-                  <CheckCircle size={14} />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent side="top" className="w-min p-1">
-                <div className="flex items-center gap-2">
-                  <ChangeStatusButtonsGroup taskId={task.id} />
-                </div>
-              </PopoverContent>
-            </Popover>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button size="icon" variant="ghost" className="w-6 h-6">
-                  <Pencil size={14} />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent side="right" className="w-min p-1">
-                <EditTaskButtonGroup
-                  task={task}
-                  setTitleEdit={setTitleEdit}
-                  setDescriptionEdit={setDescriptionEdit}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-        </CardTitle>
-      </CardHeader>
-      <CardDescription
-        className="pl-6"
-        onDoubleClick={() => setDescriptionEdit(true)}
-      >
-        {isDescriptionEdit ? (
-          <ChangeTaskDescriptionInput
-            key="input-description"
-            toggle={setDescriptionEdit}
-            task={task}
+          <EditTaskDropdown
+            onTitleEdit={handleEditTitleClick}
+            onDescriptionEdit={handleEditDescriptionClick}
+            taskId={task.id}
           />
-        ) : (
-          <span className="block text-ellipsis overflow-hidden">
-            {task.description}
-          </span>
-        )}
-      </CardDescription>
+        </div>
+      </CardHeader>
+      {(!!description || isDescriptionEdit) && (
+        <CardBody className="px-4 pt-1">
+          {isDescriptionEdit ? (
+            <ChangeTaskDescriptionInput
+              toggle={setDescriptionEdit}
+              description={description}
+              setDescription={setDescription}
+              task={task}
+            />
+          ) : (
+            <span
+              onTouchEnd={() =>
+                onSingleClick(() => handleEditDescriptionClick())
+              }
+              onDoubleClick={handleEditDescriptionClick}
+              className="cursor-pointer text-sm text-gray-11"
+            >
+              {description}
+            </span>
+          )}
+        </CardBody>
+      )}
     </Card>
-  );
-};
+  )
+}
 
-export default TaskCard;
+export default TaskCard

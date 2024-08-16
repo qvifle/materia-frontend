@@ -6,7 +6,6 @@ const MyToaster = () => {
   return (
     <Toaster
       toastOptions={{
-        className: "bg-red-500",
         style: {
           backgroundColor: "hsl(var(--background))",
           color: "hsl(var(--foreground))",

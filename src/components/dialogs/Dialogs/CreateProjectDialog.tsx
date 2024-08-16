@@ -1,12 +1,12 @@
-import React from "react";
-import Dialog from "../Dialog";
-import CreateProjectForm from "@/components/forms/CreateProjectForm";
+import React from "react"
+import Dialog from "../Dialog"
+import CreateProjectForm from "@/components/forms/CreateProjectForm"
 import {
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 const CreateProject = () => {
   return (
     <Dialog searchParam="createProject">
@@ -20,7 +20,7 @@ const CreateProject = () => {
         <CreateProjectForm />
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default CreateProject;
+export default CreateProject

@@ -1,5 +1,5 @@
-"use client";
-import React from "react";
+"use client"
+import React from "react"
 import {
   Avatar,
   Badge,
@@ -7,18 +7,18 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@nextui-org/react";
-import { Bell, Sun, LogOut, Moon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
-import useDialog from "@/lib/hooks/useDialog";
-import { useQuery } from "@tanstack/react-query";
-import inviteService from "@/services/InviteService";
+} from "@nextui-org/react"
+import { Bell, Sun, LogOut, Moon } from "lucide-react"
+import { signOut, useSession } from "next-auth/react"
+import { useTheme } from "next-themes"
+import useDialog from "@/lib/hooks/useDialog"
+import { useQuery } from "@tanstack/react-query"
+import inviteService from "@/services/InviteService"
 
 const AvatarDropdown = () => {
-  const { data: sessionData } = useSession();
-  const { theme, setTheme } = useTheme();
-  const { open: openDialog } = useDialog();
+  const { data: sessionData } = useSession()
+  const { theme, setTheme } = useTheme()
+  const { open: openDialog } = useDialog()
 
   const {
     data: invites,
@@ -27,36 +27,25 @@ const AvatarDropdown = () => {
   } = useQuery({
     queryKey: ["my-invites"],
     queryFn: async () => {
-      const { data } = await inviteService.getMyInvites();
-      console.log(invites);
-      return data;
+      const { data } = await inviteService.getMyInvites()
+      return data
     },
-  });
+  })
 
   const toggleTheme = () => {
     if (theme === "light") {
-      setTheme("dark");
-      return;
+      setTheme("dark")
+      return
     }
-    setTheme("light");
-  };
+    setTheme("light")
+  }
   return (
     <Dropdown placement="bottom-end">
-      {!!invites && invites?.length > 0 ? (
-        <Badge content={invites.length} color="primary">
-          <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="primary"
-              name={sessionData?.user.name}
-              size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-            />
-          </DropdownTrigger>
-        </Badge>
-      ) : (
+      <Badge
+        isInvisible={!invites?.length}
+        content={invites?.length}
+        color="primary"
+      >
         <DropdownTrigger>
           <Avatar
             isBordered
@@ -68,7 +57,8 @@ const AvatarDropdown = () => {
             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
           />
         </DropdownTrigger>
-      )}
+      </Badge>
+
       <DropdownMenu aria-label="Profile Actions" variant="flat">
         <DropdownItem key="profile" className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>
@@ -100,7 +90,7 @@ const AvatarDropdown = () => {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
-  );
-};
+  )
+}
 
-export default AvatarDropdown;
+export default AvatarDropdown

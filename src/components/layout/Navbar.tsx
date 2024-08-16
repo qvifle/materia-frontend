@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import {
   Navbar,
   NavbarBrand,
@@ -7,17 +7,19 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
+} from "@nextui-org/navbar"
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
-import AvatarDropdown from "../dropdowns/AvatarDropdown";
-import { useQuery } from "@tanstack/react-query";
-import { IProject } from "@/types/project.types";
-import projectService from "@/services/ProjectService";
-import sortProjects from "@/lib/utils/sortProjects";
-import { useSession } from "next-auth/react";
-import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
+import Link from "next/link"
+import { useMemo, useState } from "react"
+import AvatarDropdown from "../dropdowns/AvatarDropdown"
+import { useQuery } from "@tanstack/react-query"
+import { IProject } from "@/types/project.types"
+import projectService from "@/services/ProjectService"
+import sortProjects from "@/lib/utils/sortProjects"
+import { useSession } from "next-auth/react"
+import Emoji from "@/lib/utils/Emoji"
+import styles from "@/styles/layout.module.css"
+import { cn } from "@nextui-org/react"
 
 const menuItems = [
   "Profile",
@@ -30,11 +32,11 @@ const menuItems = [
   "Team Settings",
   "Help & Feedback",
   "Log Out",
-];
+]
 
 const CustomNavbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session } = useSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { data: session } = useSession()
 
   const {
     data: projects,
@@ -43,18 +45,24 @@ const CustomNavbar = () => {
   } = useQuery<IProject[]>({
     queryKey: ["projects"],
     queryFn: async () => {
-      const { data } = await projectService.getProjects();
-      return data;
+      const { data } = await projectService.getProjects()
+      return data
     },
-  });
+  })
 
   const sortedProjects = useMemo(
     () => sortProjects(projects, session?.user.email || ""),
     [projects, session],
-  );
+  )
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      className={cn(styles.header, "bg-gray-2")}
+      classNames={{ wrapper: "px-4" }}
+      onMenuOpenChange={setIsMenuOpen}
+      maxWidth="full"
+      isBordered
+    >
       <NavbarMenuToggle
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className="sm:hidden"
@@ -68,58 +76,63 @@ const CustomNavbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        <NavbarMenuItem key="my-projects" className="font-medium">
-          My projects
-        </NavbarMenuItem>
-
-        {!!sortedProjects?.myProjects &&
-          sortedProjects.myProjects.map((item, index) => (
-            <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                className="w-full flex items-center gap-2"
-                href={`/home/projects/${item.id}`}
-              >
-                <span>
-                  {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
-                </span>
-                <span>{item.title}</span>
-              </Link>
+        {!!sortedProjects && sortedProjects.myProjects.length > 0 && (
+          <>
+            <NavbarMenuItem key="my-projects" className="font-medium">
+              My projects
             </NavbarMenuItem>
-          ))}
-        <NavbarMenuItem className="font-medium" key="my-projects">
-          Other projects
-        </NavbarMenuItem>
-        {!!sortedProjects?.otherProjects &&
-          sortedProjects.otherProjects.map((item, index) => (
-            <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                className="w-full flex items-center gap-2"
-                href={`/home/projects/${item.id}`}
-              >
-                <span>
-                  {item.iconUrl ? unifiedToEmoji(item.iconUrl) : null}
-                </span>
-                <span>{item.title}</span>
-              </Link>
+            {sortedProjects.myProjects.map((item, index) => (
+              <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
+                <Link
+                  color={
+                    index === 2
+                      ? "primary"
+                      : index === menuItems.length - 1
+                        ? "danger"
+                        : "foreground"
+                  }
+                  className="flex w-full items-center gap-2"
+                  href={`/home/projects/${item.id}`}
+                >
+                  <span>
+                    {item.iconUrl ? <Emoji unifiedCode={item.iconUrl} /> : null}
+                  </span>
+                  <span>{item.title}</span>
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </>
+        )}
+        {!!sortedProjects && sortedProjects.otherProjects.length > 0 && (
+          <>
+            <NavbarMenuItem key="my-projects" className="font-medium">
+              Other
             </NavbarMenuItem>
-          ))}
+            {sortedProjects.otherProjects.map((item, index) => (
+              <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
+                <Link
+                  color={
+                    index === 2
+                      ? "primary"
+                      : index === menuItems.length - 1
+                        ? "danger"
+                        : "foreground"
+                  }
+                  className="flex w-full items-center gap-2"
+                  href={`/home/projects/${item.id}`}
+                >
+                  <span>
+                    {item.iconUrl ? <Emoji unifiedCode={item.iconUrl} /> : null}
+                  </span>
+                  <span>{item.title}</span>
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </>
+        )}
       </NavbarMenu>
     </Navbar>
-  );
-};
+  )
+}
 
-export default CustomNavbar;
+export default CustomNavbar

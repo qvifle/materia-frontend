@@ -1,8 +1,7 @@
-import ProjectsContainer from "@/components/containers/ProjectsContainer";
+import ProjectsModule from "@/modules/ProjectsModule"
 
 const Page = () => {
-  return <div>Page</div>;
-  // return <ProjectsContainer />;
-};
+  return <ProjectsModule />
+}
 
-export default Page;
+export default Page
