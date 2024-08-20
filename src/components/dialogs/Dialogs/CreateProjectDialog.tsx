@@ -1,5 +1,5 @@
 import React from "react"
-import Dialog from "../Dialog"
+import Modal from "../Dialog"
 import CreateProjectForm from "@/components/forms/CreateProjectForm"
 import {
   DialogContent,
@@ -7,10 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { ModalBody, ModalContent, ModalHeader } from "@nextui-org/react"
 const CreateProject = () => {
   return (
-    <Dialog searchParam="createProject">
-      <DialogContent className="sm:max-w-md">
+    <Modal searchParam="createProject">
+      <ModalContent>
+        <ModalHeader>Create new project</ModalHeader>
+       
+          <CreateProjectForm />
+      
+      </ModalContent>
+      {/* <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create new project</DialogTitle>
           <DialogDescription>
@@ -18,8 +25,8 @@ const CreateProject = () => {
           </DialogDescription>
         </DialogHeader>
         <CreateProjectForm />
-      </DialogContent>
-    </Dialog>
+      </DialogContent> */}
+    </Modal>
   )
 }
 

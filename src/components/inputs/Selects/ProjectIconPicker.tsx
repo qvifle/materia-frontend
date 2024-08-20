@@ -1,16 +1,19 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import React, { ReactNode, useEffect, useRef, useState } from "react"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 import { useTheme } from "next-themes"
 import Emoji from "@/lib/utils/Emoji"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  Popover,
+  DropdownMenu,
+  DropdownSection,
+  DropdownTrigger,
+  PopoverTrigger,
+  PopoverContent,
+} from "@nextui-org/react"
 
 const ProjectIconPicker = ({
   onChange,
@@ -27,31 +30,29 @@ const ProjectIconPicker = ({
   )
 
   return (
-    <Popover open={isOpen} onOpenChange={setOpen} modal={true}>
+    // <Popover open={isOpen} onOpenChange={setOpen} modal={true}>
+    <Popover placement="bottom">
       <PopoverTrigger>
         <Button
           className="text-[20px]"
           size="icon"
           type="button"
-          // onClick={() => setOpen((state) => !state)}
           variant="outline"
         >
           {selectedEmoji}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
-        <ScrollArea className="h-[430px] w-[352px] rounded-md">
-          <Picker
-            autoFocus
-            theme={theme}
-            data={data}
-            onEmojiSelect={(e: any) => {
-              setSelectedEmoji(e.native)
-              onChange(e.unified)
-              setOpen(false)
-            }}
-          />
-        </ScrollArea>
+        <Picker
+          autoFocus
+          theme={theme}
+          data={data}
+          onEmojiSelect={(e: any) => {
+            setSelectedEmoji(e.native)
+            onChange(e.unified)
+            setOpen(false)
+          }}
+        />
       </PopoverContent>
     </Popover>
   )

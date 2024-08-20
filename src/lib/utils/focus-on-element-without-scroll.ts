@@ -1,8 +1,13 @@
 const focusOnElementWithoutScroll = (id: string) => {
-  setInterval(() => {
-    console.log(document.getElementById(id))
-    document.getElementById(id)?.focus({ preventScroll: true })
-  }, 1)
+  const intervalId = setInterval(() => {
+    const element = document.getElementById(id)
+    if (element) {
+      element.focus({ preventScroll: true })
+    }
+    if (document.activeElement == element) {
+      clearInterval(intervalId)
+    }
+  }, 100)
 }
 
 export default focusOnElementWithoutScroll

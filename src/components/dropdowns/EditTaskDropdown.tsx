@@ -16,12 +16,14 @@ interface EditTaskDropdownProps {
   taskId: string
   onTitleEdit: () => void
   onDescriptionEdit: () => void
+  className?: string
 }
 
 const EditTaskDropdown = ({
   taskId,
   onTitleEdit,
   onDescriptionEdit,
+  className,
 }: EditTaskDropdownProps) => {
   const queryClient = useQueryClient()
 
@@ -38,7 +40,7 @@ const EditTaskDropdown = ({
 
   return (
     <Dropdown>
-      <DropdownTrigger>
+      <DropdownTrigger className={className}>
         <Button
           style={{ minWidth: "16px" }}
           className="h-4 w-4"

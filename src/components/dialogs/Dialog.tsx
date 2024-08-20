@@ -1,40 +1,38 @@
-"use client";
+"use client"
 
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import {
-  HTMLAttributes,
-  ReactNode,
-  Suspense,
-  useEffect,
-  useState,
-} from "react";
-import { Dialog } from "../ui/dialog";
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import { HTMLAttributes, ReactNode, Suspense, useEffect, useState } from "react"
+import { Modal as NModal } from "@nextui-org/react"
+import useDialog from "@/lib/hooks/useDialog"
 
 interface IModal extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
-  searchParam: string;
+  children: ReactNode
+  searchParam: string
 }
 
 const Modal: React.FC<IModal> = ({ children, searchParam, ...rest }) => {
-  const [isMounted, setMounted] = useState(false);
-  const pathName = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const isOpen = searchParams?.get(searchParam) === "y";
+  const [isMounted, setMounted] = useState(false)
+  const searchParams = useSearchParams()
+  const isOpen = searchParams?.get(searchParam) === "y"
+  const { close } = useDialog()
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
   if (!isMounted) {
-    return null;
+    return null
   }
 
   // if (!isOpen) {
   //   return null;
   // }
 
-  return <Dialog  open={isOpen}>{children}</Dialog>;
-};
+  return (
+    <NModal onOpenChange={close} backdrop="blur" isOpen={isOpen}>
+      {children}
+    </NModal>
+  )
+}
 
-export default Modal;
+export default Modal

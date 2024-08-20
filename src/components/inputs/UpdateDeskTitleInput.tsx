@@ -57,14 +57,13 @@ const UpdateDeskTitleInput: FC<UpdateDeskTitleInputProps> = ({
     },
   })
 
-  
-
   return (
     <div
       ref={ref as any}
       className="flex w-full items-center justify-between gap-2"
     >
       <input
+        autoFocus
         id="update-desk-title-input"
         className="w-full font-semibold outline-none"
         value={title}

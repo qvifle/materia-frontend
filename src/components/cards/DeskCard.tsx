@@ -10,10 +10,10 @@ import { Pencil, Trash2 } from "lucide-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import deskService from "@/services/DeskService"
 import UpdateDeskTitleInput from "../inputs/UpdateDeskTitleInput"
-import React, { FC, HTMLAttributes, useState } from "react"
+import React, { FC, HTMLAttributes, useEffect, useState } from "react"
 import { IDesk } from "@/types/desk.types"
 import Ellipsis from "../ui/icons/Ellipsis"
-import preventScrollOnFocusByElementId from "@/lib/utils/focus-on-element-without-scroll"
+import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
 
 interface DeskCardProps {
   desk: IDesk
@@ -43,15 +43,15 @@ const DeskCard: FC<DeskCardProps> = ({ desk }) => {
             title={title}
           />
         ) : (
-          <span
+          <button
             onClick={() => {
-              preventScrollOnFocusByElementId("update-desk-title-input")
+              focusOnElementWithoutScroll("update-desk-title-input")
               setTitleEdit(true)
             }}
             className="cursor-pointer font-semibold"
           >
             {title}
-          </span>
+          </button>
         )}
         <Dropdown>
           <DropdownTrigger>
@@ -63,7 +63,12 @@ const DeskCard: FC<DeskCardProps> = ({ desk }) => {
             <DropdownItem
               key="edit-title"
               startContent={<Pencil size={14} />}
-              onClick={() => setTitleEdit(true)}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                focusOnElementWithoutScroll("update-desk-title-input")
+                setTitleEdit(true)
+              }}
             >
               Title
             </DropdownItem>

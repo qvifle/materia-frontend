@@ -1,4 +1,4 @@
-// import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+"use client"
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs"
 import Navbar from "@/components/layout/Navbar"
 import Sidebar from "@/components/layout/Sidebar"

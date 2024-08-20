@@ -1,22 +1,9 @@
 "use client"
-import React, { HTMLAttributes, useRef, useState } from "react"
-import {
-  Card as ShadcnCard,
-  CardDescription,
-  CardHeader as ShadcnCardheader,
-  CardTitle,
-} from "../ui/card"
-import capitalize from "@/lib/utils/capitalize"
+import React, { HTMLAttributes, useState } from "react"
 import TaskStatusIndicator from "../indicators/TaskStatusIndicator"
-import { CheckCircle, Pencil } from "lucide-react/"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import ChangeStatusButtonsGroup from "../buttons/ChangeStatusButtonsGroup"
-import EditTaskButtonGroup from "../buttons/EditTaskButtonGroup"
-import ChangeTaskTitleInput from "../inputs/ChangeTaskTitleInput"
 import ChangeTaskDescriptionInput from "../inputs/ChangeTaskDescriptionInput"
 import { ITask } from "@/types/task.types"
-import { cn } from "@/lib/utils"
-import { Button, Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react"
+import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import UpdateTaskTitleInput from "../inputs/UpdateTaskTitleInput"
 import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
 import EditTaskDropdown from "../dropdowns/EditTaskDropdown"
@@ -36,7 +23,6 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
   const [description, setDescription] = useState(task.description ?? "")
 
   const onSingleClick = (cb: () => void) => {
-    console.log(clickTimeout)
     if (clickTimeout) {
       clearTimeout(clickTimeout)
       setClickTimeout(null) // Reset the timeout
@@ -51,20 +37,20 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
   }
 
   const handleEditTitleClick = () => {
-    focusOnElementWithoutScroll("update-task-title-input")
     setTitleEdit(true)
+    focusOnElementWithoutScroll("update-task-title-input")
   }
 
   const handleEditDescriptionClick = () => {
-    focusOnElementWithoutScroll("task-description-edit")
     setDescriptionEdit(true)
+    focusOnElementWithoutScroll("task-description-edit")
   }
 
   return (
     <Card
       style={{ touchAction: "none" }}
       isBlurred
-      className="w-full bg-gray-4 px-4 py-3 text-base md:max-w-[350px]"
+      className="group w-full bg-gray-4 px-4 py-3 text-base md:max-w-[350px]"
     >
       <CardHeader className="w-full p-0 text-gray-12">
         <div className="flex w-full items-center justify-between gap-2">
@@ -88,6 +74,7 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
             )}
           </div>
           <EditTaskDropdown
+            className="duration-100 md:opacity-0 md:group-hover:opacity-100"
             onTitleEdit={handleEditTitleClick}
             onDescriptionEdit={handleEditDescriptionClick}
             taskId={task.id}

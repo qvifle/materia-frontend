@@ -11,11 +11,8 @@ import { useSession } from "next-auth/react"
 import Emoji from "@/lib/utils/Emoji"
 import useDialog from "@/lib/hooks/useDialog"
 import SidebarButton from "../buttons/SidebarButton"
-import { useMediaQuery } from "@uidotdev/usehooks"
 
 const Sidebar = () => {
-  const isMobile = useMediaQuery("(max-width: 639px)")
-  const isDesktop = useMediaQuery("only screen and (min-width : 1024px)")
   const { open: openDialog } = useDialog()
   const [isMyProjects, setMyProjects] = useState(true)
   const [isOtherProjects, setOtherProjects] = useState(true)
@@ -45,8 +42,11 @@ const Sidebar = () => {
       )}
     >
       <Link href="/home">
-        <span className="h-[48px] w-full items-center justify-center text-xl font-[800] lg:justify-start lg:text-3xl">
-          {isDesktop ? "Matēria" : "Mā"}
+        <span className="h-[48px] w-full items-center justify-center text-xl font-[800] lg:hidden lg:justify-start lg:text-3xl">
+          Mā
+        </span>
+        <span className="hidden h-[48px] w-full items-center justify-center text-xl font-[800] lg:block lg:justify-start lg:text-3xl">
+          Matēria
         </span>
       </Link>
       <SidebarButton
