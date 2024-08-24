@@ -7,13 +7,13 @@ import InviteProjectDialog from "./Dialogs/InviteProjectDialog"
 
 const DialogsContainer = () => {
   return (
-    <>
+    <Suspense>
       <CreateProject />
-      {/* <EditProjectDialog />
+      <EditProjectDialog />
       <ConfirmDeleteProjectDialog />
       <NotificationsDialog />
-      <InviteProjectDialog /> */}
-    </>
+      <InviteProjectDialog />
+    </Suspense>
   )
 }
 

@@ -2,9 +2,8 @@
 import React, { useState } from "react"
 import { Plus, Check } from "lucide-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Button } from "../ui/button"
 import deskService from "@/services/DeskService"
-import { Card, CardBody } from "@nextui-org/react"
+import { Button, Card, CardBody } from "@nextui-org/react"
 import { useClickAway } from "@uidotdev/usehooks"
 
 const CreateDeskCard = ({ projectId }: { projectId: string }) => {
@@ -32,7 +31,8 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   })
 
   const createNewDesk = () => {
-    if (value === "") {
+    console.log(value)
+    if (!value) {
       reset()
       return
     }
@@ -55,7 +55,7 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
           className="flex w-full items-center justify-between gap-2"
         >
           <input
-            className="w-full font-semibold outline-none"
+            className="w-full bg-transparent font-semibold outline-none"
             value={value}
             autoFocus
             onChange={(e) => setValue(e.target.value)}
@@ -71,7 +71,8 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
             className="h-6 w-6 min-w-6 p-0 outline-none"
             size="sm"
             color="primary"
-            onClick={() => createDesk()}
+            onClick={() => createNewDesk()}
+            isIconOnly
           >
             <Check size={14} />
           </Button>

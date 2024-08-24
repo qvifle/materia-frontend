@@ -1,32 +1,27 @@
 "use client"
 
-import React, { useEffect, useOptimistic, useState } from "react"
+import React, { useEffect, useState } from "react"
 import deskService from "@/services/DeskService"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import DeskCard from "../cards/DeskWIdget"
-import getIndexOfElementById from "@/lib/utils/getIndexOfElementById"
 import taskService from "@/services/TaskService"
 import { arrayMove } from "@/lib/utils/arrayMove"
-import insert from "@/lib/utils/insert"
 import { IDesk } from "@/types/desk.types"
+import TaskCard from "../cards/TaskCard"
+import { ITask } from "@/types/task.types"
+import DeskWidget from "@/widgets/DeskWIdget"
 import {
   closestCenter,
-  closestCorners,
   defaultDropAnimation,
   DndContext,
   DragOverEvent,
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
-  DropAnimation,
   useSensors,
   useSensor,
-  PointerSensor,
   MouseSensor,
   TouchSensor,
 } from "@dnd-kit/core"
-import TaskCard from "../cards/TaskCard"
-import { ITask, TaskStatus } from "@/types/task.types"
 
 interface IDesksContainer {
   projectId: string
@@ -237,10 +232,6 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     }, 100)
   }, [isOvered])
 
-  const dropAnimation: DropAnimation = {
-    ...defaultDropAnimation,
-  }
-
   if (isLoading) {
     return "loading"
   }
@@ -259,10 +250,10 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
         collisionDetection={closestCenter}
       >
         {reorderDesks.map((desk, key) => (
-          <DeskCard key={desk.id} desk={desk} />
+          <DeskWidget key={desk.id} desk={desk} />
         ))}
 
-        <DragOverlay dropAnimation={dropAnimation}>
+        <DragOverlay dropAnimation={defaultDropAnimation}>
           {activeTask && <TaskCard task={activeTask} />}
         </DragOverlay>
       </DndContext>

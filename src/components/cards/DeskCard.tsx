@@ -1,3 +1,4 @@
+"use client"
 import {
   Card,
   CardBody,
@@ -12,7 +13,7 @@ import deskService from "@/services/DeskService"
 import UpdateDeskTitleInput from "../inputs/UpdateDeskTitleInput"
 import React, { FC, HTMLAttributes, useEffect, useState } from "react"
 import { IDesk } from "@/types/desk.types"
-import Ellipsis from "../ui/icons/Ellipsis"
+import Ellipsis from "../icons/Ellipsis"
 import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
 
 interface DeskCardProps {

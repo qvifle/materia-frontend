@@ -65,7 +65,7 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
               />
             ) : (
               <button
-                className="max-w-full text-balance text-start leading-[18px]"
+                className="max-w-full text-balance text-start ileading-[18px]"
                 onTouchEnd={() => onSingleClick(() => handleEditTitleClick())}
                 onDoubleClick={handleEditTitleClick}
               >

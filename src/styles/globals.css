@@ -119,10 +119,6 @@
     --input: 220 13% 91%;
     --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
-    --red: #ef4444;
-    --blue: #3b82f6;
-    --yellow: #eab308;
-    --green: #22c55e;
   }
 
   .dark {
@@ -147,36 +143,11 @@
     --border: 215 10.9% 13.9%;
     --input: 215 10.9% 10.9%;
     --ring: 263.4 70% 50.4%;
-    --red: #ef4444;
-    --blue: #3b82f6;
-    --yellow: #eab308;
-    --green: #22c55e;
   }
 }
 
 * {
   @apply text-gray-12;
-}
-
-@keyframes taskApperaAnimation {
-  0% {
-    filter: drop-shadow(0 20px 13px rgba(255, 255, 255, 0))
-      drop-shadow(0 8px 5px rgba(0, 0, 0, 0));
-  }
-  100% {
-    filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03))
-      drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
-    border: hsl(var(--border)) 1px solid;
-  }
-}
-
-/* Apply animation to the element */
-.taskAppear {
-  animation: taskApperaAnimation 0.1s forwards ease-in;
-}
-
-.light-theme-only {
-  color-scheme: "root";
 }
 
 .outline-no:focus {

@@ -1,26 +1,27 @@
-"use client";
-import React, { ReactNode } from "react";
-import { ThemeProvider } from "./ThemeProvider";
-import { SessionProvider } from "next-auth/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
+"use client"
+import React, { ReactNode } from "react"
+import { ThemeProvider } from "./ThemeProvider"
+import { SessionProvider } from "next-auth/react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { usePathname } from "next/navigation"
+import { NextUIProvider } from "@nextui-org/react"
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 const Providers = ({ children }: { children: ReactNode }) => {
-  const pathName = usePathname().split("/");
-  const isLight = pathName.includes("login");
-  const isDark = pathName.includes("registration");
+  const pathName = usePathname().split("/")
+  const isLight = pathName.includes("login")
+  const isDark = pathName.includes("registration")
 
   const getTheme = () => {
     if (isLight) {
-      return "light";
+      return "light"
     } else if (isDark) {
-      return "dark";
+      return "dark"
     } else {
-      return undefined;
+      return undefined
     }
-  };
+  }
 
   return (
     <SessionProvider>
@@ -34,7 +35,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
         </ThemeProvider>
       </QueryClientProvider>
     </SessionProvider>
-  );
-};
+  )
+}
 
-export default Providers;
+export default Providers

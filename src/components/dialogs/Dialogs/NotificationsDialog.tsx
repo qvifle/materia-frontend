@@ -1,24 +1,17 @@
-import React from "react";
-import Dialog from "../Dialog";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import MyInvitesContainer from "@/components/containers/MyInvitesContainer";
+import React from "react"
+import Modal from "../Dialog"
+import MyInvitesContainer from "@/components/containers/NotificationsContainer"
+import { ModalContent, ModalHeader } from "@nextui-org/react"
 
 const NotificationsDialog = () => {
   return (
-    <Dialog searchParam="notifications" className="">
-      <DialogContent className="">
-        <DialogHeader>
-          <DialogTitle>Notification</DialogTitle>
-        </DialogHeader>
+    <Modal searchParam="notifications" className="">
+      <ModalContent>
+        <ModalHeader>Notifications</ModalHeader>
         <MyInvitesContainer />
-      </DialogContent>
-    </Dialog>
-  );
-};
+      </ModalContent>
+    </Modal>
+  )
+}
 
-export default NotificationsDialog;
+export default NotificationsDialog

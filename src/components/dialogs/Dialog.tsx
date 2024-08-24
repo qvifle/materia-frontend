@@ -1,6 +1,6 @@
 "use client"
 
-import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { HTMLAttributes, ReactNode, Suspense, useEffect, useState } from "react"
 import { Modal as NModal } from "@nextui-org/react"
 import useDialog from "@/lib/hooks/useDialog"

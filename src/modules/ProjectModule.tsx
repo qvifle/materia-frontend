@@ -19,11 +19,11 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-hidden">
-      <div className="px-4 pt-4">
+      <div className="mb-6 mt-4 px-4">
         {!isLoading && !!data ? (
           <>
-            <div className="group flex w-full items-center justify-between md:w-min">
-              <h1 className="flex scroll-m-20 gap-1 text-4xl font-bold tracking-tight lg:text-5xl">
+            <div className="group flex w-full items-center justify-between md:w-max">
+              <h1 className="flex gap-1 text-4xl font-bold tracking-tight lg:text-5xl">
                 <span className="ml-[-6px] flex h-[48px] w-[48px] justify-center text-center">
                   <Emoji unifiedCode={data.iconUrl ?? ""} />
                 </span>
@@ -33,17 +33,17 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
               <ProjectSettingsDropdown className="ml-2" />
             </div>
 
-            <p className="mb-4 leading-7 text-muted-foreground [&:not(:first-child)]:mt-2">
-              {data.description}
-            </p>
+            {!!data.description && (
+              <p className="text-gray-11 mt-2">{data.description}</p>
+            )}
           </>
         ) : (
-          <div className="mb-[50px] flex items-center gap-2">
-            <Skeleton width="40px">
-              <div className="h-[40px] rounded-lg"></div>
+          <div className="flex items-center gap-2">
+            <Skeleton width="50px">
+              <div className="h-[50px] rounded-lg"></div>
             </Skeleton>
-            <Skeleton width="70px">
-              <div className="h-[40px] rounded-lg"></div>
+            <Skeleton width="150px">
+              <div className="h-[50px] rounded-lg"></div>
             </Skeleton>
           </div>
         )}

@@ -1,27 +1,18 @@
-import React from "react";
-import Dialog from "../Dialog";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import EditProjectForm from "@/components/forms/EditProjectForm";
+import EditProjectForm from "@/components/forms/EditProjectForm"
+
+import React from "react"
+import Modal from "../Dialog"
+import { ModalContent, ModalHeader } from "@nextui-org/react"
+
 const EditProjectDialog = () => {
-
   return (
-    <Dialog searchParam="edit-project">
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Edit project</DialogTitle>
-          <DialogDescription>
-            You can change any field of this project that you want
-          </DialogDescription>
-        </DialogHeader>
+    <Modal searchParam="edit-project">
+      <ModalContent>
+        <ModalHeader>Edit project</ModalHeader>
         <EditProjectForm />
-      </DialogContent>
-    </Dialog>
-  );
-};
+      </ModalContent>
+    </Modal>
+  )
+}
 
-export default EditProjectDialog;
+export default EditProjectDialog

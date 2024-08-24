@@ -46,7 +46,9 @@ class ProjectService {
 
   async removeMembers(projectId: string, memberId: string) {
     return api.delete(`${this.baseUrl}/${projectId}/remove`, {
-      data: memberId,
+      data: {
+        memberId,
+      },
     })
   }
 }

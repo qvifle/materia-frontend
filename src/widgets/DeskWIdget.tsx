@@ -1,11 +1,9 @@
 "use client"
 import React, { HTMLAttributes } from "react"
-import AddTaskButton from "../buttons/AddTaskButton"
-import Tasks from "../containers/TasksContainer"
 import { IDesk } from "@/types/desk.types"
-import { ITask } from "@/types/task.types"
-import DeskCard from "./DeskCard"
-import { useDroppable } from "@dnd-kit/core"
+import DeskCard from "@/components/cards/DeskCard"
+import TasksContainer from "@/components/containers/TasksContainer"
+import AddTaskButton from "@/components/buttons/AddTaskButton"
 
 interface DeskWidgetProps extends HTMLAttributes<HTMLDivElement> {
   desk: IDesk
@@ -20,7 +18,7 @@ const DeskWidget: React.FC<DeskWidgetProps> = ({ desk, ...rest }) => {
       <DeskCard desk={desk} />
 
       <div className="flex w-full flex-col gap-1">
-        <Tasks desk={desk} tasks={desk.tasks} />
+        <TasksContainer desk={desk} tasks={desk.tasks} />
         <AddTaskButton desk={desk} />
       </div>
     </div>

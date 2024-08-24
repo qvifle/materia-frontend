@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss"
 const { nextui } = require("@nextui-org/react")
 const config = {
-  // darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -24,6 +23,13 @@ const config = {
         sans: ["var(--font-sans)"],
       },
       colors: {
+        background: "var(--gray-1)",
+        foreground: "var(--gray-12)",
+        divider: "var(--black-a1)",
+        content1: "var(--gray-1)",
+        content2: "var(--gray-3)",
+        content3: "var(--gray-5)",
+        content4: "var(--gray-6)",
         primary: {
           1: "var(--primary-1)",
           2: "var(--primary-2)",
@@ -40,13 +46,6 @@ const config = {
           DEFAULT: "var(--primary-9)",
           foreground: "#FCFCFD",
         },
-        background: "var(--gray-1)",
-        foreground: "var(--gray-12)",
-        divider: "var(--black-a1)",
-        content1: "var(--gray-1)",
-        content2: "var(--gray-3)",
-        content3: "var(--gray-5)",
-        content4: "var(--gray-6)",
         default: {
           50: "var(--gray-1)",
           100: "var(--gray-3)",
@@ -71,7 +70,7 @@ const config = {
           800: "var(--error-11)",
           900: "var(--error-12)",
           DEFAULT: "var(--error-9)",
-          foreground: "var(--error-9)",
+          foreground: "var(--gray-12)",
         },
         gray: {
           1: "var(--gray-1)",
@@ -87,63 +86,6 @@ const config = {
           11: "var(--gray-11)",
           12: "var(--gray-12)",
         },
-
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background15: "var(--background-15)",
-        background_hover: "hsl(var(--background-hover))",
-
-        // background: "hsl(var(--background))",
-        // foreground: "hsl(var(--foreground))",
-        // primary: {
-        //   DEFAULT: "#FF0000",
-        //   foreground: "#ffffff",
-        // },
-
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

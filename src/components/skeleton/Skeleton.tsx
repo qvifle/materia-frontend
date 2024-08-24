@@ -10,10 +10,16 @@ interface SkeletonProps extends NSkeletonProps {
   width?: string
 }
 
-const Skeleton = ({ width, children, className, ...rest }: SkeletonProps) => {
+const Skeleton = ({
+  width,
+  children,
+  className,
+  style,
+  ...rest
+}: SkeletonProps) => {
   return (
     <NSkeleton
-      style={{ width: width }}
+      style={{ width: width, ...style }}
       className={cn(
         "rounded-lg !bg-gray-4 duration-1000 before:border-gray-4",
         otherStyles.slowAnimation,

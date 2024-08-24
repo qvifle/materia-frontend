@@ -5,9 +5,10 @@ import {
   ButtonProps,
   InternalForwardRefRenderFunction,
 } from "@nextui-org/react"
+import Link from "next/link"
 import React, { useEffect, useState } from "react"
 
-interface SidebarButtonProps extends ButtonProps {
+export interface SidebarButtonProps extends ButtonProps {
   icon: React.ReactNode
 }
 

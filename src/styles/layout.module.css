@@ -8,8 +8,7 @@
 }
 
 .sidebar {
-  @apply h-full w-full sm:col-span-1 sm:row-start-1 sm:row-end-3;
-  /* px-3 pt-3 */
+  @apply /* */ hidden h-full w-full flex-col items-center border-r border-gray-4 px-4 pt-4 sm:col-span-1 sm:row-start-1 sm:row-end-3 sm:flex lg:items-start;
 }
 
 .main {

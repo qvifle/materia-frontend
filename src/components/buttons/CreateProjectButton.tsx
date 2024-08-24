@@ -14,7 +14,7 @@ const CreateProjectButton = () => {
       onClick={(e) => {
         e.stopPropagation()
         e.preventDefault()
-        openDialog("createProject")
+        openDialog("create-project")
       }}
       isIconOnly
     >

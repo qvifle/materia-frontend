@@ -21,19 +21,6 @@ import Emoji from "@/lib/utils/Emoji"
 import styles from "@/styles/layout.module.css"
 import { cn } from "@nextui-org/react"
 
-const menuItems = [
-  "Profile",
-  "Dashboard",
-  "Activity",
-  "Analytics",
-  "System",
-  "Deployments",
-  "My Settings",
-  "Team Settings",
-  "Help & Feedback",
-  "Log Out",
-]
-
 const CustomNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { data: session } = useSession()
@@ -84,13 +71,6 @@ const CustomNavbar = () => {
             {sortedProjects.myProjects.map((item, index) => (
               <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
                 <Link
-                  color={
-                    index === 2
-                      ? "primary"
-                      : index === menuItems.length - 1
-                        ? "danger"
-                        : "foreground"
-                  }
                   className="flex w-full items-center gap-2"
                   href={`/home/projects/${item.id}`}
                 >
@@ -106,18 +86,11 @@ const CustomNavbar = () => {
         {!!sortedProjects && sortedProjects.otherProjects.length > 0 && (
           <>
             <NavbarMenuItem key="my-projects" className="font-medium">
-              Other
+              Collaborates
             </NavbarMenuItem>
             {sortedProjects.otherProjects.map((item, index) => (
               <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
                 <Link
-                  color={
-                    index === 2
-                      ? "primary"
-                      : index === menuItems.length - 1
-                        ? "danger"
-                        : "foreground"
-                  }
                   className="flex w-full items-center gap-2"
                   href={`/home/projects/${item.id}`}
                 >

@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Check } from "lucide-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Textarea } from "../ui/textarea"
 import taskService from "@/services/TaskService"
 import getHeightOfChangeDescriptionInput from "@/lib/utils/getHeightOfChangeDescriptionInput"
 import { ITask } from "@/types/task.types"
@@ -74,27 +73,6 @@ const ChangeTaskDescriptionInput = ({
           }
         }}
       />
-      {/* <Textarea
-        style={{ height: getHeightOfChangeDescriptionInput(description) }}
-        className="scroll-transparent bg-transparent custom-scroll z-[30] min-h-[30px] w-full rounded-none border-none p-0 pr-9 !ring-transparent"
-        onChange={(e) => {
-          if (e.target.value == "") {
-            return
-          }
-          setDescription(e.target.value)
-        }}
-        rows={0}
-        ref={textAreaRef}
-        value={description}
-        autoFocus
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            changeDescription()
-          } else if (e.key === "Escape") {
-            toggle(false)
-          }
-        }}
-      /> */}
       <Button
         className="h-6 w-6 min-w-6 p-0 outline-none"
         size="sm"

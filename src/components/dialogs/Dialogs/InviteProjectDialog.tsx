@@ -1,28 +1,17 @@
-"use client";
-import React from "react";
-import Dialog from "../Dialog";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import MembersTabs from "@/components/tabs/MembersTabs";
+"use client"
+import React from "react"
+import Modal from "../Dialog"
+import MembersTabs from "@/components/tabs/MembersTabs"
+import { ModalContent } from "@nextui-org/react"
 
 const InviteProjectDialog = () => {
   return (
-    <Dialog searchParam="invite-project">
-      <DialogContent>
-        {/* <DialogHeader>
-          <DialogTitle>Invite</DialogTitle>
-          <DialogDescription>
-            Here you can manage project &apos;s members and invite new users.
-          </DialogDescription>
-        </DialogHeader> */}
+    <Modal searchParam="invite-project">
+      <ModalContent>
         <MembersTabs />
-      </DialogContent>
-    </Dialog>
-  );
-};
+      </ModalContent>
+    </Modal>
+  )
+}
 
-export default InviteProjectDialog;
+export default InviteProjectDialog
