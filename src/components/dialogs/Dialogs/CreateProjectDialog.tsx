@@ -1,26 +1,16 @@
-import React from "react";
-import Dialog from "../Dialog";
-import CreateProjectForm from "@/components/forms/CreateProjectForm";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import React from "react"
+import Modal from "../Dialog"
+import CreateProjectForm from "@/components/forms/CreateProjectForm"
+import { ModalContent, ModalHeader } from "@nextui-org/react"
 const CreateProject = () => {
   return (
-    <Dialog searchParam="createProject">
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Create new project</DialogTitle>
-          <DialogDescription>
-            {`Let's start new project here`}
-          </DialogDescription>
-        </DialogHeader>
+    <Modal searchParam="create-project">
+      <ModalContent>
+        <ModalHeader>Create new project</ModalHeader>
         <CreateProjectForm />
-      </DialogContent>
-    </Dialog>
-  );
-};
+      </ModalContent>
+    </Modal>
+  )
+}
 
-export default CreateProject;
+export default CreateProject

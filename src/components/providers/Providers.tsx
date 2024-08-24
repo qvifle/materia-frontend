@@ -1,26 +1,41 @@
-"use client";
-import React, { ReactNode } from "react";
-import { ThemeProvider } from "./ThemeProvider";
-import { SessionProvider } from "next-auth/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ReorderTasksContextProvider from "@/context/ReorderTasksContextProvider";
+"use client"
+import React, { ReactNode } from "react"
+import { ThemeProvider } from "./ThemeProvider"
+import { SessionProvider } from "next-auth/react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { usePathname } from "next/navigation"
+import { NextUIProvider } from "@nextui-org/react"
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 const Providers = ({ children }: { children: ReactNode }) => {
-  return (
-    <>
-      <SessionProvider>
-        <QueryClientProvider client={queryClient}>
-          <ReorderTasksContextProvider>
-            <ThemeProvider attribute="class" defaultTheme="system">
-              {children}
-            </ThemeProvider>
-          </ReorderTasksContextProvider>
-        </QueryClientProvider>
-      </SessionProvider>
-    </>
-  );
-};
+  const pathName = usePathname().split("/")
+  const isLight = pathName.includes("login")
+  const isDark = pathName.includes("registration")
 
-export default Providers;
+  const getTheme = () => {
+    if (isLight) {
+      return "light"
+    } else if (isDark) {
+      return "dark"
+    } else {
+      return undefined
+    }
+  }
+
+  return (
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          attribute="class"
+          forcedTheme={getTheme()}
+          defaultTheme="light"
+        >
+          {children}
+        </ThemeProvider>
+      </QueryClientProvider>
+    </SessionProvider>
+  )
+}
+
+export default Providers

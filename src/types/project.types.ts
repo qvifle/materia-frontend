@@ -6,8 +6,10 @@ export interface IProject {
   description?: string | null;
   iconUrl: string | null;
   createdAt: Date;
-  userId: string;
   Desk?: IDesk[];
+  creator?: {
+    email: string;
+  };
 }
 
 export interface IProjectFormFields

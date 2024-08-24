@@ -1,78 +1,90 @@
-import React, { HTMLAttributes, useState } from "react";
-import { Card, CardContent, CardTitle } from "../ui/card";
-import AddTaskButton from "../buttons/AddTaskButton";
-import Tasks from "../containers/TasksContainer";
-import Ellipsis from "../ui/icons/Ellipsis";
-import { Button } from "../ui/button";
-import EditDeskButtonsGroup from "../buttons/EditDeskButtonsGroup";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import EditDeskCardInput from "../inputs/EditDeskCardInput";
-import { cn } from "@/lib/utils";
-import { IDesk } from "@/types/desk.types";
-import { ITask } from "@/types/task.types";
-import { Droppable } from "@hello-pangea/dnd";
+"use client"
+import {
+  Card,
+  CardBody,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react"
+import { Pencil, Trash2 } from "lucide-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import deskService from "@/services/DeskService"
+import UpdateDeskTitleInput from "../inputs/UpdateDeskTitleInput"
+import React, { FC, HTMLAttributes, useEffect, useState } from "react"
+import { IDesk } from "@/types/desk.types"
+import Ellipsis from "../icons/Ellipsis"
+import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
 
-interface IDeskCard extends HTMLAttributes<HTMLDivElement> {
-  desk: IDesk;
-  tasks: ITask[];
+interface DeskCardProps {
+  desk: IDesk
 }
 
-const DeskCard: React.FC<IDeskCard> = ({ desk, tasks, ...rest }) => {
-  const [isTitleEdit, setTitleEdit] = useState(false);
+const DeskCard: FC<DeskCardProps> = ({ desk }) => {
+  const [isTitleEdit, setTitleEdit] = useState(false)
+  const [title, setTitle] = useState(desk.title || "")
+
+  const queryClient = useQueryClient()
+  const { mutate: deleteDesk } = useMutation({
+    mutationKey: ["desk", desk.id],
+    mutationFn: () => deskService.deleteDeskById(desk.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["desks"] })
+    },
+  })
 
   return (
-    <div className="flex flex-col" {...rest}>
-      <Card className={cn("  w-[350px] mb-2 duration-100 group")}>
-        <div className="w-full min-h-[32px] flex justify-end px-2 py-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                className="h-4 w-4 rounded-[3px] group-hover:opacity-100  opacity-0 duration-200"
-                size="icon"
-              >
-                <Ellipsis className="" color="hsl(var(--muted-foreground))" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent side="right" className="w-min p-1">
-              <EditDeskButtonsGroup
-                deskId={desk.id}
-                setTitleEdit={setTitleEdit}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        <CardContent>
-          <div className={cn("flex justify-between items-center ")}>
-            <CardTitle>
-              {isTitleEdit ? (
-                <EditDeskCardInput toggle={setTitleEdit} desk={desk} />
-              ) : (
-                desk.title
-              )}{" "}
-            </CardTitle>
-            <div>
-              <span className="text-muted-foreground">{tasks.length}</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      <Droppable droppableId={desk.id}>
-        {(provider) => (
-          <div
-            ref={provider.innerRef}
-            {...provider.droppableProps}
-            className="w-full"
+    <Card className="relative mb-1 h-[64px] px-4 py-5">
+      <CardBody className="flex w-full flex-row items-center justify-between p-0">
+        {isTitleEdit ? (
+          <UpdateDeskTitleInput
+            setTitle={setTitle}
+            setTitleEdit={setTitleEdit}
+            desk={desk}
+            title={title}
+          />
+        ) : (
+          <button
+            onClick={() => {
+              focusOnElementWithoutScroll("update-desk-title-input")
+              setTitleEdit(true)
+            }}
+            className="cursor-pointer font-semibold"
           >
-            <Tasks desk={desk} tasks={tasks} />
-            {provider.placeholder}
-            <AddTaskButton desk={desk} />
-          </div>
+            {title}
+          </button>
         )}
-      </Droppable>
-    </div>
-  );
-};
+        <Dropdown>
+          <DropdownTrigger>
+            <button className="outline-none">
+              <Ellipsis color="var(--gray-11)" className="rotate-90" />
+            </button>
+          </DropdownTrigger>
+          <DropdownMenu>
+            <DropdownItem
+              key="edit-title"
+              startContent={<Pencil size={14} />}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                focusOnElementWithoutScroll("update-desk-title-input")
+                setTitleEdit(true)
+              }}
+            >
+              Title
+            </DropdownItem>
+            <DropdownItem
+              key="delete-desk"
+              startContent={<Trash2 size={14} color="var(--error-9)" />}
+              onClick={() => deleteDesk()}
+            >
+              <span className="text-danger-600">Delete</span>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </CardBody>
+    </Card>
+  )
+}
 
-export default DeskCard;
+export default DeskCard

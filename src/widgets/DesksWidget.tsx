@@ -1,21 +1,15 @@
-"use client";
-import DeskCard from "@/components/cards/DeskCard";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import CreateDeskCard from "@/components/cards/CreateDeskCard";
-import deskService from "@/services/DeskService";
-import { IDesk } from "@/types/desk.types";
-import DesksContainer from "@/components/containers/DesksContainer";
+"use client"
+import React from "react"
+import CreateDeskCard from "@/components/cards/CreateDeskCard"
+import DesksContainer from "@/components/containers/DesksContainer"
 
 const DesksWidget = ({ projectId }: { projectId: string }) => {
-  
-
   return (
-    <div className=" flex gap-4 min-h-[74px] w-max ">
-      <DesksContainer projectId={projectId}/>
+    <div className="max-w-screen flex h-full flex-grow gap-1 overflow-auto px-4">
+      <DesksContainer projectId={projectId} />
       <CreateDeskCard projectId={projectId} />
     </div>
-  );
-};
+  )
+}
 
-export default DesksWidget;
+export default DesksWidget

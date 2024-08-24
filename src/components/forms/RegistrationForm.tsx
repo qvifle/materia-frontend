@@ -1,45 +1,122 @@
-import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import CredentialsLoginForm from "./CredentialsLoginForm";
-import { Separator } from "../ui/separator";
-import CredentialsRegistrationForm from "./CredentialsRegistrationForm";
+"use client";
+import requiredFormFieldMessage from "@/lib/constants/requiredFormFieldMessage";
+import authService from "@/services/AuthService";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@nextui-org/react";
+import { signIn } from "next-auth/react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import PasswordInput from "../inputs/PasswordInput";
+
+const fromSchema = z
+  .object({
+    name: z.string().min(2),
+    email: z
+      .string()
+      .email("This is not valid Email")
+      .min(1, requiredFormFieldMessage),
+    password: z.string().min(8, "This field must have at least 8 symbols"),
+    confirmPassword: z.string().min(8),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 const RegistrationForm = () => {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<z.infer<typeof fromSchema>>({
+    resolver: zodResolver(fromSchema),
+  });
+
+  const onSubmit = async (values: z.infer<typeof fromSchema>) => {
+    const { confirmPassword, ...fields } = values;
+    const { status } = await authService.signUp(fields);
+
+    if (status != 201) {
+      return;
+    }
+
+    signIn("credentials", {
+      email: fields.email,
+      password: fields.password,
+      callbackUrl: "/home",
+    });
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="max-[588px]:mb-4 mb-2">Registration</CardTitle>
-        <CardDescription className="leading-[16px]">
-          <span>
-            Create new account for continue. If you already have account -
-          </span>
-          <Button variant="link" asChild className="p-0 ml-1">
-            <Link href="/login">Sign in</Link>
-          </Button>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <CredentialsRegistrationForm />
-        <div className="grid grid-cols-[1fr,1fr,1fr] grid-rows-1 items-center gap-2 mt-4">
-          <Separator />
-          <p className="w-max leading-7 text-muted-foreground">
-            or continue with
-          </p>
-          <Separator />
-        </div>
-        <Button variant="outline" className="w-full mt-1">
-          Google
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        control={control}
+        name="name"
+        render={({ field }) => (
+          <Input
+            className="mb-2"
+            size="lg"
+            type="text"
+            label="Name"
+            placeholder="Enter your Name"
+            isInvalid={!!errors.name}
+            errorMessage={errors.name?.message}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="email"
+        render={({ field }) => (
+          <Input
+            className="mb-2"
+            size="lg"
+            type="email"
+            label="Email"
+            placeholder="Enter your Email"
+            isInvalid={!!errors.email}
+            errorMessage={errors.email?.message}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="password"
+        render={({ field }) => (
+          <PasswordInput
+            className="mb-2"
+            size="lg"
+            label="Password"
+            placeholder="Enter your Password"
+            isInvalid={!!errors.password}
+            errorMessage={errors.password?.message}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="confirmPassword"
+        render={({ field }) => (
+          <PasswordInput
+            className="mb-2"
+            size="lg"
+            label="Confirm password"
+            placeholder="Confirm your password"
+            isInvalid={!!errors.confirmPassword}
+            errorMessage={errors.confirmPassword?.message}
+            {...field}
+          />
+        )}
+      />
+      <div className="w-full flex justify-end">
+        <Button type="submit" size="lg" color="primary">
+          Sign up
         </Button>
-      </CardContent>
-    </Card>
+      </div>
+    </form>
   );
 };
 

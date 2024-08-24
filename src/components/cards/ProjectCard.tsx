@@ -1,85 +1,45 @@
-"use client";
-import unifiedToEmoji from "@/lib/utils/unifiedToEmoji";
-import { Trash, User } from "lucide-react";
-import Link from "next/link";
-import React, { HTMLAttributes } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { IProject } from "@/types/project.types";
-import truncate from "@/lib/utils/truncate";
+import { IProject } from "@/types/project.types"
+import React from "react"
 import {
+  Avatar,
   Card,
-  CardContent,
-  CardDescription,
+  CardBody,
+  CardFooter,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ProjectCardDropdown from "../dropdowns/ProjectCardDropdown";
+} from "@nextui-org/react"
+import Emoji from "@/lib/utils/Emoji"
+import Link from "next/link"
 
-interface IProjectCard extends HTMLAttributes<HTMLAnchorElement> {
-  project: IProject;
-}
-
-const ProjectCard: React.FC<IProjectCard> = ({ project, ...rest }) => {
-  const { isTruncated: isDescriptionTruncated, value: truncatedDesctiption } =
-    truncate(project.description || undefined, 50);
-
-  const formatedData = new Date(project.createdAt);
-
+const ProjectCard = ({ project }: { project: IProject }) => {
   return (
-    <Link href={`my-projects/${project.id}`} {...rest}>
-      <Card className="flex flex-col justify-between bg-card duration-100 h-full">
-        <CardHeader>
-          <div>
-            <CardTitle>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {project.iconUrl && unifiedToEmoji(project.iconUrl)}
-                  <span>{project.title}</span>
-                </div>
-                <ProjectCardDropdown projectId={project.id} />
-              </div>
-            </CardTitle>
-            <CardDescription>
-              {isDescriptionTruncated ? (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span>{truncatedDesctiption}</span>
-                    </TooltipTrigger>
-                    <TooltipContent>{project.description}</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ) : (
-                project.description
-              )}
-            </CardDescription>
-          </div>
+    <Link href={`/home/projects/${project.id}`} className="h-full">
+      <Card
+        className="h-full w-[calc(100vw-32px)] min-[420px]:h-[200px] min-[420px]:w-full"
+        shadow="none"
+      >
+        <CardHeader className="flex flex-col pb-0 pt-6">
+          <span className="mb-2 text-4xl">
+            {project.iconUrl && <Emoji unifiedCode={project.iconUrl} />}
+          </span>
+          <p className="text-center text-xl font-medium">{project.title}</p>
         </CardHeader>
-
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">
-              {formatedData.toDateString()}
-            </span>
-            <Avatar>
-              <AvatarImage alt="avatar"></AvatarImage>
-              <AvatarFallback>
-                <div className="bg-border rounded-full p-1">
-                  <User />
-                </div>
-              </AvatarFallback>
-            </Avatar>
-          </div>
-        </CardContent>
+        <CardBody>
+          <p className="truncate text-center leading-5 text-gray-9">
+            {project.description}
+          </p>
+        </CardBody>
+        <CardFooter className="flex w-full justify-between">
+          <p className="text-sm text-gray-8">08.03.2024</p>
+          <Avatar
+            className="transition-transform"
+            color="primary"
+            size="sm"
+            name={project.creator?.email}
+          />
+        </CardFooter>
       </Card>
     </Link>
-  );
-};
+  )
+}
 
-export default ProjectCard;
+export default ProjectCard

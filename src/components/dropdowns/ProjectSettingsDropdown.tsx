@@ -1,46 +1,53 @@
-"use client";
-import React from "react";
-import { Button } from "@/components/ui/button";
+"use client"
+
 import {
+  Pencil,
+  Settings,
+  Settings2,
+  Trash2,
+  UserRoundPlus,
+} from "lucide-react"
+import useDialog from "@/lib/hooks/useDialog"
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Pencil, Settings, Trash2, UserRoundPlus } from "lucide-react";
-import useDialog from "@/lib/hooks/useDialog";
+  DropdownTrigger,
+} from "@nextui-org/react"
 
-const ProjectSettingsDropdown = () => {
-  const { open: openDialog } = useDialog();
+const ProjectSettingsDropdown = ({ className }: { className?: string }) => {
+  const { open: openDialog } = useDialog()
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-1 mb-2">
-          <Settings size={14} /> Settings
+    <Dropdown placement="left-start">
+      <DropdownTrigger className={className}>
+        <Button variant="flat" isIconOnly>
+          <Settings />
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent side="right" className="w-56">
-        <DropdownMenuGroup>
-          <DropdownMenuItem className="flex items-center gap-2">
-            <UserRoundPlus /> <span>Invite</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="flex items-center gap-2"
-            onClick={() => openDialog("edit-project")}
-          >
-            <Pencil /> <span>Edit</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="flex items-center gap-2"
-            onClick={() => openDialog("delete-project")}
-          >
-            <Trash2 /> <span>Delete</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
+      </DropdownTrigger>
+      <DropdownMenu>
+        <DropdownItem
+          onClick={() => openDialog("edit-project")}
+          startContent={<Pencil />}
+        >
+          Edit
+        </DropdownItem>
+        <DropdownItem
+          onClick={() => openDialog("invite-project")}
+          startContent={<UserRoundPlus />}
+        >
+          Invite
+        </DropdownItem>
+        <DropdownItem
+          onClick={() => openDialog("delete-project")}
+          startContent={<Trash2 color="var(--error-9)" />}
+        >
+          <span className="text-danger-600">Delete</span>
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  )
+}
 
-export default ProjectSettingsDropdown;
+export default ProjectSettingsDropdown

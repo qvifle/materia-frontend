@@ -1,0 +1,16 @@
+.layout {
+  /* @apply flex h-full max-h-screen flex-col sm:grid sm:grid-cols-[64px,1fr] sm:grid-rows-[64px,1fr] lg:grid-cols-[250px,1fr]; */
+  @apply grid h-screen grid-rows-[64px,1fr] sm:grid-cols-[64px,1fr] lg:grid-cols-[250px,1fr];
+}
+
+.header {
+  @apply sm:col-start-2 sm:col-end-3;
+}
+
+.sidebar {
+  @apply /* */ hidden h-full w-full flex-col items-center border-r border-gray-4 px-4 pt-4 sm:col-span-1 sm:row-start-1 sm:row-end-3 sm:flex lg:items-start;
+}
+
+.main {
+  @apply flex max-h-[calc(100vh-64px)] flex-1 flex-col overflow-y-auto bg-gray-3;
+}

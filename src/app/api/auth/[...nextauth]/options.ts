@@ -38,11 +38,6 @@ export const options: NextAuthOptions = {
             return null;
           }
 
-          // const res = await api.post(`/signIn`, {
-          //   email: credentials?.email,
-          //   password: credentials?.password,
-          // });
-
           const res = await authService.signIn(credentials);
 
           if (!res) {
