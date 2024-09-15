@@ -1,0 +1,6 @@
+.slowAnimation::before {
+  animation-duration: 1000ms !important;
+}
+.addDelay::before {
+  animation-delay: 200ms !important;
+}

@@ -1,9 +1,11 @@
-import api from "@/lib/utils/api";
-import getAccessTokenFromCookie from "@/lib/utils/getAccessTokenFromCookie";
-import type { NextAuthOptions, User } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import api from "@/lib/utils/api"
+import getAccessTokenFromCookie from "@/lib/utils/getAccessTokenFromCookie"
+import authService from "@/services/AuthService"
+import type { NextAuthOptions, User } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
 
 export const options: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
   },
@@ -15,11 +17,14 @@ export const options: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user }; // get all information from backend and nextauth
+      if (user) {
+        token = { ...token, ...user }
+      }
+      return token
     },
     async session({ session, token, user }) {
-      session.user = token as any; // there we get token from jwt function and pass it to our session
-      return session;
+      session.user = token as any
+      return session
     },
   },
   providers: [
@@ -33,39 +38,36 @@ export const options: NextAuthOptions = {
       async authorize(credentials) {
         try {
           if (!credentials?.email || !credentials?.password) {
-            return null;
+            return null
           }
 
-          const {
-            data: user,
-            status,
-            headers,
-          } = await api.post(`/signIn`, {
-            email: credentials?.email,
-            password: credentials?.password,
-          });
-
-
-          if (status != 200) {
-            return null;
+          const res = await authService.signIn(credentials)
+          console.log(res)
+          if (!res) {
+            return
           }
 
-          if (!headers["set-cookie"]) {
-            return null;
+          if (res.status != 200) {
+            return null
           }
 
-          const accessToken = getAccessTokenFromCookie(headers["set-cookie"]);
+          if (!res.headers["set-cookie"]) {
+            return null
+          }
+
+          const accessToken = getAccessTokenFromCookie(
+            res.headers["set-cookie"],
+          )
 
           if (!accessToken) {
-            
+            return null
           }
 
-
-          return { ...user, accessToken: accessToken };
-        } catch (err) {
-          console.log(err);
+          return { ...res.data, accessToken: accessToken }
+        } catch (err: any) {
+          console.log(err)
         }
       },
     }),
   ],
-};
+}

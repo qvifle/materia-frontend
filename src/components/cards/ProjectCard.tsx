@@ -1,98 +1,47 @@
-"use client";
+import { IProject } from "@/types/project.types"
+import React from "react"
 import {
+  Avatar,
   Card,
-  CardContent,
-  CardDescription,
+  CardBody,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { User } from "lucide-react";
-import Image from "next/image";
-import React, { HTMLAttributes } from "react";
+} from "@nextui-org/react"
+import Emoji from "@/lib/utils/Emoji"
+import Link from "next/link"
 
-const truncate = (string: string, maxLength: number) => {
-  if (string.length > maxLength) {
-    const truncatedArray = string.substring(0, maxLength).split(" ");
-    truncatedArray.pop();
-    const value = truncatedArray.join(" ") + "...";
-
-    return { isTruncated: true, value: value };
-  }
-  return { isTruncated: false, value: string };
-};
-
-interface IProjectCard extends HTMLAttributes<HTMLDivElement> {
-  title: string;
-  iconUrl: string;
-  description: string;
-  createdAt: string;
+const ProjectCard = ({ project }: { project: IProject }) => {
+  return (
+    <Link href={`/home/projects/${project.id}`} className="h-full">
+      <Card
+        className="h-full w-[calc(100vw-32px)] min-[420px]:h-[200px] min-[420px]:w-full"
+        shadow="none"
+      >
+        <CardHeader className="flex flex-col pb-0 pt-6">
+          <span className="mb-2 text-4xl">
+            {project.iconUrl && <Emoji unifiedCode={project.iconUrl} />}
+          </span>
+          <p className="text-center text-xl font-medium">{project.title}</p>
+        </CardHeader>
+        <CardBody>
+          <p className="truncate text-center leading-5 text-gray-9">
+            {project.description}
+          </p>
+        </CardBody>
+        <CardFooter className="flex w-full justify-between">
+          <p className="text-sm text-gray-8">
+            {new Date(project.createdAt).toLocaleDateString()}
+          </p>
+          <Avatar
+            className="transition-transform"
+            color="primary"
+            size="sm"
+            name={project.creator?.email}
+          />
+        </CardFooter>
+      </Card>
+    </Link>
+  )
 }
 
-const ProjectCard: React.FC<IProjectCard> = ({
-  title,
-  iconUrl,
-  description,
-  createdAt,
-  ...rest
-}) => {
-  const { isTruncated: isDescriptionTruncated, value: truncatedDesctiption } =
-    truncate(description, 50);
-
-  return (
-    <Card className="">
-      <CardHeader>
-        <CardTitle>
-          <div className="flex items-center gap-2">
-            <Image
-              alt="project-icon"
-              src={iconUrl || ""}
-              width={28}
-              height={28}
-            />
-            <span>{title}</span>
-          </div>
-        </CardTitle>
-
-        <CardDescription>
-          {isDescriptionTruncated ? (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span>{truncatedDesctiption}</span>
-                </TooltipTrigger>
-                <TooltipContent>{description}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ) : (
-            description
-          )}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">{createdAt}</span>
-          <div>
-            <Avatar>
-              <AvatarImage alt="avatar"></AvatarImage>
-              <AvatarFallback>
-                <div className="bg-border rounded-full p-1">
-                  <User />
-                </div>
-              </AvatarFallback>
-            </Avatar>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-export default ProjectCard;
+export default ProjectCard

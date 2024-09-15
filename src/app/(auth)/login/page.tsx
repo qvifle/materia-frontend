@@ -1,7 +1,7 @@
-import LoginModule from "@/modules/LoginModule";
+import LoginModule from "@/modules/LoginModule"
 
-const LoginPage = () => {
-  return <LoginModule />;
-};
+const Page = () => {
+  return <LoginModule />
+}
 
-export default LoginPage;
+export default Page
