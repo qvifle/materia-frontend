@@ -1,23 +1,24 @@
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import requiredFormFieldMessage from "@/lib/constants/requiredFormFieldMessage";
-import { z } from "zod";
-import { signIn } from "next-auth/react";
-import toast from "react-hot-toast";
-import PasswordInput from "@/components/inputs/PasswordInput";
-import { useRouter } from "next/navigation";
-import { Button, Input } from "@nextui-org/react";
+"use client"
+import React from "react"
+import { Controller, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import requiredFormFieldMessage from "@/lib/constants/requiredFormFieldMessage"
+import { z } from "zod"
+import { signIn } from "next-auth/react"
+import toast from "react-hot-toast"
+import PasswordInput from "@/components/inputs/PasswordInput"
+import { useRouter } from "next/navigation"
+import { Button, Input } from "@nextui-org/react"
 
 const LoginForm = () => {
-  const { push } = useRouter();
+  const { push } = useRouter()
   const fromSchema = z.object({
     email: z
       .string()
       .email("This is not valid Email")
       .min(1, requiredFormFieldMessage),
     password: z.string().min(8, "This field must have at least 8 symbols"),
-  });
+  })
 
   const {
     handleSubmit,
@@ -25,30 +26,30 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<z.infer<typeof fromSchema>>({
     resolver: zodResolver(fromSchema),
-  });
+  })
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
     try {
       const res = await signIn("credentials", {
         ...values,
         redirect: false,
-      });
+      })
 
       if (!res) {
-        throw new Error("something went wrong");
+        throw new Error("something went wrong")
       }
 
       if (!res.ok) {
-        toast.error("Wrong password or User doesnt exist");
-        return;
+        toast.error("Wrong password or User doesnt exist")
+        return
       }
 
-      push("/home");
+      push("/home")
     } catch (err) {
-      toast.error("Wrong password or User doesnt exist");
-      console.log(err);
+      toast.error("Wrong password or User doesnt exist")
+      console.log(err)
     }
-  };
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} action="">
       <Controller
@@ -82,7 +83,7 @@ const LoginForm = () => {
           />
         )}
       />
-      <div className="w-full flex justify-end">
+      <div className="flex w-full justify-end">
         <Button
           type="submit"
           color="primary"
@@ -93,7 +94,7 @@ const LoginForm = () => {
         </Button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

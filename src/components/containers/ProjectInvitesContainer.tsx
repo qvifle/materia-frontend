@@ -1,12 +1,11 @@
 "use client"
 import inviteService from "@/services/InviteService"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import React from "react"
-import toast from "react-hot-toast"
 import InviteCard from "../cards/InviteCard"
+import Skeleton from "../skeleton/Skeleton"
 
 const ProjectInvitesContainer = ({ projectId }: { projectId: string }) => {
-  const queryClient = useQueryClient()
   const {
     data: invites,
     isLoading,
@@ -15,30 +14,24 @@ const ProjectInvitesContainer = ({ projectId }: { projectId: string }) => {
     queryKey: ["project-invites", projectId],
     queryFn: async () => {
       const { data } = await inviteService.getProjectInvites(projectId)
-      console.log(data)
-
       return data
-    },
-  })
-
-  const { mutate: cancelInvite } = useMutation({
-    mutationFn: async (args: any) => {
-      const { data } = await inviteService.cancelInvite(args.inviteId)
-      return data
-    },
-    onSuccess: () => {
-      toast("Invite canceled")
-      queryClient.invalidateQueries({
-        queryKey: ["project-invites", projectId],
-      })
-    },
-    onError: () => {
-      toast.error("Something went wrong")
     },
   })
 
   if (isLoading) {
-    return "loading"
+    return (
+      <div className="flex flex-col gap-1">
+        <Skeleton width="100%">
+          <div className="h-[64px] rounded-[14px]"></div>
+        </Skeleton>
+        <Skeleton width="100%">
+          <div className="h-[64px] rounded-[14px]"></div>
+        </Skeleton>
+        <Skeleton width="100%">
+          <div className="h-[64px] rounded-[14px]"></div>
+        </Skeleton>
+      </div>
+    )
   }
 
   if (isError || !invites) {
@@ -50,7 +43,7 @@ const ProjectInvitesContainer = ({ projectId }: { projectId: string }) => {
   }
 
   return (
-    <ul className="flex max-h-[300px] flex-col gap-1 overflow-y-auto">
+    <ul className="flex max-h-[300px] flex-col gap-1">
       {invites.map((invite, key) => (
         <InviteCard invite={invite} key={key} />
       ))}

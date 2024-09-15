@@ -1,67 +1,84 @@
 "use client"
 import React, { FC, HTMLAttributes, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import inviteService from "@/services/InviteService"
+import inviteService, { InviteUserFormFields } from "@/services/InviteService"
 import toast from "react-hot-toast"
-import validateEmail from "@/lib/utils/testEmail"
 import { Button, Input } from "@nextui-org/react"
 import { UserPlus } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Controller, useForm } from "react-hook-form"
+import emailRegex from "@/lib/constants/emailRegex"
 
-interface InviteFormProps extends HTMLAttributes<HTMLDivElement> {
+interface InviteFormProps extends HTMLAttributes<HTMLFormElement> {
   projectId: string
 }
 
 const InviteForm: FC<InviteFormProps> = ({ projectId, className, ...rest }) => {
   const queryClient = useQueryClient()
-  const [value, setValue] = useState("")
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<InviteUserFormFields>()
 
   const { mutate: sendInvite } = useMutation({
-    mutationFn: async (data: string) =>
-      inviteService.sendInvite(projectId, { recipientEmail: data }),
+    mutationFn: async (data: InviteUserFormFields) =>
+      inviteService.sendInvite(projectId, data),
     onSuccess: () => {
       toast.success("Invite sent!")
       queryClient.invalidateQueries({
         queryKey: ["project-invites", projectId],
       })
-      setValue("")
+      reset({ recipientEmail: "" })
     },
-    onError: () => {
-      toast.error("Something went wrong")
-      setValue("")
+    onError: (error: any) => {
+      toast.error(error.request.response)
+
+      reset({ recipientEmail: "" })
     },
   })
 
-  const onSubmit = () => {
-    console.log("hello")
-    if (!validateEmail(value)) {
-      toast.error("Is not valid!")
-      return
-    }
-
-    sendInvite(value)
+  const onSubmit = (data: InviteUserFormFields) => {
+    sendInvite(data)
   }
 
   return (
-    <div className={cn("flex w-full items-center gap-2", className)} {...rest}>
-      <Input
-        type="email"
-        value={value}
-        placeholder="member@gmail.com"
-        label="Invite email"
-        size="lg"
-        onChange={(e) => setValue(e.target.value)}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={cn("flex w-full items-start gap-2", className)}
+      {...rest}
+    >
+      <Controller
+        control={control}
+        name="recipientEmail"
+        rules={{
+          required: "Input email",
+          pattern: { value: emailRegex, message: "Not valid email" },
+        }}
+        render={({ field }) => (
+          <Input
+            placeholder="member@gmail.com"
+            label="Invite email"
+            id="email"
+            size="lg"
+            isInvalid={!!errors.recipientEmail}
+            errorMessage={errors.recipientEmail?.message}
+            {...field}
+          />
+        )}
       />
+
       <Button
         isIconOnly
         type="submit"
         color="primary"
         className="h-16 w-16 min-w-16"
-        onClick={() => onSubmit()}
       >
         <UserPlus size={22} />
       </Button>
-    </div>
+    </form>
   )
 }
 

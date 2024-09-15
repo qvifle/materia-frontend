@@ -1,3 +1,4 @@
+'use client'
 import { Input, InputProps } from "@nextui-org/react";
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";

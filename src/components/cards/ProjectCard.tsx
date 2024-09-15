@@ -29,7 +29,9 @@ const ProjectCard = ({ project }: { project: IProject }) => {
           </p>
         </CardBody>
         <CardFooter className="flex w-full justify-between">
-          <p className="text-sm text-gray-8">08.03.2024</p>
+          <p className="text-sm text-gray-8">
+            {new Date(project.createdAt).toLocaleDateString()}
+          </p>
           <Avatar
             className="transition-transform"
             color="primary"

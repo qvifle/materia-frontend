@@ -28,7 +28,7 @@ const LoginModule = () => {
         <section className="hidden h-screen w-full flex-col justify-between p-[40px] md:flex">
           <div className="flex max-w-max flex-col">
             <h1 className="w-full text-left text-4xl font-semibold leading-[36px] text-gray-1">
-              Trello clone
+              Matēria
             </h1>
             <h3 className="text-left text-3xl font-bold text-primary-6">
               by qvifle
@@ -52,7 +52,7 @@ const LoginModule = () => {
         <section className="filter-opacity-15 flex h-full w-full flex-col items-center justify-between px-4 py-[40px] backdrop-blur-md md:items-center md:justify-center md:rounded-l-3xl md:p-0">
           <div className="mx-auto flex max-w-max flex-col md:hidden">
             <h1 className="text-center text-4xl font-semibold leading-[36px] text-gray-1">
-              Trello clone
+              Matēria
             </h1>
             <h3 className="text-end text-3xl font-bold text-primary-6">
               by qvifle

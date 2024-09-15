@@ -6,23 +6,44 @@ import projectService from "@/services/ProjectService"
 import { IProject } from "@/types/project.types"
 import DesksWidget from "@/widgets/DesksWidget"
 import { useQuery } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 import React from "react"
 
 const ProjectModule = ({ projectId }: { projectId: string }) => {
-  const { data, isLoading, isError } = useQuery<IProject>({
+  const { push } = useRouter()
+  const { data, isLoading, isError } = useQuery<IProject | undefined>({
     queryKey: ["project", projectId],
     queryFn: async () => {
-      const { data } = await projectService.getProjectById(projectId)
-      return data
+      try {
+        const res = await projectService.getProjectById(projectId)
+
+        return res.data
+      } catch (err: any) {
+        if (err.response.status === 403 || err.response.status === 404) {
+          push("/home/projects")
+        }
+      }
     },
   })
-
   return (
-    <div className="flex h-full w-full flex-col overflow-y-hidden">
-      <div className="mb-6 mt-4 px-4">
+    <div className="flex h-full w-full flex-col">
+      <div className="px-4">
         {!isLoading && !!data ? (
           <>
-            <div className="group flex w-full items-center justify-between md:w-max">
+            <div className="flex items-center">
+              <span className="ml-[-6px] flex h-[48px] w-[48px] items-center justify-center text-center text-4xl">
+                <Emoji unifiedCode={data.iconUrl ?? ""} />
+              </span>
+              <h1 className="hidden h-max max-w-full gap-1 break-all text-4xl font-bold tracking-tight lg:block lg:text-5xl">
+                {data.title}
+              </h1>
+              <ProjectSettingsDropdown project={data} className="sm:ml-2" />
+            </div>
+            <h1 className="h-max max-w-full gap-1 break-all text-4xl font-bold tracking-tight lg:hidden lg:text-5xl">
+              {data.title}
+            </h1>
+
+            {/* <div className=" flex w-full md:w-max md:items-center md:justify-between">
               <h1 className="flex gap-1 text-4xl font-bold tracking-tight lg:text-5xl">
                 <span className="ml-[-6px] flex h-[48px] w-[48px] justify-center text-center">
                   <Emoji unifiedCode={data.iconUrl ?? ""} />
@@ -30,11 +51,11 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
 
                 <span>{data.title}</span>
               </h1>
-              <ProjectSettingsDropdown className="ml-2" />
-            </div>
+              <ProjectSettingsDropdown project={data} className="sm:ml-2" />
+            </div> */}
 
             {!!data.description && (
-              <p className="text-gray-11 mt-2">{data.description}</p>
+              <p className="mt-2 break-all text-gray-11">{data.description}</p>
             )}
           </>
         ) : (

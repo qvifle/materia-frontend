@@ -24,9 +24,14 @@ const SortableItem = ({ children, id }: SortableItemProps) => {
     opacity: isDragging ? 0 : 1,
   }
 
-
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div
+      className="touch-none"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       {children}
     </div>
   )

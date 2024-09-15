@@ -8,10 +8,7 @@ import { useSession } from "next-auth/react"
 import SidebarProjectSection from "./SidebarProjectSection"
 import { useMemo, useState } from "react"
 import Skeleton from "@/components/skeleton/Skeleton"
-
-function getArray(len: number) {
-  return Array.from(Array(len).keys())
-}
+import getArray from "@/lib/utils/get-array"
 
 const SidebarProjects = () => {
   const [isMyProjects, setMyProjects] = useState(true)

@@ -38,6 +38,7 @@ const ProjectIconPicker = ({
         <Picker
           autoFocus
           theme={theme}
+          perLine={7}
           data={data}
           onEmojiSelect={(e: any) => {
             setSelectedEmoji(e.native)

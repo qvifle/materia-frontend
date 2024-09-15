@@ -4,6 +4,7 @@ import EditProjectDialog from "./Dialogs/EditProjectDialog"
 import ConfirmDeleteProjectDialog from "./Dialogs/ConfirmDeleteProjectDialog"
 import NotificationsDialog from "./Dialogs/NotificationsDialog"
 import InviteProjectDialog from "./Dialogs/InviteProjectDialog"
+import ConfirmLeaveProjectDialog from "./Dialogs/ConfirmLeaveProjectDialog"
 
 const DialogsContainer = () => {
   return (
@@ -13,6 +14,7 @@ const DialogsContainer = () => {
       <ConfirmDeleteProjectDialog />
       <NotificationsDialog />
       <InviteProjectDialog />
+      <ConfirmLeaveProjectDialog />
     </Suspense>
   )
 }

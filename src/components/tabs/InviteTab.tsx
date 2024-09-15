@@ -11,7 +11,7 @@ const InviteTab = () => {
   return (
     <section className="flex flex-col pt-4">
       <InviteForm className="mb-4" projectId={projectId} />
-      <h2 className="text-md mb-1 font-medium">Pending invites</h2>
+      <h2 className="text-md mb-2 font-medium">Pending invites</h2>
       <ProjectInvitesContainer projectId={projectId} />
     </section>
   )

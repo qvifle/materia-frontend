@@ -66,7 +66,7 @@ const ProjectsModule = () => {
   if (!sortedProjects || projects?.length === 0) {
     return (
       <div className="mt-[40px] flex h-full w-full flex-col items-center justify-center gap-4 p-4 text-2xl font-medium sm:mt-0">
-        <span className="text-center"> You doesn&apos;t have any project</span>
+        <span className="text-center"> You don&apos;t have any project</span>
         <Button
           onClick={() => openDialog("create-project")}
           size="lg"

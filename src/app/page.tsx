@@ -1,8 +1,7 @@
-"use client";
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation"
 
 const Page = () => {
-  redirect("/home/projects");
-};
+  redirect("/home/projects")
+}
 
-export default Page;
+export default Page

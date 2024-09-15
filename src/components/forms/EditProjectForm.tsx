@@ -57,7 +57,11 @@ const EditProjectForm = () => {
       })
       close()
     },
-    onError: () => {
+    onError: (err: any) => {
+      if (!!err.response.data) {
+        toast.error(err.response.data)
+        return
+      }
       toast.error("Something went wrong")
     },
   })

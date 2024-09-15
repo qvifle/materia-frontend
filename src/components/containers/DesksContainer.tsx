@@ -22,6 +22,7 @@ import {
   MouseSensor,
   TouchSensor,
 } from "@dnd-kit/core"
+import SkeletonDeskWidget from "../skeleton/SkeletonDeskWidget"
 
 interface IDesksContainer {
   projectId: string
@@ -44,12 +45,13 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const [isOvered, setOvered] = useState(false)
 
   const sensors = useSensors(
-    useSensor(MouseSensor, {
+    useSensor(TouchSensor, {
       activationConstraint: {
+        delay: 100,
         distance: 10,
       },
     }),
-    useSensor(TouchSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
         distance: 10,
       },
@@ -233,7 +235,12 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   }, [isOvered])
 
   if (isLoading) {
-    return "loading"
+    return (
+      <>
+        <SkeletonDeskWidget tasks={4} />
+        <SkeletonDeskWidget tasks={3} />
+      </>
+    )
   }
 
   if (!reorderDesks || reorderDesks.length === 0) {

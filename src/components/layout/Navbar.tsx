@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/navbar"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import AvatarDropdown from "../dropdowns/AvatarDropdown"
 import { useQuery } from "@tanstack/react-query"
 import { IProject } from "@/types/project.types"
@@ -20,9 +20,12 @@ import { useSession } from "next-auth/react"
 import Emoji from "@/lib/utils/Emoji"
 import styles from "@/styles/layout.module.css"
 import { cn } from "@nextui-org/react"
+import { Span } from "next/dist/trace"
+import useDialog from "@/lib/hooks/useDialog"
 
 const CustomNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { open: openDialog } = useDialog()
   const { data: session } = useSession()
 
   const {
@@ -46,13 +49,14 @@ const CustomNavbar = () => {
     <Navbar
       className={cn(styles.header, "bg-gray-2")}
       classNames={{ wrapper: "px-4" }}
+      isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="full"
       isBordered
     >
       <NavbarMenuToggle
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        className="sm:hidden"
+        className="md:hidden"
       />
       <NavbarBrand className="text-lg">Projects</NavbarBrand>
 
@@ -63,6 +67,18 @@ const CustomNavbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
+        {!sortedProjects?.myProjects.length &&
+          !sortedProjects?.otherProjects.length && (
+            <p>
+              <span>You have no projects yet.</span>{" "}
+              <span
+                onClick={() => openDialog("create-project")}
+                className="text-primary-500"
+              >
+                Create!
+              </span>
+            </p>
+          )}
         {!!sortedProjects && sortedProjects.myProjects.length > 0 && (
           <>
             <NavbarMenuItem key="my-projects" className="font-medium">
@@ -73,6 +89,7 @@ const CustomNavbar = () => {
                 <Link
                   className="flex w-full items-center gap-2"
                   href={`/home/projects/${item.id}`}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   <span>
                     {item.iconUrl ? <Emoji unifiedCode={item.iconUrl} /> : null}
@@ -91,6 +108,7 @@ const CustomNavbar = () => {
             {sortedProjects.otherProjects.map((item, index) => (
               <NavbarMenuItem className="ml-2" key={`${item.title}-${index}`}>
                 <Link
+                  onClick={() => setIsMenuOpen(false)}
                   className="flex w-full items-center gap-2"
                   href={`/home/projects/${item.id}`}
                 >

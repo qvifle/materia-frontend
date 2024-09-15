@@ -1,4 +1,3 @@
-"use client"
 import React, { HTMLAttributes } from "react"
 import { IDesk } from "@/types/desk.types"
 import DeskCard from "@/components/cards/DeskCard"

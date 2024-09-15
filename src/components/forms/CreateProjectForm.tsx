@@ -1,8 +1,6 @@
 "use client"
 import React from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
-import { z } from "zod"
 import useDialog from "@/lib/hooks/useDialog"
 import ProjectIconPicker from "../inputs/Selects/ProjectIconPicker"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -38,7 +36,11 @@ const CreateProjectForm = () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
       close()
     },
-    onError: () => {
+    onError: (err: any) => {
+      if (!!err.response.data) {
+        toast.error(err.response.data)
+        return
+      }
       toast.error("Something went wrong")
     },
   })

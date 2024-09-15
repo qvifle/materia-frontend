@@ -7,6 +7,7 @@ import { IDesk } from "@/types/desk.types"
 import { useDroppable } from "@dnd-kit/core"
 import { Button, ButtonProps, Card, CardHeader, cn } from "@nextui-org/react"
 import { useClickAway } from "@uidotdev/usehooks"
+import toast from "react-hot-toast"
 
 interface IAddTaskButton extends ButtonProps {
   desk: IDesk
@@ -16,7 +17,11 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
   const [isInit, setInit] = useState(true)
   const [value, setValue] = useState("")
 
-  const ref = useClickAway(() => setInit(true))
+  const reset = () => {
+    setInit(true)
+    setValue("")
+  }
+  const ref = useClickAway(() => reset())
 
   const { setNodeRef } = useDroppable({
     id: desk.id,
@@ -32,14 +37,20 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["desks"] })
-      setValue("")
-      setInit(true)
+      reset()
+    },
+    onError: (err: any) => {
+      if (!!err.response.data) {
+        toast.error(err.response.data)
+        return
+      }
+      toast.error("Что-то пошло не так")
     },
   })
 
   const createNewTask = () => {
     if (value === "") {
-      setInit(true)
+      reset()
       return
     }
     createTask()
@@ -95,7 +106,7 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
                 if (e.key === "Enter") {
                   createNewTask()
                 } else if (e.key === "Escape") {
-                  setInit(true)
+                  reset()
                 }
               }}
             />
@@ -105,39 +116,13 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
               color="primary"
               onClick={() => createNewTask()}
             >
-              <Check size={14} />
+              <Check color="#fcfcfd" size={14} />
             </Button>
           </div>
         </div>
       </CardHeader>
     </Card>
   )
-}
-
-{
-  /* <div className="relative">
-        <Input
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              createNewTask()
-            }
-          }}
-          className="z-30 mx-1 h-[28px] max-w-[348px] py-0"
-          autoFocus
-        />
-        <Button
-          className="absolute right-[3px] top-1 z-30 h-5 w-5 p-1"
-          onClick={createNewTask}
-          isIconOnly
-        >
-          <Check size={16} />
-        </Button>
-      </div>
-      <div
-        onClick={() => setInit(true)}
-        className="absolute left-0 top-0 h-screen w-screen"
-      ></div>  */
 }
 
 export default AddTaskButton

@@ -79,7 +79,7 @@ const ChangeTaskDescriptionInput = ({
         color="primary"
         onClick={changeDescription}
       >
-        <Check size={14} />
+        <Check color="#fcfcfd" size={14} />
       </Button>
     </div>
   )

@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useClickAway } from "@uidotdev/usehooks"
 import { Check } from "lucide-react"
 import React, { FC } from "react"
+import toast from "react-hot-toast"
 
 interface UpdateTaskTitleInputProps {
   title: string
@@ -32,18 +33,14 @@ const UpdateTaskTitleInput: FC<UpdateTaskTitleInputProps> = ({
   const ref = useClickAway(() => reset())
 
   const changeTaskTitleQuery = async (taskId: string, newTitle: string) => {
-    try {
-      if (newTitle === "") {
-        reset()
-        return
-      }
-      const { data } = await taskService.updateTaskById(taskId, {
-        title: newTitle,
-      })
-      return data
-    } catch (err) {
-      console.error(err)
+    if (newTitle === "") {
+      reset()
+      return
     }
+    const { data } = await taskService.updateTaskById(taskId, {
+      title: newTitle,
+    })
+    return data
   }
 
   const { mutate: updateTitle } = useMutation({
@@ -53,8 +50,14 @@ const UpdateTaskTitleInput: FC<UpdateTaskTitleInputProps> = ({
       setTitleEdit(false)
       queryClient.invalidateQueries({ queryKey: ["desks"] })
     },
-    onError: (err) => {
-      setTitleEdit(false)
+    onError: (err: any) => {
+      reset()
+      if (!!err.response.data) {
+        toast.error(err.response.data)
+        return
+      }
+      toast.error("Something went wrong")
+
       console.error(err)
     },
   })
@@ -74,7 +77,7 @@ const UpdateTaskTitleInput: FC<UpdateTaskTitleInputProps> = ({
           if (e.key === "Enter") {
             updateTitle()
           } else if (e.key === "Escape") {
-            setTitleEdit(false)
+            reset()
           }
         }}
       />
@@ -84,7 +87,7 @@ const UpdateTaskTitleInput: FC<UpdateTaskTitleInputProps> = ({
         color="primary"
         onClick={() => updateTitle()}
       >
-        <Check size={14} />
+        <Check color="#fcfcfd" size={14} />
       </Button>
     </div>
   )

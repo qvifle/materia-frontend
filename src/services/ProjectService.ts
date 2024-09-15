@@ -10,8 +10,7 @@ class ProjectService {
   }
 
   async getProjectById(projectId: string) {
-    const res = await api.get<IProject>(`${this.baseUrl}/${projectId}`)
-    return res
+    return api.get<IProject>(`${this.baseUrl}/${projectId}`)
   }
 
   async createProject(data: IProjectFormFields) {

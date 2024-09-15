@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import React from "react"
 import { ModalFooter } from "@nextui-org/react"
 import NotificationsCard from "../cards/NotificationsCard"
+import Skeleton from "../skeleton/Skeleton"
 
 const NotificationsContainer = () => {
   const {
@@ -18,17 +19,13 @@ const NotificationsContainer = () => {
     },
   })
 
-  if (isLoading) {
-    return "loading"
-  }
-
-  if (isError || !invites) {
+  if (isError) {
     return "error"
   }
 
-  if (invites.length === 0) {
+  if (!!invites && invites.length === 0) {
     return (
-      <div className="flex items-center justify-center py-[40px] text-2xl font-medium">
+      <div className="flex items-center justify-center py-9 text-2xl font-medium">
         No notifications yet!
       </div>
     )
@@ -36,10 +33,21 @@ const NotificationsContainer = () => {
 
   return (
     <ModalFooter className="pt-0">
-      <div className="flex flex-col gap-2 overflow-y-auto">
-        {invites.map((invite, key) => (
-          <NotificationsCard invite={invite} key={key} />
-        ))}
+      <div className="flex w-full flex-col gap-2 bg-transparent">
+        {isLoading || !invites ? (
+          <>
+            <Skeleton width="100%">
+              <div className="h-[56px] rounded-[14px]"></div>
+            </Skeleton>
+            <Skeleton width="100%">
+              <div className="h-[56px] rounded-[14px]"></div>
+            </Skeleton>{" "}
+          </>
+        ) : (
+          invites.map((invite, key) => (
+            <NotificationsCard invite={invite} key={key} />
+          ))
+        )}
       </div>
     </ModalFooter>
   )

@@ -24,7 +24,7 @@ const SidebarProjectSection: FC<SidebarProjectSectionProps> = ({
 }) => {
   const { push } = useRouter()
 
-  if (!projects) {
+  if (!projects || !projects.length) {
     return null
   }
 

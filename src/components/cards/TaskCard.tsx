@@ -22,16 +22,15 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
   const [isDescriptionEdit, setDescriptionEdit] = useState(false)
   const [description, setDescription] = useState(task.description ?? "")
 
-  const onSingleClick = (cb: () => void) => {
+  const onDoubleClick = (cb: () => void) => {
     if (clickTimeout) {
+      cb()
       clearTimeout(clickTimeout)
       setClickTimeout(null) // Reset the timeout
     } else {
       const timeout = setTimeout(() => {
-        cb()
         setClickTimeout(null)
       }, 300)
-
       setClickTimeout(timeout)
     }
   }
@@ -65,8 +64,8 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
               />
             ) : (
               <button
-                className="max-w-full text-balance text-start ileading-[18px]"
-                onTouchEnd={() => onSingleClick(() => handleEditTitleClick())}
+                className="ileading-[18px] max-w-full text-balance text-start"
+                onTouchEnd={() => onDoubleClick(() => handleEditTitleClick())}
                 onDoubleClick={handleEditTitleClick}
               >
                 {title}
@@ -93,7 +92,7 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
           ) : (
             <span
               onTouchEnd={() =>
-                onSingleClick(() => handleEditDescriptionClick())
+                onDoubleClick(() => handleEditDescriptionClick())
               }
               onDoubleClick={handleEditDescriptionClick}
               className="cursor-pointer text-sm text-gray-11"

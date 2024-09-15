@@ -5,6 +5,7 @@ import { IDesk } from "@/types/desk.types"
 import { ITask } from "@/types/task.types"
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import SortableItem from "../dnd/SortableItem"
+import { motion } from "framer-motion"
 interface ITasksContainer extends HTMLAttributes<HTMLDivElement> {
   tasks: ITask[]
   desk: IDesk
@@ -20,7 +21,6 @@ const TasksContainer: React.FC<ITasksContainer> = ({ tasks, desk }) => {
       id={desk.id}
       items={tasks}
       strategy={verticalListSortingStrategy}
-      
     >
       <div className="relative flex flex-col gap-1">
         {tasks.map((task, index) => (

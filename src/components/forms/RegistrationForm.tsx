@@ -1,12 +1,13 @@
-"use client";
-import requiredFormFieldMessage from "@/lib/constants/requiredFormFieldMessage";
-import authService from "@/services/AuthService";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@nextui-org/react";
-import { signIn } from "next-auth/react";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-import PasswordInput from "../inputs/PasswordInput";
+"use client"
+import requiredFormFieldMessage from "@/lib/constants/requiredFormFieldMessage"
+import authService from "@/services/AuthService"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Input } from "@nextui-org/react"
+import { signIn } from "next-auth/react"
+import { Controller, useForm } from "react-hook-form"
+import { z } from "zod"
+import PasswordInput from "../inputs/PasswordInput"
+import toast from "react-hot-toast"
 
 const fromSchema = z
   .object({
@@ -21,7 +22,7 @@ const fromSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
-  });
+  })
 
 const RegistrationForm = () => {
   const {
@@ -30,22 +31,27 @@ const RegistrationForm = () => {
     formState: { errors },
   } = useForm<z.infer<typeof fromSchema>>({
     resolver: zodResolver(fromSchema),
-  });
+    mode: "onTouched",
+  })
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
-    const { confirmPassword, ...fields } = values;
-    const { status } = await authService.signUp(fields);
+    try {
+      const { confirmPassword, ...fields } = values
+      const res = await authService.signUp(fields)
 
-    if (status != 201) {
-      return;
+      if (res.status != 201) {
+        return
+      }
+
+      signIn("credentials", {
+        email: fields.email,
+        password: fields.password,
+        callbackUrl: "/home",
+      })
+    } catch (err: any) {
+      toast.error(err.response.data)
     }
-
-    signIn("credentials", {
-      email: fields.email,
-      password: fields.password,
-      callbackUrl: "/home",
-    });
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -111,13 +117,13 @@ const RegistrationForm = () => {
           />
         )}
       />
-      <div className="w-full flex justify-end">
+      <div className="flex w-full justify-end">
         <Button type="submit" size="lg" color="primary">
           Sign up
         </Button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default RegistrationForm;
+export default RegistrationForm

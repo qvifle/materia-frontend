@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useClickAway } from "@uidotdev/usehooks"
 import { Check } from "lucide-react"
 import React, { FC } from "react"
+import toast from "react-hot-toast"
 
 interface UpdateDeskTitleInputProps {
   title: string
@@ -30,18 +31,14 @@ const UpdateDeskTitleInput: FC<UpdateDeskTitleInputProps> = ({
   const ref = useClickAway(() => reset())
 
   const changeDeskTitleQuery = async (deskId: string, newTitle: string) => {
-    try {
-      if (newTitle === "") {
-        reset()
-        return
-      }
-      const { data } = await deskService.updateDeskById(deskId, {
-        title: newTitle,
-      })
-      return data
-    } catch (err) {
-      console.error(err)
+    if (newTitle === "") {
+      reset()
+      return
     }
+    const { data } = await deskService.updateDeskById(deskId, {
+      title: newTitle,
+    })
+    return data
   }
 
   const { mutate: updateTitle } = useMutation({
@@ -51,8 +48,11 @@ const UpdateDeskTitleInput: FC<UpdateDeskTitleInputProps> = ({
       setTitleEdit(false)
       queryClient.invalidateQueries({ queryKey: ["desks"] })
     },
-    onError: (err) => {
-      setTitleEdit(false)
+    onError: (err: any) => {
+      reset()
+      if (!!err.response.data) {
+        toast.error(err.response.data)
+      }
       console.error(err)
     },
   })
@@ -72,7 +72,7 @@ const UpdateDeskTitleInput: FC<UpdateDeskTitleInputProps> = ({
           if (e.key === "Enter") {
             updateTitle()
           } else if (e.key === "Escape") {
-            setTitleEdit(false)
+            reset()
           }
         }}
       />
@@ -82,7 +82,7 @@ const UpdateDeskTitleInput: FC<UpdateDeskTitleInputProps> = ({
         color="primary"
         onClick={() => updateTitle()}
       >
-        <Check size={14} />
+        <Check color="#fcfcfd" size={14} />
       </Button>
     </div>
   )

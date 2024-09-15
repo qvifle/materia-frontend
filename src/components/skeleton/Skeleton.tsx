@@ -21,7 +21,7 @@ const Skeleton = ({
     <NSkeleton
       style={{ width: width, ...style }}
       className={cn(
-        "rounded-lg !bg-gray-4 duration-1000 before:border-gray-4",
+        "rounded-lg !bg-gray-4  before:border-gray-4",
         otherStyles.slowAnimation,
         className,
       )}

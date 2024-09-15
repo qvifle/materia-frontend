@@ -23,7 +23,8 @@ const NotificationsCard: FC<NotificationsCardProps> = ({ invite }) => {
     },
     onSuccess: () => {
       toast.success("Invite accepted!")
-      queryClient.invalidateQueries({ queryKey: ["my-invites", "projects"] })
+      queryClient.invalidateQueries({ queryKey: ["my-invites"] })
+      queryClient.invalidateQueries({ queryKey: ["projects"] })
     },
     onError: () => {
       toast.error("Something went wrong")

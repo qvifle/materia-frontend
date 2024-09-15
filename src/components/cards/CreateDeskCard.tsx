@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import deskService from "@/services/DeskService"
 import { Button, Card, CardBody } from "@nextui-org/react"
 import { useClickAway } from "@uidotdev/usehooks"
+import toast from "react-hot-toast"
 
 const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   const queryClient = useQueryClient()
@@ -28,10 +29,16 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
       queryClient.invalidateQueries({ queryKey: ["desks"] })
       reset()
     },
+    onError: (err: any) => {
+      if (!!err.response.data) {
+        toast.error(err.response.data)
+        return
+      }
+      toast.error("Something went wrong")
+    },
   })
 
   const createNewDesk = () => {
-    console.log(value)
     if (!value) {
       reset()
       return
@@ -41,6 +48,7 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
 
   return (
     <Card
+      disableAnimation
       isPressable={isInit}
       onClick={() => setInit(false)}
       className="outline-no h-[64px] min-w-[calc(100vw-18px-16px)] cursor-pointer px-4 py-5 md:min-w-[350px]"
@@ -74,7 +82,7 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
             onClick={() => createNewDesk()}
             isIconOnly
           >
-            <Check size={14} />
+            <Check color="#fcfcfd" size={14} />
           </Button>
         </div>
       )}

@@ -1,20 +1,22 @@
-import api from "@/lib/utils/api";
-import { ISignInFormFields, ISignUpFormFields } from "@/types/auth.types";
+import { apiNoAuth, serverApi } from "@/lib/utils/api"
+import { ISignInFormFields, ISignUpFormFields } from "@/types/auth.types"
 
 class AuthService {
-  private signInUrl = "/signIn";
-  private signUpUrl = "signUp";
+  private signInUrl = "/signIn"
+  private signUpUrl = "/signUp"
 
   async signIn(data: ISignInFormFields) {
-    const res = await api.post(this.signInUrl, data, { withCredentials: true });
-    return res;
+    const res = await serverApi.post(this.signInUrl, data, {
+      withCredentials: true,
+    })
+    return res
   }
 
   async signUp(data: ISignUpFormFields) {
-    const res = await api.post(this.signUpUrl, data);
-    return res;
+    const res = await apiNoAuth.post(this.signUpUrl, data)
+    return res
   }
 }
 
-const authService = new AuthService();
-export default authService;
+const authService = new AuthService()
+export default authService

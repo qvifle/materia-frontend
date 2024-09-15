@@ -20,9 +20,18 @@ const CustomBreadcrumbs = () => {
           titles.push(capitalize(pathNames[i]))
           continue
         } else {
-          const { data } = await projectService.getProjectById(pathNames[i])
-          titles.push(data.title)
-          continue
+          try {
+            const { data, status } = await projectService.getProjectById(
+              pathNames[i],
+            )
+            if (status === 403) {
+              titles.push("-")
+            }
+            titles.push(data.title)
+            continue
+          } catch (err) {
+            console.log(err)
+          }
         }
       }
 

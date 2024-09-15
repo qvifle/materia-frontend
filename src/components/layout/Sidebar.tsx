@@ -13,18 +13,20 @@ const Sidebar = () => {
 
   return (
     <aside className={cn(styles.sidebar)}>
-      <SidebarHeader />
+      <div className="sticky top-4 flex flex-col  items-center lg:items-start">
+        <SidebarHeader />
 
-      <SidebarButton
-        onClick={() => openDialog("create-project")}
-        variant="light"
-        color="primary"
-        icon={<SquarePen />}
-      >
-        Create project
-      </SidebarButton>
+        <SidebarButton
+          onClick={() => openDialog("create-project")}
+          variant="light"
+          color="primary"
+          icon={<SquarePen />}
+        >
+          Create project
+        </SidebarButton>
 
-      <SidebarProjects />
+        <SidebarProjects />
+      </div>
     </aside>
   )
 }
