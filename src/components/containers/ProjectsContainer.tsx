@@ -1,28 +1,19 @@
-"use client"
 import { IProject } from "@/types/project.types"
 import { ReactNode } from "react"
 import ProjectCard from "../cards/ProjectCard"
 import { cn } from "@nextui-org/react"
+import getProjectsContainerRows from "@/lib/utils/getRows"
 
 interface ProjectsContainerProps {
   title: ReactNode
   items: IProject[]
 }
 
-const getRows = (count: number) => {
-  if (count === 1) {
-    return "grid-rows-1"
-  } else if (count === 2) {
-    return "grid-rows-2"
-  } else {
-    return "grid-rows-3"
-  }
-}
-
 const ProjectsContainer: React.FC<ProjectsContainerProps> = ({
   title,
   items,
 }) => {
+  const gridRows = getProjectsContainerRows(items.length)
   return (
     <>
       {items.length > 0 && (
@@ -31,7 +22,7 @@ const ProjectsContainer: React.FC<ProjectsContainerProps> = ({
           <div
             className={cn(
               "grid w-full grid-flow-col grid-rows-3 gap-2 overflow-x-auto py-2 min-[420px]:grid-flow-row min-[420px]:grid-cols-2 min-[420px]:grid-rows-none md:grid-flow-row md:grid-cols-4 md:grid-rows-none xl:grid-cols-5",
-              getRows(items.length),
+              gridRows,
             )}
           >
             {items.map((project: IProject, key: number) => (

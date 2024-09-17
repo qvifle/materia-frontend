@@ -10,18 +10,22 @@ export async function generateMetadata({
   params: { projectId: string }
 }) {
   try {
-    const { status, data } = await serverApi.get<IProject>(
-      `/projects/${projectId}`,
-    )
+    const res = await serverApi.get<IProject>(`/projects/${projectId}`)
 
-    if (status != 200) {
+    if (!res) {
+      console.log(res)
+      return
+    }
+
+    if (res.status != 200) {
       redirect("/home/projects")
     }
 
     return {
-      title: data.title,
+      title: res.data.title,
     }
   } catch (err) {
+    console.log("suka")
     console.log(err)
   }
 }

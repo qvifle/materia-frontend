@@ -11,6 +11,7 @@ import React from "react"
 
 const ProjectModule = ({ projectId }: { projectId: string }) => {
   const { push } = useRouter()
+
   const { data, isLoading, isError } = useQuery<IProject | undefined>({
     queryKey: ["project", projectId],
     queryFn: async () => {
@@ -25,6 +26,7 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
       }
     },
   })
+
   return (
     <div className="flex h-full w-full flex-col">
       <div className="px-4">
@@ -42,17 +44,6 @@ const ProjectModule = ({ projectId }: { projectId: string }) => {
             <h1 className="h-max max-w-full gap-1 break-all text-4xl font-bold tracking-tight lg:hidden lg:text-5xl">
               {data.title}
             </h1>
-
-            {/* <div className=" flex w-full md:w-max md:items-center md:justify-between">
-              <h1 className="flex gap-1 text-4xl font-bold tracking-tight lg:text-5xl">
-                <span className="ml-[-6px] flex h-[48px] w-[48px] justify-center text-center">
-                  <Emoji unifiedCode={data.iconUrl ?? ""} />
-                </span>
-
-                <span>{data.title}</span>
-              </h1>
-              <ProjectSettingsDropdown project={data} className="sm:ml-2" />
-            </div> */}
 
             {!!data.description && (
               <p className="mt-2 break-all text-gray-11">{data.description}</p>

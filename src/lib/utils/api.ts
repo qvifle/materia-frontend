@@ -17,18 +17,16 @@ const options = {
 const ApiClient = () => {
   const instance = axios.create(options)
 
-  instance.interceptors.request.use(async (request) => {
-    const session = await getSession({ req: request })
-    if (session?.user.accessToken) {
-      request.headers.Authorization = `Bearer ${session?.user.accessToken}`
-    }
-    return request
-  })
-
-  instance.interceptors.response.use(
-    (response) => response,
+  instance.interceptors.request.use(
+    async (request) => {
+      const session = await getSession({ req: request })
+      if (session?.user.accessToken) {
+        request.headers.Authorization = `Bearer ${session?.user.accessToken}`
+      }
+      return request
+    },
     (error) => {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
         signOut({ redirect: true, callbackUrl: "/login" })
       }
       throw error
@@ -51,18 +49,17 @@ const ApiClientNoAuth = () => {
 
 const ServerApiClient = () => {
   const instance = axios.create({ ...options, baseURL: serverBaseUrl })
-  instance.interceptors.request.use(async (request) => {
-    const session = await getServerSession(nextAuthOptions)
-    if (session?.user.accessToken) {
-      request.headers.Authorization = `Bearer ${session?.user.accessToken}`
-    }
-    return request
-  })
-
-  instance.interceptors.response.use(
-    (response) => response,
+  instance.interceptors.request.use(
+    async (request) => {
+      const session = await getServerSession(nextAuthOptions)
+      if (session?.user.accessToken) {
+        request.headers.Authorization = `Bearer ${session?.user.accessToken}`
+      }
+      return request
+    },
     (error) => {
-      if (error.response.status === 401) {
+      console.log(error)
+      if (error?.response?.status === 401) {
         signOut({ redirect: true, callbackUrl: "/login" })
       }
       throw error

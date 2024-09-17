@@ -248,23 +248,21 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   }
 
   return (
-    <>
-      <DndContext
-        sensors={sensors}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-        collisionDetection={closestCenter}
-      >
-        {reorderDesks.map((desk, key) => (
-          <DeskWidget key={desk.id} desk={desk} />
-        ))}
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+      collisionDetection={closestCenter}
+    >
+      {reorderDesks.map((desk) => (
+        <DeskWidget key={desk.id} desk={desk} />
+      ))}
 
-        <DragOverlay dropAnimation={defaultDropAnimation}>
-          {activeTask && <TaskCard task={activeTask} />}
-        </DragOverlay>
-      </DndContext>
-    </>
+      <DragOverlay dropAnimation={defaultDropAnimation}>
+        {activeTask && <TaskCard task={activeTask} />}
+      </DragOverlay>
+    </DndContext>
   )
 }
 
