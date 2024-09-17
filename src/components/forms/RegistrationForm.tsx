@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react"
 import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 import PasswordInput from "../inputs/PasswordInput"
-import toast from "react-hot-toast"
+import handleSignupError from "@/lib/utils/handleSignupError"
 
 const fromSchema = z
   .object({
@@ -49,12 +49,8 @@ const RegistrationForm = () => {
         callbackUrl: "/home",
       })
     } catch (err: any) {
-      if (err.message === "Network Error") {
-        toast.error("Can't reach the server")
-      }
-      
+      handleSignupError(err)
       console.log(err)
-      // toast.error(err)
     }
   }
 
