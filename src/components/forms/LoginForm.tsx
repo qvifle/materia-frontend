@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import requiredFormFieldMessage from "@/lib/constants/requiredFormFieldMessage"
@@ -13,6 +13,7 @@ import handleSignInError from "@/lib/utils/handleSigninError"
 
 const LoginForm = () => {
   const { push } = useRouter()
+  const [isLoading, setLoading] = useState(false)
   const fromSchema = z.object({
     email: z
       .string()
@@ -31,6 +32,7 @@ const LoginForm = () => {
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
     try {
+      setLoading(true)
       const res = await signIn("credentials", {
         ...values,
         redirect: false,
@@ -44,10 +46,11 @@ const LoginForm = () => {
     } catch (err: any) {
       console.log(err)
       handleSignInError(err)
+    } finally {
+      setLoading(false)
     }
   }
 
-  
   return (
     <form onSubmit={handleSubmit(onSubmit)} action="">
       <Controller
@@ -83,6 +86,7 @@ const LoginForm = () => {
       />
       <div className="flex w-full justify-end">
         <Button
+          isLoading={isLoading}
           type="submit"
           color="primary"
           size="lg"

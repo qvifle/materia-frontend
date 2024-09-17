@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 import PasswordInput from "../inputs/PasswordInput"
 import handleSignupError from "@/lib/utils/handleSignupError"
+import { useState } from "react"
 
 const fromSchema = z
   .object({
@@ -25,6 +26,7 @@ const fromSchema = z
   })
 
 const RegistrationForm = () => {
+  const [isLoading, setLoading] = useState(false)
   const {
     handleSubmit,
     control,
@@ -36,6 +38,7 @@ const RegistrationForm = () => {
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
     try {
+      setLoading(true)
       const { confirmPassword, ...fields } = values
       const res = await authService.signUp(fields)
 
@@ -51,6 +54,8 @@ const RegistrationForm = () => {
     } catch (err: any) {
       handleSignupError(err)
       console.log(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -119,7 +124,7 @@ const RegistrationForm = () => {
         )}
       />
       <div className="flex w-full justify-end">
-        <Button type="submit" size="lg" color="primary">
+        <Button isLoading={isLoading} type="submit" size="lg" color="primary">
           Sign up
         </Button>
       </div>
