@@ -43,8 +43,7 @@ const ApiClientNoAuth = () => {
   instance.interceptors.response.use(
     (res) => res,
     (err) => {
-      console.log(Error(err))
-      throw new Error(err)
+      throw err
     },
   )
   return instance

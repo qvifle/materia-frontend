@@ -49,7 +49,12 @@ const RegistrationForm = () => {
         callbackUrl: "/home",
       })
     } catch (err: any) {
-      toast.error(err.response.data)
+      if (err.message === "Network Error") {
+        toast.error("Can't reach the server")
+      }
+      
+      console.log(err)
+      // toast.error(err)
     }
   }
 
