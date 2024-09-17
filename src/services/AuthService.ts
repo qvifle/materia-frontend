@@ -6,7 +6,7 @@ class AuthService {
   private signUpUrl = "/signUp"
 
   async signIn(data: ISignInFormFields) {
-    const res = await serverApi.post(this.signInUrl, data, {
+    const res = await apiNoAuth.post(this.signInUrl, data, {
       withCredentials: true,
     })
     return res

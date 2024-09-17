@@ -14,6 +14,7 @@ const RegistrationModule = () => {
   if (status === "authenticated") {
     push("/home")
   }
+  
   return (
     <main className="h-full min-h-screen bg-[url('/registrationImage.jpg')] bg-cover">
       <div className="flex h-screen items-center md:grid md:grid-cols-[5fr,4fr]">

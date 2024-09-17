@@ -9,6 +9,7 @@ import toast from "react-hot-toast"
 import PasswordInput from "@/components/inputs/PasswordInput"
 import { useRouter } from "next/navigation"
 import { Button, Input } from "@nextui-org/react"
+import handleSignInError from "@/lib/utils/handleSigninError"
 
 const LoginForm = () => {
   const { push } = useRouter()
@@ -35,21 +36,18 @@ const LoginForm = () => {
         redirect: false,
       })
 
-      if (!res) {
-        throw new Error("something went wrong")
-      }
-
-      if (!res.ok) {
-        toast.error("Wrong password or User doesnt exist")
-        return
+      if (!res || !res.ok) {
+        throw res
       }
 
       push("/home")
-    } catch (err) {
-      toast.error("Wrong password or User doesnt exist")
+    } catch (err: any) {
       console.log(err)
+      handleSignInError(err)
     }
   }
+
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} action="">
       <Controller

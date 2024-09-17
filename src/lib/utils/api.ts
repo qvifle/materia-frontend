@@ -40,10 +40,17 @@ const ApiClient = () => {
 
 const ApiClientNoAuth = () => {
   const instance = axios.create(options)
+  instance.interceptors.response.use(
+    (res) => res,
+    (err) => {
+      console.log(Error(err))
+      throw new Error(err)
+    },
+  )
   return instance
 }
 
-export const ServerApiClient = () => {
+const ServerApiClient = () => {
   const instance = axios.create({ ...options, baseURL: serverBaseUrl })
   instance.interceptors.request.use(async (request) => {
     const session = await getServerSession(nextAuthOptions)

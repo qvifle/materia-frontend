@@ -36,37 +36,19 @@ export const options: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        try {
-          if (!credentials?.email || !credentials?.password) {
-            return null
-          }
-
-          const res = await authService.signIn(credentials)
-          console.log(res)
-          if (!res) {
-            return
-          }
-
-          if (res.status != 200) {
-            return null
-          }
-
-          if (!res.headers["set-cookie"]) {
-            return null
-          }
-
-          const accessToken = getAccessTokenFromCookie(
-            res.headers["set-cookie"],
-          )
-
-          if (!accessToken) {
-            return null
-          }
-
-          return { ...res.data, accessToken: accessToken }
-        } catch (err: any) {
-          console.log(err)
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("No email or password provided")
         }
+
+        const res = await authService.signIn(credentials)
+
+        if (!res.headers["set-cookie"]) {
+          throw new Error("No header 'set-cookie' in response")
+        }
+
+        const accessToken = getAccessTokenFromCookie(res.headers["set-cookie"])
+
+        return { ...res.data, accessToken: accessToken }
       },
     }),
   ],
