@@ -29,7 +29,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
         <ThemeProvider
           attribute="class"
           forcedTheme={getTheme()}
-          defaultTheme="light"
+          defaultTheme="system"
         >
           {children}
         </ThemeProvider>
