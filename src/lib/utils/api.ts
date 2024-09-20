@@ -4,7 +4,7 @@ import { getSession, signOut } from "next-auth/react"
 import { options as nextAuthOptions } from "@/app/api/auth/[...nextauth]/options"
 
 const baseURL = process.env.NEXT_PUBLIC_API_PATH
-const serverBaseUrl = process.env.API_PATH
+const serverBaseUrl = process.env.SERVER_API_PATH
 
 const options = {
   baseURL,
@@ -47,6 +47,17 @@ const ApiClientNoAuth = () => {
   return instance
 }
 
+const ServerApiClientNoAuth = () => {
+  const instance = axios.create({ ...options, baseURL: serverBaseUrl })
+  instance.interceptors.response.use(
+    (res) => res,
+    (err) => {
+      throw err
+    },
+  )
+  return instance
+}
+
 const ServerApiClient = () => {
   const instance = axios.create({ ...options, baseURL: serverBaseUrl })
   instance.interceptors.request.use(
@@ -70,5 +81,7 @@ const ServerApiClient = () => {
 }
 
 export const serverApi = ServerApiClient()
+export const serverApiNoAuth = ServerApiClientNoAuth()
 export const apiNoAuth = ApiClientNoAuth()
+
 export default ApiClient()

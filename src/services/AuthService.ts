@@ -1,4 +1,4 @@
-import { apiNoAuth, serverApi } from "@/lib/utils/api"
+import { apiNoAuth, serverApi, serverApiNoAuth } from "@/lib/utils/api"
 import { ISignInFormFields, ISignUpFormFields } from "@/types/auth.types"
 
 class AuthService {
@@ -6,7 +6,7 @@ class AuthService {
   private signUpUrl = "/signUp"
 
   async signIn(data: ISignInFormFields) {
-    const res = await apiNoAuth.post(this.signInUrl, data, {
+    const res = await serverApiNoAuth.post(this.signInUrl, data, {
       withCredentials: true,
     })
     return res

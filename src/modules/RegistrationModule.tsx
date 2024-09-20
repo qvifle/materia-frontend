@@ -1,22 +1,15 @@
-"use client"
 import RegistrationForm from "@/components/forms/RegistrationForm"
 import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
 import { Github as GhIcon, Instagram } from "lucide-react"
-import { useSession } from "next-auth/react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import React from "react"
+import bg from "public/registrationImage.jpg"
+import BluredBackground from "@/components/images/BluredBackground"
 
 const RegistrationModule = () => {
-  const { status } = useSession()
-  const { push } = useRouter()
-
-  if (status === "authenticated") {
-    push("/home")
-  }
-  
   return (
-    <main className="h-full min-h-screen bg-[url('/registrationImage.jpg')] bg-cover">
+    <main className="h-full min-h-screen bg-cover">
+      <BluredBackground src={bg} />
       <div className="flex h-screen items-center md:grid md:grid-cols-[5fr,4fr]">
         <section className="filter-opacity-15 flex h-full w-full flex-col items-center justify-between px-4 py-[40px] backdrop-blur-md md:items-center md:justify-center md:rounded-l-3xl md:p-0">
           <div className="mx-auto flex max-w-max flex-col md:hidden">
@@ -59,11 +52,11 @@ const RegistrationModule = () => {
         </section>
 
         <section className="hidden h-screen w-full flex-col items-end justify-between p-[40px] md:flex">
-          <div className="flex max-w-max flex-col items-end">
+          <div className="flex max-w-max flex-col items-start">
             <h1 className="w-full text-right text-4xl font-semibold leading-[36px] text-gray-1">
               Matēria
             </h1>
-            <h3 className="text-right text-3xl font-bold text-primary-6">
+            <h3 className="text-start text-3xl font-bold text-primary-6">
               by qvifle
             </h3>
           </div>

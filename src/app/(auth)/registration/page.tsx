@@ -1,8 +1,12 @@
-import RegistrationModule from "@/modules/RegistrationModule";
-import React from "react";
+import RegistrationModule from "@/modules/RegistrationModule"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Registration",
+}
 
 const RegistrationPage = () => {
-  return <RegistrationModule />;
-};
+  return <RegistrationModule />
+}
 
-export default RegistrationPage;
+export default RegistrationPage

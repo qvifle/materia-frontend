@@ -1,29 +1,16 @@
-"use client"
-import React, { useEffect } from "react"
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-  Input,
-} from "@nextui-org/react"
+import React from "react"
+import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
 import Link from "next/link"
 import { Github as GhIcon, Instagram } from "lucide-react"
 import LoginForm from "@/components/forms/LoginForm"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import BluredBackground from "@/components/images/BluredBackground"
+import bg from "public/loginImage.png"
 
 const LoginModule = () => {
-  const { status } = useSession()
-  const { push } = useRouter()
-
-  if (status === "authenticated") {
-    push("/home")
-  }
-
   return (
-    <main className="h-full min-h-screen bg-[url('/loginImage.png')] bg-cover">
+    <main className="h-full min-h-screen bg-cover">
+      <BluredBackground src={bg} />
+
       <div className="flex h-screen items-center md:grid md:grid-cols-[4fr,5fr]">
         <section className="hidden h-screen w-full flex-col justify-between p-[40px] md:flex">
           <div className="flex max-w-max flex-col">
