@@ -10,11 +10,12 @@ import PasswordInput from "@/components/inputs/PasswordInput"
 import { useRouter } from "next/navigation"
 import { Button, Input } from "@nextui-org/react"
 import handleSignInError from "@/lib/utils/handleSigninError"
+import handleOnChange from "@/lib/utils/handleOnChange"
 
 const LoginForm = () => {
   const { push } = useRouter()
   const [isLoading, setLoading] = useState(false)
-  
+
   const fromSchema = z.object({
     email: z
       .string()

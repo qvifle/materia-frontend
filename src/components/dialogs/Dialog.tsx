@@ -24,12 +24,13 @@ const Modal: React.FC<IModal> = ({ children, searchParam, ...rest }) => {
     return null
   }
 
-  // if (!isOpen) {
-  //   return null;
-  // }
-
   return (
-    <NModal onOpenChange={close} backdrop="blur" isOpen={isOpen}>
+    <NModal
+      onOpenChange={close}
+      backdrop="blur"
+      placement="center"
+      isOpen={isOpen}
+    >
       {children}
     </NModal>
   )

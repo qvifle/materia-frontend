@@ -8,6 +8,8 @@ import { useDroppable } from "@dnd-kit/core"
 import { Button, ButtonProps, Card, CardHeader, cn } from "@nextui-org/react"
 import { useClickAway } from "@uidotdev/usehooks"
 import toast from "react-hot-toast"
+import { useDesksContext } from "@/context/DesksContext"
+import { ITask, TaskStatus } from "@/types/task.types"
 
 interface IAddTaskButton extends ButtonProps {
   desk: IDesk
@@ -16,6 +18,31 @@ interface IAddTaskButton extends ButtonProps {
 const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
   const [isInit, setInit] = useState(true)
   const [value, setValue] = useState("")
+  const { setDesks: setMockDesks } = useDesksContext()
+
+  const addMockTask = (title: string) => {
+    setMockDesks((desks) => {
+      return desks.map((d) => {
+        if (d.id === desk.id) {
+          return {
+            ...d,
+            tasks: [
+              ...d.tasks,
+              {
+                id: "mock",
+                title: title,
+                createdAt: new Date(),
+                deskId: d.id,
+                orderId: d.tasks.length,
+                status: TaskStatus.PAUSED,
+              },
+            ],
+          }
+        }
+        return d
+      })
+    })
+  }
 
   const reset = () => {
     setInit(true)
@@ -53,6 +80,8 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
       reset()
       return
     }
+    setInit(true)
+    addMockTask(value)
     createTask()
   }
 

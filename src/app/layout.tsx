@@ -17,10 +17,25 @@ export const metadata: Metadata = {
     template: "%s | Matēria: Powerful Kanban Task Management for Your Projects",
   },
   creator: "Kopytin Igor",
-  authors: [{name: "Kopytin Igor","url": ""}],
-  robots: "",
+  authors: [{ name: "Kopytin Igor", url: "" }],
+  keywords: [
+    "Materia",
+    "materia",
+    "mateeria",
+    "Mateeria",
+    "Kanban",
+    "материя",
+    "Материя",
+    "Trello",
+    "Трело",
+    "канбан",
+    "Kanban",
+    "Trello clone",
+    "Task manager",
+  ],
   description:
     "Organize and manage your projects effortlessly with our Kanban-based task management tool. Create, track, and prioritize tasks with ease to boost productivity and streamline your workflow.",
+  metadataBase: new URL("http://mateeria.ru"),
   openGraph: {
     title: "Matēria: Powerful Kanban Task Management for Your Projects",
     description:
@@ -28,10 +43,17 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Matēria",
+    images: [
+      {
+        url: "https://mateeria.ru/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Mateeria",
+      },
+    ],
 
-    // url: ""
+    url: "mateeria.ru",
   },
-  // metadataBase: new URL("domen/"),
 }
 
 export default function RootLayout({

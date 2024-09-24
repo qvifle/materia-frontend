@@ -1,11 +1,11 @@
-import { ITask } from "./task.types";
+import { ITask } from "./task.types"
 
 export interface IDesk {
-  id: string;
-  title: string;
-  color: string | null;
-  projectId: string;
-  tasks: ITask[];
+  id: string
+  title: string
+  color: string | null
+  projectId: string
+  tasks: ITask[]
 }
 
 export interface IDeskFormFields

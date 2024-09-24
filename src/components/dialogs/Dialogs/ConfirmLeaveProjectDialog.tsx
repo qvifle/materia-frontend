@@ -36,7 +36,7 @@ const ConfirmLeaveProjectDialog = () => {
   })
 
   return (
-    <Modal searchParam="leave-project">
+    <Modal  searchParam="leave-project">
       <ModalContent>
         <ModalHeader>Confirm project exit</ModalHeader>
         <ModalBody>

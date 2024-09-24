@@ -6,12 +6,28 @@ import deskService from "@/services/DeskService"
 import { Button, Card, CardBody } from "@nextui-org/react"
 import { useClickAway } from "@uidotdev/usehooks"
 import toast from "react-hot-toast"
+import { useDesksContext } from "@/context/DesksContext"
+import { IDesk } from "@/types/desk.types"
 
 const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   const queryClient = useQueryClient()
+  const { setDesks: setMockDesks } = useDesksContext()
   const [isInit, setInit] = useState(true)
   const [value, setValue] = useState("")
   const ref = useClickAway(() => setInit(true))
+
+  const addMockDesk = (title: string) => {
+    setMockDesks((desks) => [
+      ...desks,
+      {
+        id: "mock-desk",
+        title: title,
+        projectId: projectId,
+        color: null,
+        tasks: [],
+      },
+    ])
+  }
 
   const reset = () => {
     setValue("")
@@ -43,6 +59,8 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
       reset()
       return
     }
+    setInit(true)
+    addMockDesk(value)
     createDesk()
   }
 
