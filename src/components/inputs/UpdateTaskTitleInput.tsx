@@ -70,7 +70,7 @@ const UpdateTaskTitleInput: FC<UpdateTaskTitleInputProps> = ({
       <input
         autoFocus
         id="update-task-title-input"
-        className="w-full bg-transparent outline-none"
+        className="w-full bg-transparent leading-[20px] outline-none"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={(e) => {
@@ -82,7 +82,7 @@ const UpdateTaskTitleInput: FC<UpdateTaskTitleInputProps> = ({
         }}
       />
       <Button
-        className="h-6 w-6 min-w-6 p-0 outline-none"
+        className="h-5 w-5 min-w-5 p-0 outline-none"
         size="sm"
         color="primary"
         onClick={() => updateTitle()}

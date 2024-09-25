@@ -7,6 +7,7 @@ import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import UpdateTaskTitleInput from "../inputs/UpdateTaskTitleInput"
 import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
 import EditTaskDropdown from "../dropdowns/EditTaskDropdown"
+import { cn } from "@/lib/utils"
 
 interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
   task: ITask
@@ -14,7 +15,12 @@ interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
   draggable?: boolean
 }
 
-const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
+const TaskCard: React.FC<ITaskCard> = ({
+  task,
+  hidden = false,
+  className,
+  ...rest
+}) => {
   const [isTitleEdit, setTitleEdit] = useState(false)
   const [title, setTitle] = useState(task.title)
   const [clickTimeout, setClickTimeout] = useState<NodeJS.Timeout | null>(null)
@@ -49,7 +55,10 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
     <Card
       style={{ touchAction: "none" }}
       isBlurred
-      className="group w-full bg-gray-4 px-4 py-3 text-base md:max-w-[350px]"
+      className={cn(
+        "group w-full cursor-grab bg-gray-4 px-4 py-3 text-base active:cursor-grabbing md:max-w-[350px]",
+        className,
+      )}
     >
       <CardHeader className="w-full p-0 text-gray-12">
         <div className="flex w-full items-center justify-between gap-2">
@@ -64,11 +73,12 @@ const TaskCard: React.FC<ITaskCard> = ({ task, hidden = false, ...rest }) => {
               />
             ) : (
               <button
-                className="max-w-full text-start leading-[20px]"
+                className="w-max min-w-[20px] text-start leading-[20px]"
                 onTouchEnd={() => onDoubleClick(() => handleEditTitleClick())}
                 onDoubleClick={handleEditTitleClick}
               >
-                {title}
+                {/* {title} */}
+                {title + " | " + task.id.substring(0, 4) + " | " + task.orderId}
               </button>
             )}
           </div>
