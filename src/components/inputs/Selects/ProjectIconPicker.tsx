@@ -1,5 +1,5 @@
 "use client"
-import React, { ReactNode, useState } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 import { useTheme } from "next-themes"
@@ -10,6 +10,7 @@ import {
   PopoverContent,
   Button,
 } from "@nextui-org/react"
+import { useMediaQuery } from "@uidotdev/usehooks"
 
 const ProjectIconPicker = ({
   onChange,
@@ -22,6 +23,8 @@ const ProjectIconPicker = ({
   const [selectedEmoji, setSelectedEmoji] = useState<ReactNode | undefined>(
     value ? <Emoji unifiedCode={value} /> : undefined,
   )
+
+  const isMobile = useMediaQuery("only screen and (max-width : 320px)")
 
   return (
     <Popover placement="bottom">
@@ -38,7 +41,7 @@ const ProjectIconPicker = ({
         <Picker
           autoFocus
           theme={theme}
-          perLine={7}
+          perLine={isMobile ? 5 : 7}
           data={data}
           onEmojiSelect={(e: any) => {
             setSelectedEmoji(e.native)

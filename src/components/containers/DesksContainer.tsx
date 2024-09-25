@@ -61,7 +61,7 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   )
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["desks"],
+    queryKey: ["desks", projectId],
     queryFn: async () => {
       const { data } = await deskService.getDesks(projectId)
       return data
