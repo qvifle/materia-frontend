@@ -1,6 +1,6 @@
 "use client"
 import CreateProjectButton from "@/components/buttons/CreateProjectButton"
-import React from "react"
+import React, { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import projectService from "@/services/ProjectService"
 import { IProject } from "@/types/project.types"
@@ -32,6 +32,10 @@ const ProjectsModule = () => {
     () => sortProjects(projects, session?.user.email || ""),
     [projects, session],
   )
+
+  useEffect(() => {
+    console.log(session?.user.accessToken)
+  }, [session])
 
   if (isPending) {
     return <ProjectsModuleLoading />

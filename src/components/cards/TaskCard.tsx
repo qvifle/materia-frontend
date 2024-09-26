@@ -77,8 +77,7 @@ const TaskCard: React.FC<ITaskCard> = ({
                 onTouchEnd={() => onDoubleClick(() => handleEditTitleClick())}
                 onDoubleClick={handleEditTitleClick}
               >
-                {/* {title} */}
-                {title + " | " + task.id.substring(0, 4) + " | " + task.orderId}
+                {title}
               </button>
             )}
           </div>

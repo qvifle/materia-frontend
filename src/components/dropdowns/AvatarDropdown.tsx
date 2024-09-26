@@ -52,7 +52,7 @@ const AvatarDropdown = () => {
             as="button"
             className="transition-transform"
             color="primary"
-            name={sessionData?.user.name}
+            name={sessionData?.user.email}
             size="sm"
           />
         </DropdownTrigger>

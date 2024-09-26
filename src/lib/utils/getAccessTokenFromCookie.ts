@@ -1,18 +1,25 @@
-const getTokensFromCookie = (cookie: string[]) => {
-  let accessToken: undefined | string
-  for (let i = 0; i < cookie.length; i++) {
-    const [name, value] = cookie[i].split(";")[0].split("=")
-    if (name === "accessToken") {
-      accessToken = value
+const getCookieByKey = (cookies: string[], cookieName: string) => {
+  let cookie: undefined | string
+  for (let i = 0; i < cookies.length; i++) {
+    const [name, value] = cookies[i].split(";")[0].split("=")
+    if (name === cookieName) {
+      cookie = value
       break
     }
   }
 
-  if (!accessToken) {
+  if (!cookie) {
     throw new Error("Can not parse access token")
   }
 
-  return accessToken as string
+  return cookie
 }
 
-export default getTokensFromCookie
+const getTokens = (cookiesHeader: string[]) => {
+  const accessToken = getCookieByKey(cookiesHeader, "accessToken")
+  const refreshToken = getCookieByKey(cookiesHeader, "refreshToken")
+
+  return { accessToken, refreshToken }
+}
+
+export default getTokens

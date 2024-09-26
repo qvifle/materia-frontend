@@ -25,7 +25,6 @@ export async function generateMetadata({
       title: res.data.title,
     }
   } catch (err) {
-    console.log("suka")
     console.log(err)
   }
 }
