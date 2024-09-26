@@ -71,6 +71,7 @@ const RegistrationForm = () => {
             type="text"
             label="Name"
             placeholder="Enter your Name"
+            autoComplete="username"
             isInvalid={!!errors.name}
             errorMessage={errors.name?.message}
             {...field}
@@ -85,6 +86,7 @@ const RegistrationForm = () => {
             className="mb-2"
             size="lg"
             type="email"
+            autoComplete="email"
             label="Email"
             placeholder="Enter your Email"
             isInvalid={!!errors.email}
@@ -101,6 +103,7 @@ const RegistrationForm = () => {
             className="mb-2"
             size="lg"
             label="Password"
+            autoComplete="new-password"
             placeholder="Enter your Password"
             isInvalid={!!errors.password}
             errorMessage={errors.password?.message}
@@ -115,6 +118,7 @@ const RegistrationForm = () => {
           <PasswordInput
             className="mb-2"
             size="lg"
+            autoComplete="new-password"
             label="Confirm password"
             placeholder="Confirm your password"
             isInvalid={!!errors.confirmPassword}

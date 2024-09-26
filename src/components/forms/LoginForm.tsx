@@ -67,6 +67,7 @@ const LoginForm = () => {
             placeholder="Enter your email"
             isInvalid={!!errors.email}
             errorMessage={errors.email?.message}
+            autoComplete="email"
             {...field}
           />
         )}
@@ -80,6 +81,7 @@ const LoginForm = () => {
             size="lg"
             label="Password"
             className="mb-4"
+            autoComplete="password"
             isInvalid={!!errors.password}
             errorMessage={errors.password?.message}
             {...field}
