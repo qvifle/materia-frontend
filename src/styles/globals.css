@@ -150,6 +150,10 @@
   @apply text-gray-12;
 }
 
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .outline-no:focus {
   outline: none !important;
 }
