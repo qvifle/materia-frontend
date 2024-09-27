@@ -8,7 +8,7 @@ const CreateProjectButton = () => {
   const { open: openDialog } = useDialog()
   return (
     <Button
-      className="absolute bottom-4 right-4 z-30 rounded-[14px] bg-[#0031d2a0] backdrop-blur-sm sm:hidden"
+      className="fixed bottom-4 right-4 z-30 rounded-[14px] bg-[#0031d2a0] backdrop-blur-sm sm:hidden"
       size="lg"
       color="primary"
       onClick={(e) => {

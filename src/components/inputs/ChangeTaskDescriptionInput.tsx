@@ -24,7 +24,6 @@ const ChangeTaskDescriptionInput = ({
   const mainRef = useRef<null | any>(null)
 
   useClickOutside(mainRef, () => {
-    console.log("hello")
     toggle(false)
   })
 

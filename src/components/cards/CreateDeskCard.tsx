@@ -11,12 +11,14 @@ import { IDesk } from "@/types/desk.types"
 
 const CreateDeskCard = ({ projectId }: { projectId: string }) => {
   const queryClient = useQueryClient()
-  const { setDesks: setMockDesks } = useDesksContext()
+  const { setDesks: setMockDesks, desks } = useDesksContext()
+  const [backupDesks, setBackupDesks] = useState<IDesk[]>([])
   const [isInit, setInit] = useState(true)
   const [value, setValue] = useState("")
   const ref = useClickAway(() => setInit(true))
 
   const addMockDesk = (title: string) => {
+    setBackupDesks(desks)
     setMockDesks((desks) => [
       ...desks,
       {
@@ -48,9 +50,11 @@ const CreateDeskCard = ({ projectId }: { projectId: string }) => {
     onError: (err: any) => {
       if (!!err.response.data) {
         toast.error(err.response.data)
-        return
+      } else {
+        toast.error("Something went wrong")
       }
-      toast.error("Something went wrong")
+
+      setMockDesks(backupDesks)
     },
   })
 

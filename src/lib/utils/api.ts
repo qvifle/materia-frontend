@@ -31,9 +31,11 @@ const ApiClient = () => {
     (res) => res,
     async (err) => {
       console.log(err)
-      if (err?.response?.data.error.name === "TokenExpiredError") {
+
+      if (err?.response?.data?.error?.name === "TokenExpiredError") {
         signOut()
       }
+
       throw err
     },
   )

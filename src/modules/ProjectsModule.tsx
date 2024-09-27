@@ -33,10 +33,6 @@ const ProjectsModule = () => {
     [projects, session],
   )
 
-  useEffect(() => {
-    console.log(session?.user.accessToken)
-  }, [session])
-
   if (isPending) {
     return <ProjectsModuleLoading />
   }

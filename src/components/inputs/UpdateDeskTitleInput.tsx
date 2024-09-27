@@ -60,12 +60,12 @@ const UpdateDeskTitleInput: FC<UpdateDeskTitleInputProps> = ({
   return (
     <div
       ref={ref as any}
-      className="flex w-full items-center justify-between gap-2"
+      className="flex w-full items-center justify-between gap-2 "
     >
       <input
         autoFocus
         id="update-desk-title-input"
-        className="w-full font-semibold outline-none"
+        className="w-full bg-transparent font-semibold outline-none"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={(e) => {

@@ -24,6 +24,7 @@ import {
 } from "@dnd-kit/core"
 import SkeletonDeskWidget from "../skeleton/SkeletonDeskWidget"
 import { useDesksContext } from "@/context/DesksContext"
+import mock from "./mock.json"
 
 interface IDesksContainer {
   projectId: string
@@ -42,15 +43,14 @@ interface IAddToDesk {
 const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
   const queryClient = useQueryClient()
   const [activeTask, setActiveTask] = useState<undefined | ITask>(undefined)
-  // const [reorderDesks, setReorderDesks] = useState<IDesk[]>([])
   const { desks: reorderDesks, setDesks: setReorderDesks } = useDesksContext()
   const [isOvered, setOvered] = useState(false)
 
   const sensors = useSensors(
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 200,
-        distance: 10,
+        delay: 300,
+        tolerance: 10,
       },
     }),
     useSensor(MouseSensor, {
@@ -64,6 +64,12 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     queryKey: ["desks", projectId],
     queryFn: async () => {
       const { data } = await deskService.getDesks(projectId)
+      if (!!data) {
+        setReorderDesks(mock as any)
+      }
+
+      setReorderDesks(data)
+
       return data
     },
   })
@@ -222,9 +228,9 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     })
   }
 
-  useEffect(() => {
-    setReorderDesks(data)
-  }, [data])
+  // useEffect(() => {
+  //   setReorderDesks(data)
+  // }, [data])
 
   useEffect(() => {
     if (!isOvered) {

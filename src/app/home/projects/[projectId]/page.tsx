@@ -13,7 +13,6 @@ export async function generateMetadata({
     const res = await serverApi.get<IProject>(`/projects/${projectId}`)
 
     if (!res) {
-      console.log(res)
       return
     }
 

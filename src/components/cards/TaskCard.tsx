@@ -53,7 +53,7 @@ const TaskCard: React.FC<ITaskCard> = ({
 
   return (
     <Card
-      style={{ touchAction: "none" }}
+      // style={{ touchAction: "none" }}
       isBlurred
       className={cn(
         "group w-full cursor-grab bg-gray-4 px-4 py-3 text-base active:cursor-grabbing md:max-w-[350px]",
@@ -73,7 +73,7 @@ const TaskCard: React.FC<ITaskCard> = ({
               />
             ) : (
               <button
-                className="w-max min-w-[20px] text-start leading-[20px]"
+                className="w-fit text-start leading-[20px]"
                 onTouchEnd={() => onDoubleClick(() => handleEditTitleClick())}
                 onDoubleClick={handleEditTitleClick}
               >
@@ -90,7 +90,7 @@ const TaskCard: React.FC<ITaskCard> = ({
         </div>
       </CardHeader>
       {(!!description || isDescriptionEdit) && (
-        <CardBody className="px-4 pt-1">
+        <CardBody className="pl-6 pt-1">
           {isDescriptionEdit ? (
             <ChangeTaskDescriptionInput
               toggle={setDescriptionEdit}
@@ -104,7 +104,7 @@ const TaskCard: React.FC<ITaskCard> = ({
                 onDoubleClick(() => handleEditDescriptionClick())
               }
               onDoubleClick={handleEditDescriptionClick}
-              className="cursor-pointer text-sm text-gray-11"
+              className="w-fit cursor-pointer text-sm text-gray-11"
             >
               {description}
             </span>

@@ -26,7 +26,7 @@ const SortableItem = ({ children, id }: SortableItemProps) => {
 
   return (
     <div
-      className="touch-none"
+      // className="touch-none"
       ref={setNodeRef}
       style={style}
       {...attributes}

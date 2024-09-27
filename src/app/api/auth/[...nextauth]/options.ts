@@ -23,7 +23,6 @@ function parseJwt(token: string): DecodedRefreshToken {
 const isJWTExpired = (token: string) => {
   const decodedToken = parseJwt(token)
   const expDate = new Date(decodedToken.exp * 1000)
-  console.log(expDate)
   const isExpired = new Date() > expDate
 
   return isExpired

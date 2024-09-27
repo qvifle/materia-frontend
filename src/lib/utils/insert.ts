@@ -7,7 +7,6 @@ function insert<Type>(element: Type, index: number, array: Type[]): Type[] {
     element,
     ...arr.slice(index),
   ]);
-  console.log(val);
   return val;
 }
 

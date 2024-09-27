@@ -18,9 +18,11 @@ interface IAddTaskButton extends ButtonProps {
 const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
   const [isInit, setInit] = useState(true)
   const [value, setValue] = useState("")
-  const { setDesks: setMockDesks } = useDesksContext()
+  const [backupState, setBackupState] = useState<IDesk[]>([])
+  const { setDesks: setMockDesks, desks } = useDesksContext()
 
   const addMockTask = (title: string) => {
+    setBackupState(desks)
     setMockDesks((desks) => {
       return desks.map((d) => {
         if (d.id === desk.id) {
@@ -29,7 +31,7 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
             tasks: [
               ...d.tasks,
               {
-                id: "mock",
+                id: `mock-${d.id}-${d.tasks.length}`,
                 title: title,
                 createdAt: new Date(),
                 deskId: d.id,
@@ -59,19 +61,21 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
   const { mutate: createTask } = useMutation({
     mutationKey: ["tasks", desk.id],
     mutationFn: async () => {
-      const { data } = await taskService.createTask(desk.id, { title: value })
-      return data
+      const res = await taskService.createTask(desk.id, { title: value })
+      return res.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["desks"] })
       reset()
     },
     onError: (err: any) => {
+      console.log(err)
       if (!!err.response.data) {
         toast.error(err.response.data)
-        return
+      } else {
+        toast.error("Something went wrong")
       }
-      toast.error("Что-то пошло не так")
+      setMockDesks(backupState)
     },
   })
 
