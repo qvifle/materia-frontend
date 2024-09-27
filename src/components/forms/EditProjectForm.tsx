@@ -130,7 +130,7 @@ const EditProjectForm = () => {
           Close
         </Button>
         <Button type="submit" color="primary">
-          Create
+          Confirm
         </Button>
       </ModalFooter>{" "}
     </form>

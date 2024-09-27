@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Organize and manage your projects effortlessly with our Kanban-based task management tool. Create, track, and prioritize tasks with ease to boost productivity and streamline your workflow.",
     start_url: "/",
     display: "standalone",
-    background_color: "#111113",
     theme_color: "#111113",
+    background_color: "#111113",
     icons: [
       {
         src: "/icon-192x192.png",

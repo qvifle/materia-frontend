@@ -3,6 +3,7 @@ import {
   IAddToDeskFields,
   IOrderIdFormFields,
   ITaskFormFields,
+  ITaskPriorityFormFields,
   ITaskStatusFormFields,
 } from "@/types/task.types"
 
@@ -27,6 +28,12 @@ class TaskService {
     const res = await api.patch(`${this.baseUrl}/status/${taskId}`, data)
     return res
   }
+
+  async changePriorityById(taskId: string, data: ITaskPriorityFormFields) {
+    const res = await api.patch(`${this.baseUrl}/priority/${taskId}`, data)
+    return res
+  }
+
   async changeOrderById(taskId: string, data: IOrderIdFormFields) {
     const res = await api.patch(`${this.baseUrl}/order/${taskId}`, data)
     return res

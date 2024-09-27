@@ -1,13 +1,13 @@
 "use client"
 import React, { HTMLAttributes, useState } from "react"
-import TaskStatusIndicator from "../indicators/TaskStatusIndicator"
 import ChangeTaskDescriptionInput from "../inputs/ChangeTaskDescriptionInput"
-import { ITask } from "@/types/task.types"
+import { ITask, TaskPriority } from "@/types/task.types"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import UpdateTaskTitleInput from "../inputs/UpdateTaskTitleInput"
 import focusOnElementWithoutScroll from "@/lib/utils/focus-on-element-without-scroll"
 import EditTaskDropdown from "../dropdowns/EditTaskDropdown"
 import { cn } from "@/lib/utils"
+import TaskPriorityIndicator from "../indicators/TaskPriorityIndicator"
 
 interface ITaskCard extends HTMLAttributes<HTMLDivElement> {
   task: ITask
@@ -63,7 +63,8 @@ const TaskCard: React.FC<ITaskCard> = ({
       <CardHeader className="w-full p-0 text-gray-12">
         <div className="flex w-full items-center justify-between gap-2">
           <div className="grid w-full grid-cols-[16px,1fr] items-center gap-2">
-            <TaskStatusIndicator task={task} />
+            {/* <TaskStatusIndicator task={task} /> */}
+            <TaskPriorityIndicator task={task} />
             {isTitleEdit ? (
               <UpdateTaskTitleInput
                 task={task}

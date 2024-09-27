@@ -10,6 +10,8 @@
 @import "@radix-ui/colors/yellow-dark.css";
 @import "@radix-ui/colors/blue.css";
 @import "@radix-ui/colors/blue-dark.css";
+@import "@radix-ui/colors/tomato.css";
+@import "@radix-ui/colors/tomato-dark.css";
 @import "@radix-ui/colors/black-alpha.css";
 @import "@radix-ui/colors/white-alpha.css";
 
@@ -96,6 +98,19 @@
     --info-10: var(--blue-10);
     --info-11: var(--blue-11);
     --info-12: var(--blue-12);
+
+    --critical-1: var(--tomato-1);
+    --critical-2: var(--tomato-2);
+    --critical-3: var(--tomato-3);
+    --critical-4: var(--tomato-4);
+    --critical-5: var(--tomato-5);
+    --critical-6: var(--tomato-6);
+    --critical-7: var(--tomato-7);
+    --critical-8: var(--tomato-8);
+    --critical-9: var(--tomato-9);
+    --critical-10: var(--tomato-10);
+    --critical-11: var(--tomato-11);
+    --critical-12: var(--tomato-12);
 
     --background-15: #ffffff42;
     --background: 0 0% 100%;

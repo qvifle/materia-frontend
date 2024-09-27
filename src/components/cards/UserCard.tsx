@@ -12,7 +12,7 @@ const UserCard: React.FC<UserCardProps> = ({ name, email, content }) => {
     <Card className="bg-default-100">
       <CardBody>
         <div className="grid w-full grid-cols-[40px,140px,1fr] grid-rows-1 items-center gap-2 sm:grid-cols-[40px,200px,1fr]">
-          <Avatar name={name} />
+          <Avatar name={email} />
           <div className="flex flex-col">
             <h4 className="leading text-base font-medium leading-[18px]">
               {name}

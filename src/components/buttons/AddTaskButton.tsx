@@ -9,7 +9,7 @@ import { Button, ButtonProps, Card, CardHeader, cn } from "@nextui-org/react"
 import { useClickAway } from "@uidotdev/usehooks"
 import toast from "react-hot-toast"
 import { useDesksContext } from "@/context/DesksContext"
-import { ITask, TaskStatus } from "@/types/task.types"
+import { ITask, TaskPriority, TaskStatus } from "@/types/task.types"
 
 interface IAddTaskButton extends ButtonProps {
   desk: IDesk
@@ -37,6 +37,7 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
                 deskId: d.id,
                 orderId: d.tasks.length,
                 status: TaskStatus.PAUSED,
+                priority: TaskPriority.LOW,
               },
             ],
           }
@@ -115,11 +116,11 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
             variant="ghost"
             size="sm"
             className="h-4 w-4 min-w-4 border-[1px] p-0"
-            style={{ borderColor: `var(--info-7)` }}
+            style={{ borderColor: `var(--succes-7)` }}
           >
             <div
               style={{
-                backgroundColor: `var(--info-9)`,
+                backgroundColor: `var(--succes-9)`,
               }}
               className={cn("h-2 w-2 rounded-full")}
             ></div>
