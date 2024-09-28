@@ -4,7 +4,6 @@ import {
   IOrderIdFormFields,
   ITaskFormFields,
   ITaskPriorityFormFields,
-  ITaskStatusFormFields,
 } from "@/types/task.types"
 
 class TaskService {
@@ -21,11 +20,6 @@ class TaskService {
 
   async updateTaskById(taskId: string, data: Partial<ITaskFormFields>) {
     const res = await api.put(`${this.baseUrl}/${taskId}`, data)
-    return res
-  }
-
-  async changeStatusById(taskId: string, data: ITaskStatusFormFields) {
-    const res = await api.patch(`${this.baseUrl}/status/${taskId}`, data)
     return res
   }
 
