@@ -8,9 +8,9 @@ import BluredBackground from "@/components/images/BluredBackground"
 
 const RegistrationModule = () => {
   return (
-    <main className="h-full min-h-screen bg-cover">
+    <main className="h-dvh bg-cover">
       <BluredBackground src={bg} />
-      <div className="flex h-screen items-center md:grid md:grid-cols-[5fr,4fr]">
+      <div className="flex h-full items-center md:grid md:grid-cols-[5fr,4fr]">
         <section className="filter-opacity-15 flex h-full w-full flex-col items-center justify-between px-4 py-[40px] backdrop-blur-md md:items-center md:justify-center md:rounded-l-3xl md:p-0">
           <div className="mx-auto flex max-w-max flex-col md:hidden">
             <h1 className="text-center text-4xl font-semibold leading-[36px] text-gray-1">
