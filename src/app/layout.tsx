@@ -9,7 +9,7 @@ import metadataConfig from "@/lib/constants/metadata"
 
 const inter = FontSans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
 })
 
 export const metadata = metadataConfig
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("font-sans antialiased", inter.variable)}>
+      <body className={cn("font-", inter.className, inter.variable)}>
         <Providers>
           {children}
           <Toaster />

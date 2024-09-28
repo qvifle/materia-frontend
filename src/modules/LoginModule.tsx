@@ -8,10 +8,10 @@ import bg from "public/loginImage.png"
 
 const LoginModule = () => {
   return (
-    <main className="h-full min-h-screen bg-cover">
+    <main className="h-dvh bg-cover">
       <BluredBackground src={bg} />
 
-      <div className="flex h-screen items-center md:grid md:grid-cols-[4fr,5fr]">
+      <div className="flex h-full items-center md:grid md:grid-cols-[4fr,5fr]">
         <section className="hidden h-screen w-full flex-col justify-between p-[40px] md:flex">
           <div className="flex max-w-max flex-col">
             <h1 className="w-full text-left text-4xl font-semibold leading-[36px] text-gray-1">

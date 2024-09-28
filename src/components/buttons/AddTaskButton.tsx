@@ -9,7 +9,7 @@ import { Button, ButtonProps, Card, CardHeader, cn } from "@nextui-org/react"
 import { useClickAway } from "@uidotdev/usehooks"
 import toast from "react-hot-toast"
 import { useDesksContext } from "@/context/DesksContext"
-import { ITask, TaskPriority, TaskStatus } from "@/types/task.types"
+import { ITask, TaskPriority } from "@/types/task.types"
 
 interface IAddTaskButton extends ButtonProps {
   desk: IDesk
@@ -36,7 +36,6 @@ const AddTaskButton: React.FC<IAddTaskButton> = ({ desk, ...rest }) => {
                 createdAt: new Date(),
                 deskId: d.id,
                 orderId: d.tasks.length,
-                status: TaskStatus.PAUSED,
                 priority: TaskPriority.LOW,
               },
             ],

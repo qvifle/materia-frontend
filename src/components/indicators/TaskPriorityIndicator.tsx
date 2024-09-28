@@ -1,6 +1,5 @@
 "use client"
 import { cn } from "@/lib/utils"
-import getStatusColor from "@/lib/utils/getStatusColor"
 import { ITask, TaskPriority } from "@/types/task.types"
 import React, { HTMLAttributes, useEffect, useState } from "react"
 import {

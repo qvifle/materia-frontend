@@ -24,7 +24,6 @@ import {
 } from "@dnd-kit/core"
 import SkeletonDeskWidget from "../skeleton/SkeletonDeskWidget"
 import { useDesksContext } from "@/context/DesksContext"
-import mock from "./mock.json"
 
 interface IDesksContainer {
   projectId: string
@@ -64,11 +63,9 @@ const DesksContainer: React.FC<IDesksContainer> = ({ projectId }) => {
     queryKey: ["desks", projectId],
     queryFn: async () => {
       const { data } = await deskService.getDesks(projectId)
-      if (!!data) {
-        setReorderDesks(mock as any)
+      if (data) {
+        setReorderDesks(data)
       }
-
-      setReorderDesks(data)
 
       return data
     },

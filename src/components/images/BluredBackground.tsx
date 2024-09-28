@@ -4,7 +4,7 @@ import Image, { StaticImageData } from "next/image"
 const BluredBackground = async ({ src }: { src: StaticImageData }) => {
   return (
     <Image
-      className="z-[-10]"
+      className="z-[-10] h-full w-full"
       fill
       src={src}
       alt="background"
